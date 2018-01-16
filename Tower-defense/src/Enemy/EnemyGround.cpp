@@ -47,6 +47,7 @@ void EnemyGround::update()
 		{
 			//deal dmg
 			dead = true;
+			gold = 0;
 			return;
 		}
 		

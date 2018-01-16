@@ -21,6 +21,9 @@ void EnemyAir::update()
 	if (speed > distance)
 	{
 		circle.setPosition(next_target_pos);
+		//deal dmg
+		dead = true;
+		gold = 0;
 	}
 	else
 	{
