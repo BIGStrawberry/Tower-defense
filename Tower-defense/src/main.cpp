@@ -8,6 +8,7 @@ int main() {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Game State Manager");
 	sf::Event event;
 
+	// The game starts in the MenuState
 	GameStateManager::pushState(std::make_shared<MenuState>(window));
 
 	while (window.isOpen()) {
@@ -21,17 +22,13 @@ int main() {
 		/**********/
 		// TODO: game loop
 		// Update the active state
-		if (GameStateManager::getCurrentState() != nullptr) {
-			GameStateManager::getCurrentState()->update();
-		}
+		GameStateManager::getCurrentState()->update();
 		/**********/
 		/**RENDER**/
 		/**********/
 		window.clear(sf::Color(200, 200, 200));
 		// Draw the active state
-		if (GameStateManager::getCurrentState() != nullptr) {
-			GameStateManager::getCurrentState()->render();
-		}
+		GameStateManager::getCurrentState()->render();
 		window.display();
 	}
 

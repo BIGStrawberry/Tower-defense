@@ -1,4 +1,5 @@
 #include "gameStateManager.h"
+#include <assert.h>
 
 GameStateManager::GameStateManager() {};
 
@@ -6,6 +7,8 @@ GameStateManager::GameStateManager() {};
 std::vector<std::shared_ptr<State>> GameStateManager::states;
 
 std::shared_ptr<State> GameStateManager::getCurrentState() {
+	assert(states.size() > 0);
+
 	return states.back();
 }
 
