@@ -5,7 +5,7 @@
 class EnemyAir : public Enemy
 {
 public:
-	EnemyAir(sf::RenderWindow& window, Grid& grid);
+	EnemyAir(sf::RenderWindow& window, Grid& grid, EnemyType type);
 	~EnemyAir();
 
 	void update() override;

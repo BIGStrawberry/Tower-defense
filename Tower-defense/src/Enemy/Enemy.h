@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include "EnemyType.h"
+#include "EnemyDataContainer.h"
 
 class Grid
 {
@@ -24,7 +26,7 @@ protected:
 	bool dead;
 
 public:
-	Enemy(sf::RenderWindow& window, Grid& grid);
+	Enemy(sf::RenderWindow& window, Grid& grid, EnemyType type);
 	~Enemy();
 
 	void decreaseHp(int dmg);
@@ -32,3 +34,4 @@ public:
 	void render();
 	virtual void update() = 0;
 };
+

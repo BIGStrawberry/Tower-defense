@@ -3,8 +3,8 @@
 
 
 
-EnemyGround::EnemyGround(sf::RenderWindow& window, Grid& grid):
-	Enemy(window, grid),
+EnemyGround::EnemyGround(sf::RenderWindow& window, Grid& grid, EnemyType type):
+	Enemy(window, grid, type),
 	target_counter(0)
 {
 	circle.setFillColor(sf::Color::Red);

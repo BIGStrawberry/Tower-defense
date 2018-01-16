@@ -1,12 +1,15 @@
 #include "Enemy.h"
 
 
-Enemy::Enemy(sf::RenderWindow& window, Grid& grid) :
+Enemy::Enemy(sf::RenderWindow& window, Grid& grid, EnemyType type) :
 	window(window),
 	grid(grid),
 	next_target_pos(grid.path[0]),
 	distance(0.0),
-	speed(3)
+	speed(EnemyDataContainer::get(type).speed),
+	hp(EnemyDataContainer::get(type).hp),
+	dmg(EnemyDataContainer::get(type).damage),
+	gold(EnemyDataContainer::get(type).gold)
 {
 	circle.setRadius(20);
 	circle.setOrigin(sf::Vector2f(circle.getRadius(), circle.getRadius()));
