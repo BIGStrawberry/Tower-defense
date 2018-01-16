@@ -4,6 +4,8 @@
 
 class EnemyGround : public Enemy
 {
+private:
+	int target_counter;
 public:
 	EnemyGround(sf::RenderWindow& window, Grid& grid);
 	~EnemyGround();

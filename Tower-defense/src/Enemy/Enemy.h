@@ -13,7 +13,6 @@ class Enemy
 protected:
 	sf::RenderWindow& window;
 	Grid& grid;
-	int target_counter;
 	float distance;
 	sf::CircleShape circle;
 	sf::Vector2f next_target_pos;
