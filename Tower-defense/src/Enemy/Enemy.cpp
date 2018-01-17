@@ -11,19 +11,19 @@ Enemy::Enemy(sf::RenderWindow& window, Grid& grid, EnemyType type) :
 	dmg(EnemyDataContainer::get(type).damage),
 	gold(EnemyDataContainer::get(type).gold)
 {
-	circle.setRadius(20);
-	circle.setOrigin(sf::Vector2f(circle.getRadius(), circle.getRadius()));
-	circle.setPosition(sf::Vector2f(0.0, 0.0));
+	body.setRadius(20);
+	body.setOrigin(sf::Vector2f(body.getRadius(), body.getRadius()));
+	body.setPosition(sf::Vector2f(0.0, 0.0));
 }
 
 void Enemy::render()
 {
-	window.draw(circle);
+	window.draw(body);
 }
 
 sf::Vector2f Enemy::getPosition()
 {
-	return circle.getPosition();
+	return body.getPosition();
 }
 
 void Enemy::decreaseHp(int dmg)
@@ -33,6 +33,21 @@ void Enemy::decreaseHp(int dmg)
 	{
 		dead = true;
 	}
+}
+
+int Enemy::getGold()
+{
+	return gold;
+}
+
+sf::FloatRect Enemy::getBounds()
+{
+	return body.getGlobalBounds();
+}
+
+bool Enemy::isDead()
+{
+	return dead;
 }
 
 Enemy::~Enemy()

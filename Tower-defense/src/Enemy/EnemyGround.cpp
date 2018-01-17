@@ -7,7 +7,7 @@ EnemyGround::EnemyGround(sf::RenderWindow& window, Grid& grid, EnemyType type):
 	Enemy(window, grid, type),
 	target_counter(0)
 {
-	circle.setFillColor(sf::Color::Red);
+	body.setFillColor(sf::Color::Red);
 }
 
 
@@ -19,13 +19,13 @@ void EnemyGround::move()
 {
 	if (speed > distance)
 	{
-		circle.setPosition(next_target_pos);
+		body.setPosition(next_target_pos);
 		distance = 0;
 
 	}
 	else
 	{
-		circle.setPosition(circle.getPosition() + (vector * speed));
+		body.setPosition(body.getPosition() + (vector * speed));
 		distance -= speed;
 	}
 }
@@ -35,13 +35,14 @@ void EnemyGround::update()
 {
 	if (distance == 0)
 	{
-		sf::Vector2f pos = circle.getPosition();
-		target_counter++;
+		sf::Vector2f pos = body.getPosition();
+		
 		if (grid.path.size() > target_counter)
 		{
 			next_target_pos = grid.path[target_counter];
 			distance = sqrt(pow(pos.x - next_target_pos.x, 2) + pow(pos.y - next_target_pos.y, 2));
-			vector = (next_target_pos - circle.getPosition()) / distance;
+			vector = (next_target_pos - body.getPosition()) / distance;
+			target_counter++;
 		}
 		else
 		{

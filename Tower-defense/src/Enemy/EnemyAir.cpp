@@ -6,9 +6,9 @@ EnemyAir::EnemyAir(sf::RenderWindow& window, Grid& grid, EnemyType type):
 	Enemy(window, grid, type)
 {
 	next_target_pos = *(grid.path.end() - 1);
-	distance = sqrt(pow(circle.getPosition().x - next_target_pos.x, 2) + pow(circle.getPosition().y - next_target_pos.y, 2));
-	vector = (next_target_pos - circle.getPosition()) / distance;
-	circle.setFillColor(sf::Color::Green);
+	distance = sqrt(pow(body.getPosition().x - next_target_pos.x, 2) + pow(body.getPosition().y - next_target_pos.y, 2));
+	vector = (next_target_pos - body.getPosition()) / distance;
+	body.setFillColor(sf::Color::Green);
 }
 
 
@@ -20,14 +20,14 @@ void EnemyAir::update()
 {
 	if (speed > distance)
 	{
-		circle.setPosition(next_target_pos);
+		body.setPosition(next_target_pos);
 		//deal dmg
 		dead = true;
 		gold = 0;
 	}
 	else
 	{
-		circle.setPosition(circle.getPosition() + (vector * speed));
+		body.setPosition(body.getPosition() + (vector * speed));
 		distance -= speed;
 	}
 	
