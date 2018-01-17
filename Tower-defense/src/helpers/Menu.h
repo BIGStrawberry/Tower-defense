@@ -8,12 +8,13 @@ class Menu {
 private:
 	sf::RenderWindow& window;
 	std::vector<MenuItem> menuItems;
-	uint8_t selectedIndex;
+	uint8_t selectedIndex = -1;
 public:
 	Menu(sf::RenderWindow& window, std::vector<MenuItem> menuItems);
 
 	void selectNext();
 	void selectPrevious();
+	void onPress();
 	void update();
 	void render() const;
 };
