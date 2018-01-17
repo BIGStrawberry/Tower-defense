@@ -4,7 +4,7 @@
 
 /**
 * @class Player
-* @file Player.hpp
+* @file Player.cpp
 * @brief Class for the Player
 */
 class Player {
