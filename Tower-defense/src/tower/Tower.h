@@ -125,9 +125,9 @@ public:
 
 	/**
 	* @brief rotates the turret, updates projectiles and updates the target pointer.
-	removes dead projectiles
+	Removes dead projectiles.
 	Checks if enemy is out of range and searches for a new one.
-	Will create a projectile after the reload_time.
+	Creates a projectile after the reload_time if the tower has a target.
 	
 	*/
 	void update();
