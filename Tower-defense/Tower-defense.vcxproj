@@ -25,6 +25,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\states\MenuState.cpp" />
     <ClCompile Include="src\states\PlayState.cpp" />
+    <ClCompile Include="src\states\ScoreState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\helpers\GameStateManager.h" />
@@ -32,6 +33,7 @@
     <ClInclude Include="src\helpers\MenuItem.h" />
     <ClInclude Include="src\states\MenuState.h" />
     <ClInclude Include="src\states\PlayState.h" />
+    <ClInclude Include="src\states\ScoreState.h" />
     <ClInclude Include="src\states\State.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

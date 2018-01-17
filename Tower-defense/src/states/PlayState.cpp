@@ -15,9 +15,6 @@ void PlayState::init() {
 }
 
 void PlayState::update() {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {
-		GameStateManager::popState();
-	}
 }
 
 void PlayState::render() const {
@@ -25,3 +22,10 @@ void PlayState::render() const {
 }
 
 void PlayState::cleanUp() {}
+
+void PlayState::onKeyPressed(sf::Event& evt) {
+	if (evt.key.code ==  sf::Keyboard::Escape) {
+		// TODO: Pass player score not 1337
+		GameStateManager::pushState(std::make_unique<ScoreState>(window, 1337));
+	}
+};
