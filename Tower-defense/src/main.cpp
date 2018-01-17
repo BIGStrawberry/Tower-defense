@@ -6,17 +6,22 @@
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Project name");
 	sf::Event event;
-	Tower t(window, 10.0, sf::Vector2f(500, 200));
+	window.setVerticalSyncEnabled(true);
 	
+	EnemyDataContainer::load();
 	//fakegrid
 	Grid grid;
-	grid.path.push_back(sf::Vector2f(0, 0));
-	grid.path.push_back(sf::Vector2f(100, 0));
-	grid.path.push_back(sf::Vector2f(100, 100));
-	grid.path.push_back(sf::Vector2f(150, 200));
+	grid.path.push_back(sf::Vector2f(0.0f, 0.0f));
+	grid.path.push_back(sf::Vector2f(100.0f, 0.0f));
+	grid.path.push_back(sf::Vector2f(100.0f, 100.0f));
+	grid.path.push_back(sf::Vector2f(150.0f, 200.0f));
+	grid.path.push_back(sf::Vector2f(1280.0f, 720.0f));
 
-	std::vector<std::shared_ptr<Enemy>> enemies;
-	enemies.push_back(make_enemy(EnemyType::Normal, window, grid));
+	Tower t(window, 10, sf::Vector2f(500, 200), grid);
+
+	grid.enemies.push_back(make_enemy(EnemyType::Normal, window, grid));
+
+	/*auto e = make_enemy(EnemyType::Normal, window, grid);*/
 
 	while (window.isOpen()) {
 		while (window.pollEvent(event)) {
@@ -25,17 +30,19 @@ int main() {
 			}
 		}
 
-		for (auto& enemy : enemies) {
+		for (auto& enemy : grid.enemies) {
 			enemy->update();
 		}
+	
 		t.update();
 
 		window.clear(sf::Color(200, 200, 200));
 
-		for (auto& enemy : enemies) {
+		for (auto& enemy : grid.enemies) {
 			enemy->render();
 		}
 		t.render();
+		/*e->render();*/
 		//
 
 		window.display();

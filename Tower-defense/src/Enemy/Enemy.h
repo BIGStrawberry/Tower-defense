@@ -3,6 +3,7 @@
 #include <vector>
 #include "EnemyType.h"
 #include "EnemyDataContainer.h"
+#include <memory>
 
 #pragma region comment
 /// @file
@@ -12,11 +13,13 @@
 /// \details
 /// Dummy class, used by Enemy.
 #pragma endregion
+class Enemy;
 
 class Grid
 {
 public:
 	std::vector<sf::Vector2f> path;
+	std::vector<std::shared_ptr<Enemy>> enemies;
 };
 
 #pragma region comment

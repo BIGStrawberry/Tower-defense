@@ -2,12 +2,13 @@
 
 
 
-Projectile::Projectile(sf::RenderWindow & window, float damage, sf::Vector2f position):
-	speed(0.1f),
-	damage(100),
+Projectile::Projectile(sf::RenderWindow & window, int damage, sf::Vector2f position, std::shared_ptr<Enemy> & target):
+	speed(10.0f),
+	damage(damage),
 	is_alive(true),
 	body(3),
-	window(window)
+	window(window),
+	target(target)
 {
 	body.setFillColor(sf::Color::Black);
 	body.setOrigin(sf::Vector2f(3, 3));
@@ -21,13 +22,12 @@ void Projectile::render() {
 }
 
 void Projectile::update() {
-	//if (body.getBoundaries().intersects(target.getBoundaries()){
-	//	target.decreaseHp(damage);
-	//	is_alive = false;
-	//	return;
-	// }
+	if (body.getGlobalBounds().intersects(target->getBounds())){
+		target->decreaseHp(damage);
+		is_alive = false;
+	 }
 
-	sf::Vector2f enemypos = sf::Vector2f((float)sf::Mouse::getPosition(window).x, (float)sf::Mouse::getPosition(window).y); // temporarily mouse pos
+	sf::Vector2f enemypos = target->getPosition();
 
 	sf::Vector2f mypos = body.getPosition();
 	sf::Vector2f diff = mypos - enemypos;
