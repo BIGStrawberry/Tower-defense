@@ -1,5 +1,7 @@
 #include "Menu.h"
 
+#include <iostream>
+
 Menu::Menu(sf::RenderWindow& window, std::vector<MenuItem> menuItems):
 	window(window),
 	menuItems(menuItems)
@@ -10,11 +12,11 @@ void Menu::selectNext() {
 }
 
 void Menu::selectPrevious() {
-	selectedIndex = (selectedIndex > 1) ? selectedIndex - 1 : static_cast<uint8_t>(menuItems.size()) - 1;
+	selectedIndex = (selectedIndex > 0) ? selectedIndex - 1 : static_cast<uint8_t>(menuItems.size()) - 1;
 }
 
 void Menu::onPress() {
-	if (selectedIndex != -1) {
+	if (selectedIndex >= 0) {
 		menuItems[selectedIndex].onPress();
 	}
 }

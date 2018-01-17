@@ -8,7 +8,7 @@ class Menu {
 private:
 	sf::RenderWindow& window;
 	std::vector<MenuItem> menuItems;
-	uint8_t selectedIndex = -1;
+	int8_t selectedIndex = -1;
 public:
 	Menu(sf::RenderWindow& window, std::vector<MenuItem> menuItems);
 
