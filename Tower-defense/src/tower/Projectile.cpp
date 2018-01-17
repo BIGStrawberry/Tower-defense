@@ -31,8 +31,8 @@ void Projectile::update() {
 		sf::Vector2f mypos = body.getPosition();
 		sf::Vector2f diff = mypos - target->getPosition();
 
-		float c = std::sqrt(std::pow(diff.x, 2.0f) + std::pow(diff.y, 2.0f));
-		body.setPosition(body.getPosition() - sf::Vector2f((diff.x / c)* speed, (diff.y / c)* speed));
+		float distance_to_unit = std::sqrt(std::pow(diff.x, 2.0f) + std::pow(diff.y, 2.0f));
+		body.setPosition(body.getPosition() - sf::Vector2f((diff.x / distance_to_unit)* speed, (diff.y / distance_to_unit)* speed));
 	}
 	else {
 		is_alive = false;
@@ -43,5 +43,3 @@ void Projectile::update() {
 bool Projectile::isAlive() {
 	return is_alive;
 }
-
-Projectile::~Projectile() {}
