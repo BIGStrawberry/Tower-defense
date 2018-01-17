@@ -1,7 +1,7 @@
 #include "Enemy.h"
 
 
-Enemy::Enemy(sf::RenderWindow& window, std::vector<sf::Vector2f>& path, EnemyType type) :
+Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, EnemyType type) :
 	window(window),
 	path(path),
 	next_target_pos(path[0]),
@@ -16,7 +16,7 @@ Enemy::Enemy(sf::RenderWindow& window, std::vector<sf::Vector2f>& path, EnemyTyp
 	body.setPosition(path[0]);
 }
 
-void Enemy::render()
+void Enemy::render() const
 {
 	if (!dead)
 	{
@@ -24,7 +24,7 @@ void Enemy::render()
 	}
 }
 
-sf::Vector2f Enemy::getPosition()
+const sf::Vector2f Enemy::getPosition() const
 {
 	return body.getPosition();
 }
@@ -38,17 +38,17 @@ void Enemy::decreaseHp(int dmg)
 	}
 }
 
-int Enemy::getGold()
+const int Enemy::getGold() const
 {
 	return gold;
 }
 
-sf::FloatRect Enemy::getBounds()
+sf::FloatRect Enemy::getBounds() const
 {
 	return body.getGlobalBounds();
 }
 
-bool Enemy::isDead()
+const bool Enemy::isDead() const
 {
 	return dead;
 }

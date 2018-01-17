@@ -17,7 +17,7 @@ class Enemy
 {
 protected:
 	sf::RenderWindow& window;
-	std::vector<sf::Vector2f>& path;
+	const std::vector<sf::Vector2f>& path;
 	float distance;
 	sf::CircleShape body;
 	sf::Vector2f next_target_pos;
@@ -39,7 +39,7 @@ public:
 	*/
 
 #pragma endregion
-	Enemy(sf::RenderWindow& window, std::vector<sf::Vector2f>& path, EnemyType type);
+	Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, EnemyType type);
 	~Enemy();
 
 #pragma region comment
@@ -63,7 +63,7 @@ public:
 	*/
 
 #pragma endregion
-	sf::Vector2f getPosition();
+	const sf::Vector2f getPosition() const;
 #pragma region comment
 	/**
 	* @brief renders Enemy
@@ -72,7 +72,7 @@ public:
 	*/
 
 #pragma endregion
-	void render();
+	void render() const;
 #pragma region comment
 	/**
 	* @brief abstract update funcion
@@ -89,7 +89,7 @@ public:
 	*/
 
 #pragma endregion
-	int getGold();
+	const int getGold() const;
 #pragma region comment
 	/**
 	* @brief returns bounding box
@@ -98,7 +98,7 @@ public:
 	*/
 
 #pragma endregion
-	sf::FloatRect getBounds();
+	sf::FloatRect getBounds() const;
 #pragma region comment
 	/**
 	* @brief getter for bool dead
@@ -106,5 +106,5 @@ public:
 	*/
 
 #pragma endregion
-	bool isDead();
+	const bool isDead() const;
 };
