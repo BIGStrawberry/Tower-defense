@@ -6,19 +6,32 @@
 
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Game State Manager");
-	sf::Event event;
+	sf::Event evt;
 
 	// The game starts in the MenuState
 	GameStateManager::pushState(std::make_shared<MenuState>(window));
 
 	while (window.isOpen()) {
-		while (window.pollEvent(event)) {
-			if (event.type == sf::Event::Closed) {
+		while (window.pollEvent(evt)) {
+			switch (evt.type) {
+			case sf::Event::Closed:
 				window.close();
-			} else if (event.type == sf::Event::KeyPressed) {
-				if (event.key.code == sf::Keyboard::Up) {
-					std::cout << "Up" << std::endl;
-				}
+				break;
+			case sf::Event::KeyPressed:
+				GameStateManager::getCurrentState()->onKeyPressed(evt);
+				break;
+			case sf::Event::KeyReleased:
+				GameStateManager::getCurrentState()->onKeyReleased(evt);
+				break;
+			case sf::Event::MouseButtonPressed:
+				GameStateManager::getCurrentState()->onMouseButtonPressed(evt);
+				break;
+			case sf::Event::MouseButtonReleased:
+				GameStateManager::getCurrentState()->onMouseButtonReleased(evt);
+				break;
+			case sf::Event::MouseMoved:
+				GameStateManager::getCurrentState()->onMouseMoved(evt);
+				break;
 			}
 		}
 		/**********/
