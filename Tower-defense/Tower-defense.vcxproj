@@ -19,6 +19,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Enemy\EnemyDataContainer.cpp" />
+    <ClCompile Include="src\Enemy\EnemyAir.cpp" />
+    <ClCompile Include="src\Enemy\EnemyGround.cpp" />
+    <ClCompile Include="src\Enemy\Enemy.cpp" />
+    <ClCompile Include="src\Enemy\make_enemy.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\tower\Projectile.cpp" />
     <ClCompile Include="src\tower\Tower.cpp" />
@@ -26,6 +31,15 @@
   <ItemGroup>
     <ClInclude Include="src\tower\Projectile.h" />
     <ClInclude Include="src\tower\Tower.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Enemy\EnemyDataContainer.h" />
+    <ClInclude Include="src\Enemy\EnemyAir.h" />
+    <ClInclude Include="src\Enemy\EnemyData.h" />
+    <ClInclude Include="src\Enemy\EnemyGround.h" />
+    <ClInclude Include="src\Enemy\Enemy.h" />
+    <ClInclude Include="src\Enemy\EnemyType.h" />
+    <ClInclude Include="src\Enemy\make_enemy.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{e4699b1e-4ff1-4510-95fb-d03823b32527}</ProjectGuid>
