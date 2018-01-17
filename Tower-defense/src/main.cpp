@@ -17,7 +17,7 @@ int main() {
 	grid.path.push_back(sf::Vector2f(150.0f, 200.0f));
 	grid.path.push_back(sf::Vector2f(1280.0f, 720.0f));
 
-	Tower t(window, 10, sf::Vector2f(500, 200), grid);
+	Tower t(window, 10, sf::Vector2f(500, 200), 150, grid);
 
 	grid.enemies.push_back(make_enemy(EnemyType::Normal, window, grid));
 

@@ -22,18 +22,21 @@ void Projectile::render() {
 }
 
 void Projectile::update() {
-	if (body.getGlobalBounds().intersects(target->getBounds())){
-		target->decreaseHp(damage);
+	if (!target->isDead()) {
+		if (body.getGlobalBounds().intersects(target->getBounds())) {
+			target->decreaseHp(damage);
+			is_alive = false;
+		}
+
+		sf::Vector2f mypos = body.getPosition();
+		sf::Vector2f diff = mypos - target->getPosition();
+
+		float c = std::sqrt(std::pow(diff.x, 2.0f) + std::pow(diff.y, 2.0f));
+		body.setPosition(body.getPosition() - sf::Vector2f((diff.x / c)* speed, (diff.y / c)* speed));
+	}
+	else {
 		is_alive = false;
-	 }
-
-	sf::Vector2f enemypos = target->getPosition();
-
-	sf::Vector2f mypos = body.getPosition();
-	sf::Vector2f diff = mypos - enemypos;
-
-	float c = std::sqrt(std::pow(diff.x, 2.0f) + std::pow(diff.y, 2.0f));
-	body.setPosition(mypos - sf::Vector2f((diff.x / c)* speed, (diff.y / c)* speed));
+	}
 
 }
 

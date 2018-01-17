@@ -4,6 +4,7 @@
 #include "EnemyType.h"
 #include "EnemyDataContainer.h"
 #include <memory>
+#include <iostream>
 
 #pragma region comment
 /// @file
