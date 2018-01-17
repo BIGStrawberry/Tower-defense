@@ -43,4 +43,25 @@ public:
 	* @brief Cleans up the state
 	*/
 	virtual void cleanUp() = 0;
+
+	/**
+	* @brief SFML KeyPressed event
+	*/
+	virtual void onKeyPressed(sf::Event evt) = 0;
+	/**
+	* @brief SFML KeyReleased event
+	*/
+	virtual void onKeyReleased(sf::Event evt) = 0;
+	/**
+	* @brief SFML MouseButoonPressed event
+	*/
+	virtual void onMouseButtonPressed(sf::Event evt) = 0;
+	/**
+	* @brief SFML MouseButoonReleased event
+	*/
+	virtual void onMouseButtonReleased(sf::Event evt) = 0;
+	/**
+	* @brief SFML MouseMoved event
+	*/
+	virtual void onMouseMoved(sf::Event evt) = 0;
 };
