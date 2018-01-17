@@ -5,13 +5,15 @@
 #include <memory>
 
 #pragma region comment
-/// \brief
-///  makes an Enemy on the heap
-/// \param EnemyType - the dataset used by the Enemy.
-/// \param sf::RenderWindow& - window to be rerndered on
-/// \param Grid& - grid, contains a public vector of sf::Vector2f coordinates, called path.
-/// \details
-/// This function returns a std::shared_ptr to an Enemy object, created using the given parameters.
+/**
+* @brief creates an Enemy object on th heap.
+* @param EnemyTye					type: The type of Enemy that needs to be created.
+* @param sf::RenderWindow&			window: The window that the Enemy will be rendered on.
+* @param std::vector<sf::Vector2f>&	path: Vector containing the coordinates of the path that
+* the unit needs to follow.
+* @details This function will create an instance of desired subclass of Enemy on the heap,
+* and return a std::shred_ptr<Enemy> to that instance.
+*/
 
 #pragma endregion
-std::shared_ptr<Enemy> make_enemy(EnemyType type, sf::RenderWindow& window, Grid& grid);
+std::shared_ptr<Enemy> make_enemy(EnemyType type, sf::RenderWindow& window, std::vector<sf::Vector2f>& path);

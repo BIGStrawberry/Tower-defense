@@ -1,8 +1,9 @@
 #pragma once
 
 #pragma region comment
-/// \brief
-///  enum class EnemyType
+/**
+* @enum Enum class of valid Enemy types.
+*/
 
 #pragma endregion
 

@@ -2,10 +2,10 @@
 
 
 
-EnemyAir::EnemyAir(sf::RenderWindow& window, Grid& grid, EnemyType type):
-	Enemy(window, grid, type)
+EnemyAir::EnemyAir(sf::RenderWindow& window, std::vector<sf::Vector2f>& path, EnemyType type):
+	Enemy(window, path, type)
 {
-	next_target_pos = *(grid.path.end() - 1);
+	next_target_pos = *(path.end() - 1);
 	distance = sqrt(pow(body.getPosition().x - next_target_pos.x, 2) + pow(body.getPosition().y - next_target_pos.y, 2));
 	vector = (next_target_pos - body.getPosition()) / distance;
 	body.setFillColor(sf::Color::Green);

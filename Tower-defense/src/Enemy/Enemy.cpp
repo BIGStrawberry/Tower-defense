@@ -1,10 +1,10 @@
 #include "Enemy.h"
 
 
-Enemy::Enemy(sf::RenderWindow& window, Grid& grid, EnemyType type) :
+Enemy::Enemy(sf::RenderWindow& window, std::vector<sf::Vector2f>& path, EnemyType type) :
 	window(window),
-	grid(grid),
-	next_target_pos(grid.path[0]),
+	path(path),
+	next_target_pos(path[0]),
 	distance(0.0),
 	speed(EnemyDataContainer::get(type).speed),
 	hp(EnemyDataContainer::get(type).hp),
@@ -13,12 +13,15 @@ Enemy::Enemy(sf::RenderWindow& window, Grid& grid, EnemyType type) :
 {
 	body.setRadius(20);
 	body.setOrigin(sf::Vector2f(body.getRadius(), body.getRadius()));
-	body.setPosition(sf::Vector2f(0.0, 0.0));
+	body.setPosition(path[0]);
 }
 
 void Enemy::render()
 {
-	window.draw(body);
+	if (!dead)
+	{
+		window.draw(body);
+	}
 }
 
 sf::Vector2f Enemy::getPosition()

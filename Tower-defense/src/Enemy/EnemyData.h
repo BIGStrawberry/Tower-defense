@@ -1,10 +1,9 @@
 #pragma once
 
 #pragma region comment
-/// \brief
-/// struct EnemyData
-/// \details
-/// ADT, contains the data of a type of unit.
+/**
+* @struct Encapsulates all the (modifiable) data that is needed by Enemy.
+*/
 #pragma endregion
 
 struct EnemyData

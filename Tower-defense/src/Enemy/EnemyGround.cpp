@@ -3,8 +3,8 @@
 
 
 
-EnemyGround::EnemyGround(sf::RenderWindow& window, Grid& grid, EnemyType type):
-	Enemy(window, grid, type),
+EnemyGround::EnemyGround(sf::RenderWindow& window, std::vector<sf::Vector2f>& path, EnemyType type):
+	Enemy(window, path, type),
 	target_counter(0)
 {
 	body.setFillColor(sf::Color::Red);
@@ -33,25 +33,28 @@ void EnemyGround::move()
 
 void EnemyGround::update()
 {
-	if (distance == 0)
+	if (!dead)
 	{
-		sf::Vector2f pos = body.getPosition();
-		
-		if (grid.path.size() > target_counter)
+		if (distance == 0)
 		{
-			next_target_pos = grid.path[target_counter];
-			distance = sqrt(pow(pos.x - next_target_pos.x, 2) + pow(pos.y - next_target_pos.y, 2));
-			vector = (next_target_pos - body.getPosition()) / distance;
-			target_counter++;
+			sf::Vector2f pos = body.getPosition();
+
+			if (path.size() > target_counter)
+			{
+				next_target_pos = path[target_counter];
+				distance = sqrt(pow(pos.x - next_target_pos.x, 2) + pow(pos.y - next_target_pos.y, 2));
+				vector = (next_target_pos - body.getPosition()) / distance;
+				target_counter++;
+			}
+			else
+			{
+				//deal dmg
+				dead = true;
+				gold = 0;
+				return;
+			}
+
 		}
-		else
-		{
-			//deal dmg
-			dead = true;
-			gold = 0;
-			return;
-		}
-		
+		move();
 	}
-	move();
 }

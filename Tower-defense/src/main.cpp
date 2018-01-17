@@ -11,12 +11,12 @@ int main() {
 	EnemyDataContainer::load();
 
 #pragma region Fake_grid
-	Grid grid;
-	grid.path.push_back(sf::Vector2f(0.0, 0.0));
-	grid.path.push_back(sf::Vector2f(100.0, 0.0));
-	grid.path.push_back(sf::Vector2f(100.0, 100.0));
-	grid.path.push_back(sf::Vector2f(275.0, 300.0));
-	grid.path.push_back(sf::Vector2f(400.0, 250.0));
+	std::vector<sf::Vector2f> path;
+	path.push_back(sf::Vector2f(0.0, 0.0));
+	path.push_back(sf::Vector2f(100.0, 0.0));
+	path.push_back(sf::Vector2f(100.0, 100.0));
+	path.push_back(sf::Vector2f(275.0, 300.0));
+	path.push_back(sf::Vector2f(400.0, 250.0));
 #pragma endregion
 
 #pragma region Markers
@@ -26,8 +26,8 @@ int main() {
 	rect.setOrigin(sf::Vector2f(rect.getSize().x / 2, rect.getSize().y / 2));
 #pragma endregion
 
-	auto eg = make_enemy(EnemyType::Normal, window, grid);
-	auto ea = make_enemy(EnemyType::Flying, window, grid);
+	auto eg = make_enemy(EnemyType::Normal, window, path);
+	auto ea = make_enemy(EnemyType::Flying, window, path);
 
 	while (window.isOpen()) {
 		while (window.pollEvent(event)) {
@@ -37,7 +37,7 @@ int main() {
 		}
 #pragma region Drawing_markers
 		window.clear(sf::Color(200, 200, 200));
-		for (auto& item : grid.path)
+		for (auto& item : path)
 		{
 			rect.setPosition(item);
 			window.draw(rect);
@@ -49,6 +49,7 @@ int main() {
 		eg->render();
 		ea->render();
 		window.display();
+		sf::Vector2f a = eg->getPosition();
 	}
 
     return 0;

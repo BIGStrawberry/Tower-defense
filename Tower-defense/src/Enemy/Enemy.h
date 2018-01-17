@@ -5,32 +5,19 @@
 #include "EnemyDataContainer.h"
 
 #pragma region comment
-/// @file
-
-/// \brief
-/// class Grid
-/// \details
-/// Dummy class, used by Enemy.
+/**
+* @class Enemy
+* @file Enemy.cpp
+* @brief Class for enemy units
+* @details This is an abstract base class for enemy units.
+* Enemies can be updated and rendered.
+*/
 #pragma endregion
-
-class Grid
-{
-public:
-	std::vector<sf::Vector2f> path;
-};
-
-#pragma region comment
-/// \brief
-/// class Enemy
-/// \details
-/// Abstract base class for enemy units.
-#pragma endregion
-
 class Enemy
 {
 protected:
 	sf::RenderWindow& window;
-	Grid& grid;
+	std::vector<sf::Vector2f>& path;
 	float distance;
 	sf::CircleShape body;
 	sf::Vector2f next_target_pos;
@@ -43,59 +30,80 @@ protected:
 
 public:
 #pragma region comment
-	/// \brief
-	///  constructor
-	/// \param sf::RenderWindow& - Window to be rendered on.
-	/// \param Grid& - Grid, should contain a public std::vector of coordinates of path.
+	/**
+	* @brief Enemy Constructor
+	* @param sf::RenderWindow&			window: SFML window instance to be rendered on.
+	* @param std::vector<sf::Vector2f>&	path: Vector reference, which contains (at least 1) coordinate point(s).
+	*									The enemy will follow the given path, until it reaches the base (last coordinate).
+	* @param EnemyType					Type of the Enemy.
+	*/
 
 #pragma endregion
-	Enemy(sf::RenderWindow& window, Grid& grid, EnemyType type);
+	Enemy(sf::RenderWindow& window, std::vector<sf::Vector2f>& path, EnemyType type);
 	~Enemy();
 
 #pragma region comment
-	/// \brief
-	///  lowers hp of enemy
-	/// \param int - damage
-	/// \details
-	/// This function will be called by a projectile object when overlap.
+	/**
+	* @brief decreases hp of Enemy
+	* @param int	dmg: Amount of damage that is being dealt.
+	* @details This function needs to be called by a projectile instance,
+	* when it deals damage to the Enemy. If there is no more hitpoints
+	* remaining after the hit, bool dead will be set to true. After this
+	* is done, the Enemy won't react to future update() calls, nor can be
+	* rendered. Object is ready to be removed from the container.
+	*/
 
 #pragma endregion
 	void decreaseHp(int dmg);
 #pragma region comment
-	/// \brief
-	///  gets position
+	/**
+	* @brief returns Enemy's position
+	* @details This function returns the sf::Vector2f position
+	* of the Enemy.
+	*/
 
 #pragma endregion
 	sf::Vector2f getPosition();
 #pragma region comment
-	/// \brief
-	///  renders object
+	/**
+	* @brief renders Enemy
+	* @details This function renders the Enemy to the sf::RenderWindow reference
+	* stored in a member variable. Will only render if unit is not marked as dead.
+	*/
 
 #pragma endregion
 	void render();
 #pragma region comment
-	/// \brief
-	///  updates the state of the object
-	/// \details
-	/// This function will be called once per update loop.
+	/**
+	* @brief abstract update funcion
+	* @details This function is to be called once per update loop.
+	*/
 
 #pragma endregion
 	virtual void update() = 0;
 #pragma region comment
-	/// \brief
-	///  returns the amount of gold that the unit gives when killed.
+	/**
+	* @brief returns gold attribute
+	* @details This function returns the amount of gold that the player
+	* gets in case Enemy gets killed.
+	*/
 
 #pragma endregion
 	int getGold();
 #pragma region comment
-	/// \brief
-	///  returns global bounds of object
+	/**
+	* @brief returns bounding box
+	* @details This function returns an sf::FloatRect object, that can be used
+	* to check overlap with the Enemy instance.
+	*/
 
 #pragma endregion
 	sf::FloatRect getBounds();
 #pragma region comment
-	/// \brief
-	///  returns if unit is dead
+	/**
+	* @brief getter for bool dead
+	* @details This function returns whether the Enemy has been marked as dead.
+	*/
 
 #pragma endregion
 	bool isDead();
