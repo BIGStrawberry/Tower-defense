@@ -3,9 +3,19 @@
 
 MenuState::MenuState(sf::RenderWindow& window):
 	State(window),
-	menu(window, {
-		{window, std::function<void()>([&window]() { GameStateManager::pushState(std::make_unique<PlayState>(window)); }),{150, 50},{50, 150},  {"Play game", font, 20}},
-		{window, std::function<void()>([&window]() { window.close(); }),{150, 50},{50, 250}, {"Exit game", font, 20}}
+	menu(window, {{
+			window,
+			std::function<void()>([&window]() { GameStateManager::pushState(std::make_unique<PlayState>(window)); }),
+			{250, 75},
+			{static_cast<float>(window.getSize().x) / 2 - 255 / 2, 150},
+			{"Play game", font, 20}
+		}, {
+			window,
+			std::function<void()>([&window]() { window.close(); }),
+			{250, 75},
+			{static_cast<float>(window.getSize().x) / 2 - 255 / 2, 350},
+			{"Exit game", font, 20}
+		}
 	})
 {}
 
@@ -14,9 +24,9 @@ void MenuState::init() {
 		std::cout << "Could not load consola.ttf" << std::endl;
 	}
 	text.setFont(font);
-	text.setString("Press Enter to start");
+	text.setString("A Mazing Tower Defence");
 	// TODO: Better center d;)
-	text.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, static_cast<float>(window.getSize().y) / 2 - 24});
+	text.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 24.0f});
 }
 
 void MenuState::update() {
