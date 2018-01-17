@@ -6,7 +6,7 @@
 
 /**
 * @class GameStateManager
-* @file GameStateManager.hpp
+* @file GameStateManager.h
 * @brief Singleton class used to switch game states.
 *
 * @details

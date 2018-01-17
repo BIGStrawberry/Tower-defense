@@ -17,9 +17,9 @@ public:
 	void render() const override;
 	void cleanUp() override;
 
-	void onKeyPressed(sf::Event evt) override {};
-	void onKeyReleased(sf::Event evt) override {};
-	void onMouseButtonPressed(sf::Event evt) override {};
-	void onMouseButtonReleased(sf::Event evt) override {};
-	void onMouseMoved(sf::Event evt) override {};
+	void onKeyPressed(sf::Event& evt) override {};
+	void onKeyReleased(sf::Event& evt) override {};
+	void onMouseButtonPressed(sf::Event& evt) override {};
+	void onMouseButtonReleased(sf::Event& evt) override {};
+	void onMouseMoved(sf::Event& evt) override {};
 };

@@ -20,8 +20,6 @@ void MenuState::init() {
 }
 
 void MenuState::update() {
-
-	menu.update();
 }
 
 void MenuState::render() const {
@@ -33,7 +31,7 @@ void MenuState::render() const {
 void MenuState::cleanUp() {
 }
 
-void MenuState::onKeyPressed(sf::Event evt) {
+void MenuState::onKeyPressed(sf::Event& evt) {
 	switch (evt.key.code) {
 	case sf::Keyboard::Return:
 		menu.onPress();
@@ -45,4 +43,12 @@ void MenuState::onKeyPressed(sf::Event evt) {
 		menu.selectPrevious();
 		break;
 	}
+}
+
+void MenuState::onMouseButtonPressed(sf::Event& evt) {
+	menu.onPress();
+}
+
+void MenuState::onMouseMoved(sf::Event& evt) {
+	menu.onMouseMoved(evt);
 }

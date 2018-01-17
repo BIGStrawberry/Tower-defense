@@ -21,10 +21,13 @@ void Menu::onPress() {
 	}
 }
 
-void Menu::update() {
-	// TODO: Hover and keyboard effects
-	for (const auto& menuItem : menuItems) {
-		// Check collision with mouse;
+void Menu::onMouseMoved(sf::Event evt) {
+	for (uint8_t i = 0; i < menuItems.size(); ++i) {
+		auto menuItem = menuItems[i];
+		if (menuItem.getBounds().contains(static_cast<float>(evt.mouseMove.x), static_cast<float>(evt.mouseMove.y))) {
+			selectedIndex = i;
+			break;
+		}
 	}
 }
 
