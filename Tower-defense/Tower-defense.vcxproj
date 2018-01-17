@@ -20,6 +20,12 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\tower\Projectile.cpp" />
+    <ClCompile Include="src\tower\Tower.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\tower\Projectile.h" />
+    <ClInclude Include="src\tower\Tower.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{e4699b1e-4ff1-4510-95fb-d03823b32527}</ProjectGuid>
