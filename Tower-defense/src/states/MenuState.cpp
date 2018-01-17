@@ -2,7 +2,12 @@
 #include "../helpers/GameStateManager.h"
 
 MenuState::MenuState(sf::RenderWindow& window):
-	State(window) {}
+	State(window),
+	menu(window, {
+		{window, std::function<void()>([&window]() { GameStateManager::pushState(std::make_unique<PlayState>(window)); }),{150, 50},{50, 150},  {"Play game", font, 20}},
+		{window, std::function<void()>([&window]() { window.close(); }),{150, 50},{50, 250}, {"Exit game", font, 20}}
+	})
+{}
 
 void MenuState::init() {
 	if (!font.loadFromFile("resources/fonts/consola.ttf")) {
@@ -15,13 +20,22 @@ void MenuState::init() {
 }
 
 void MenuState::update() {
+	// TODO: We should replace this with events but the GSM does not support it yet
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
-		GameStateManager::pushState(std::make_unique<PlayState>(window));
+		menu.onPress();
+	} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+		menu.selectNext();
+	} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
+		menu.selectPrevious();
 	}
+
+	menu.update();
 }
 
 void MenuState::render() const {
 	window.draw(text);
+
+	menu.render();
 }
 
 void MenuState::cleanUp() {
