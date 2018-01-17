@@ -20,14 +20,6 @@ void MenuState::init() {
 }
 
 void MenuState::update() {
-	// TODO: We should replace this with events but the GSM does not support it yet
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {
-		menu.onPress();
-	} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-		menu.selectNext();
-	} else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {
-		menu.selectPrevious();
-	}
 
 	menu.update();
 }
@@ -39,4 +31,18 @@ void MenuState::render() const {
 }
 
 void MenuState::cleanUp() {
+}
+
+void MenuState::onKeyPressed(sf::Event evt) {
+	switch (evt.key.code) {
+	case sf::Keyboard::Return:
+		menu.onPress();
+		break;
+	case sf::Keyboard::Up:
+		menu.selectNext();
+		break;
+	case sf::Keyboard::Down:
+		menu.selectPrevious();
+		break;
+	}
 }
