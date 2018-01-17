@@ -45,13 +45,20 @@ public:
 #pragma region comment
 	/// \brief
 	///  constructor
-	/// \param
-	/// 
+	/// \param sf::RenderWindow& - Window to be rendered on.
+	/// \param Grid& - Grid, should contain a public std::vector of coordinates of path.
 
 #pragma endregion
 	Enemy(sf::RenderWindow& window, Grid& grid, EnemyType type);
 	~Enemy();
 
+#pragma region comment
+	/// \brief
+	///  lowers hp of enemy
+	/// \param sf::RenderWindow& - Window to be rendered on.
+	/// \param Grid& - Grid, should contain a public std::vector of coordinates of path.
+
+#pragma endregion
 	void decreaseHp(int dmg);
 	sf::Vector2f getPosition();
 	void render();
