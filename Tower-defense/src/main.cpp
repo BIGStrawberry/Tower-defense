@@ -1,56 +1,51 @@
+#include <iostream>
+#include <memory>
 #include <SFML/Graphics.hpp>
-#include "Tower/Tower.h"
-#include "Enemy/make_enemy.h"
-#include "tower/Projectile.h"
-
-
+#include "Helpers/GameStateManager.h"
+#include "States/MenuState.h"
 
 int main() {
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "Project name");
-	sf::Event event;
-	window.setVerticalSyncEnabled(true);
+	sf::RenderWindow window(sf::VideoMode(1280, 720), "Game State Manager");
+	sf::Event evt;
 
-
-	EnemyDataContainer::load();
-	//fakegrid
-	Grid grid;
-	grid.path.push_back(sf::Vector2f(0.0f, 0.0f));
-	grid.path.push_back(sf::Vector2f(100.0f, 0.0f));
-	grid.path.push_back(sf::Vector2f(100.0f, 100.0f));
-	grid.path.push_back(sf::Vector2f(150.0f, 200.0f));
-	grid.path.push_back(sf::Vector2f(1280.0f, 720.0f));
-
-	Tower t(window, 10, sf::Vector2f(500, 200), 150, grid, 500);
-	Tower t2(window, 10, sf::Vector2f(500, 400), 150, grid, 1);
-
-	grid.enemies.push_back(make_enemy(EnemyType::Normal, window, grid));
-
-	/*auto e = make_enemy(EnemyType::Normal, window, grid);*/
+	// The game starts in the MenuState
+	GameStateManager::pushState(std::make_shared<MenuState>(window));
 
 	while (window.isOpen()) {
-		while (window.pollEvent(event)) {
-			if (event.type == sf::Event::Closed) {
+		while (window.pollEvent(evt)) {
+			switch (evt.type) {
+			case sf::Event::Closed:
 				window.close();
+				break;
+			case sf::Event::KeyPressed:
+				GameStateManager::getCurrentState()->onKeyPressed(evt);
+				break;
+			case sf::Event::KeyReleased:
+				GameStateManager::getCurrentState()->onKeyReleased(evt);
+				break;
+			case sf::Event::MouseButtonPressed:
+				GameStateManager::getCurrentState()->onMouseButtonPressed(evt);
+				break;
+			case sf::Event::MouseButtonReleased:
+				GameStateManager::getCurrentState()->onMouseButtonReleased(evt);
+				break;
+			case sf::Event::MouseMoved:
+				GameStateManager::getCurrentState()->onMouseMoved(evt);
+				break;
 			}
 		}
-
-		for (auto& enemy : grid.enemies) {
-			enemy->update();
-		}
-	
-		t.update();
-		t2.update();
-
+		/**********/
+		/**UPDATE**/
+		/**********/
+		// TODO: game loop
+		// Update the active state
+		GameStateManager::getCurrentState()->update();
+		/**********/
+		/**RENDER**/
+		/**********/
 		window.clear(sf::Color(200, 200, 200));
-
-		for (auto& enemy : grid.enemies) {
-			enemy->render();
-		}
-		t.render();
-		t2.render();
-		/*e->render();*/
-		//
-
+		// Draw the active state
+		GameStateManager::getCurrentState()->render();
 		window.display();
 	}
 
