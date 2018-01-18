@@ -36,6 +36,11 @@ private:
 	float tileSize;
 
 	/**
+	* @brief lineSize		The width of the lines between the grid
+	*/
+	float lineSize = 1;
+
+	/**
 	* @brief spawn			The place where enemy's spawn
 	*/
 	sf::RectangleShape spawn;
@@ -53,7 +58,7 @@ private:
 	/**
 	* @brief towers			An array where all the placed towers will be stored in
 	*/
-	std::array<std::shared_ptr<sf::RectangleShape>, COLUMNS * ROWS > towers;
+	std::array<std::shared_ptr<sf::RectangleShape>, COLUMNS * ROWS > grid;
 
 	/**
 	* @brief enemies		An array where all the 'living' will be stored in
@@ -64,6 +69,7 @@ private:
 	* @brief waveQueue		An array where all the enemies that need to spawn in the next wave will be stored in 
 	*/
 	std::vector<sf::CircleShape> waveQueue;
+
 public:
 	/**
 	* @brief Grid Constructor

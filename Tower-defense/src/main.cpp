@@ -4,7 +4,6 @@
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Project name");
 	sf::Event event;
-	//TODO remove gridlines (tileSize + 1 ) => tileSize
 	Grid grid(window, 31);
 
 	while (window.isOpen()) {

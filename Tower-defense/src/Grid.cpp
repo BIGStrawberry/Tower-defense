@@ -8,27 +8,23 @@ Grid::Grid(sf::RenderWindow & window, float tileSize):
 	base(sf::Vector2f(tileSize,tileSize))
 {
 	//TODO: cast round the result of the devided numers off, so the spawn will alway's be allinged with the grid
-	//TODO: remove grid lines (tileSize + 1 ) => tileSize
-	spawn.setPosition(xOffset - (tileSize + 1), static_cast<int>(ROWS / 2) * (tileSize + 1) + yOffset);
-	spawn.setFillColor(sf::Color::Green);
-	base.setPosition(xOffset + COLUMNS * (tileSize + 1), static_cast<int>(ROWS / 2) * (tileSize + 1) + yOffset);
+	spawn.setPosition(xOffset - (tileSize + lineSize), static_cast<int>(ROWS / 2) * (tileSize + lineSize) + yOffset);
+	spawn.setFillColor(sf::Color::Red);
+	base.setPosition(xOffset + COLUMNS * (tileSize + lineSize), static_cast<int>(ROWS / 2) * (tileSize + lineSize) + yOffset);
 	base.setFillColor(sf::Color::Green);
 	for (uint8_t i = 0; i < ROWS; ++i) {
 		for(uint8_t j = 0; j < COLUMNS; ++j) {
 			std::shared_ptr<sf::RectangleShape> newTower = std::make_shared<sf::RectangleShape>(sf::Vector2f(this->tileSize, this->tileSize));
-			//TODO remove grid lines (tileSize + 1 ) => tileSize
-			newTower->setPosition((static_cast<float>(j) + 2) * (tileSize + 1) , (static_cast<float>(i) + 2) * (tileSize + 1) + 8);
+			newTower->setPosition(static_cast<float>(j) * (tileSize + lineSize) + xOffset , static_cast<float>(i) * (tileSize + lineSize) + yOffset);
 			placeTower(j, i, newTower);
 		}
 	}
 
-	//TODO remove grid lines (tileSize + 1 ) => tileSize
-	float enemySize = (tileSize + 1) / 4;
+	float enemySize = (tileSize + lineSize) / 4;
 	for (uint8_t i = 0; i < 5; ++i) {
 		sf::CircleShape enemy = sf::CircleShape(enemySize);
-		enemy.setFillColor(sf::Color::Red);
-		//TODO remove grid lines (tileSize + 1 ) => tileSize
-		enemy.setPosition((tileSize + 1) * i + xOffset + (tileSize+1)/4, yOffset + (tileSize + 1) / 4);
+		enemy.setFillColor(sf::Color::Blue);
+		enemy.setPosition((tileSize + lineSize) * i + xOffset + (tileSize+lineSize)/4, yOffset + (tileSize + lineSize) / 4);
 		enemies.emplace_back(enemy);
 	}
 };
@@ -36,7 +32,7 @@ Grid::Grid(sf::RenderWindow & window, float tileSize):
 void Grid::render() const {
 	window.draw(spawn);
 	window.draw(base);
-	for (const auto& tower:towers) {
+	for (const auto& tower:grid) {
 		if (tower != nullptr) {
 			window.draw(*tower);
 		}
@@ -52,11 +48,11 @@ bool Grid::placeTower(uint8_t x, uint8_t y, std::shared_ptr<sf::RectangleShape> 
 	//checks invalid position and there is already a tower placed on target location
 	if (x <= 0 && x >= COLUMNS && 
 		y <= 0 && y >= ROWS &&
-		towers[x + y * COLUMNS] != nullptr
+		grid[x + y * COLUMNS] != nullptr
 		) {
 		return false;
 	}
-	towers[x + y * COLUMNS] = newTower;
+	grid[x + y * COLUMNS] = newTower;
 	//TODO: pathfinding check
 	return true;
 }
