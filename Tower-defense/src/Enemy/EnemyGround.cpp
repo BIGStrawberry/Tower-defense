@@ -33,28 +33,25 @@ void EnemyGround::move()
 
 void EnemyGround::update()
 {
-	if (!dead)
+	if (distance == 0)
 	{
-		if (distance == 0)
+		sf::Vector2f pos = body.getPosition();
+
+		if (path.size() > target_counter)
 		{
-			sf::Vector2f pos = body.getPosition();
-
-			if (path.size() > target_counter)
-			{
-				next_target_pos = path[target_counter];
-				distance = sqrt(pow(pos.x - next_target_pos.x, 2) + pow(pos.y - next_target_pos.y, 2));
-				vector = (next_target_pos - body.getPosition()) / distance;
-				target_counter++;
-			}
-			else
-			{
-				//deal dmg
-				dead = true;
-				gold = 0;
-				return;
-			}
-
+			next_target_pos = path[target_counter];
+			distance = sqrt(pow(pos.x - next_target_pos.x, 2) + pow(pos.y - next_target_pos.y, 2));
+			vector = (next_target_pos - body.getPosition()) / distance;
+			target_counter++;
 		}
-		move();
+		else
+		{
+			//deal dmg
+			dead = true;
+			gold = 0;
+			return;
+		}
+
 	}
+	move();
 }

@@ -18,10 +18,7 @@ Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, En
 
 void Enemy::render() const
 {
-	if (!dead)
-	{
-		window.draw(body);
-	}
+	window.draw(body);
 }
 
 const sf::Vector2f Enemy::getPosition() const
