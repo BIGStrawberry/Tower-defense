@@ -5,9 +5,9 @@
 Projectile::Projectile(sf::RenderWindow & window, int damage, sf::Vector2f position, std::shared_ptr<Enemy> & target):
 	speed(10.0f),
 	damage(damage),
-	is_alive(true),
+	is_dead(false),
 	body(3),
-	window(window),
+	window(&window),
 	target(target)
 {
 	body.setFillColor(sf::Color::Black);
@@ -16,16 +16,17 @@ Projectile::Projectile(sf::RenderWindow & window, int damage, sf::Vector2f posit
 }
 
 
-void Projectile::render() {
-	window.draw(body);
+void Projectile::render() const {
+	window->draw(body);
 
 }
 
 void Projectile::update() {
+	std::cout << target->isDead() << " " << is_dead << " \n";
 	if (!target->isDead()) {
 		if (body.getGlobalBounds().intersects(target->getBounds())) {
 			target->decreaseHp(damage);
-			is_alive = false;
+			is_dead = true;
 		}
 
 		sf::Vector2f mypos = body.getPosition();
@@ -35,11 +36,12 @@ void Projectile::update() {
 		body.setPosition(body.getPosition() - sf::Vector2f((diff.x / distance_to_unit)* speed, (diff.y / distance_to_unit)* speed));
 	}
 	else {
-		is_alive = false;
+		is_dead = true;
 	}
+	
 
 }
 
-bool Projectile::isAlive() {
-	return is_alive;
+bool Projectile::isDead() {
+	return is_dead;
 }

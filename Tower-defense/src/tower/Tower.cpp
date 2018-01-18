@@ -32,21 +32,20 @@ Tower::Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, int radius
 }
 
 
-float Tower::getDistanceToEnemy(Enemy & rhs) {
+float Tower::getDistanceToEnemy(Enemy & rhs) const {
 	sf::Vector2f diff = tower_shape.getPosition() - rhs.getPosition();
 	return std::sqrt(std::pow(diff.x, 2.0f) + std::pow(diff.y, 2.0f));
-
 }
 
-void Tower::render() {
+void Tower::render() const {
 	window.draw(tower_shape);
 	window.draw(turret);
 	if (render_range) {
 		window.draw(range_circle);
 	}
 
-	for (auto& pt : projectiles) {
-		pt->render();
+	for (const auto& pt : projectiles) {
+		pt.render();
 	}
 }
 
@@ -57,8 +56,8 @@ void Tower::rotateTurret() {
 	turret[1].position = tower_shape.getPosition() - sf::Vector2f(diff.x / scale, diff.y / scale);
 }
 
-std::shared_ptr<Enemy> Tower::getClosestEnemyInRange() {
-	for (auto& enemy : grid.enemies) {
+std::shared_ptr<Enemy> Tower::getClosestEnemyInRange() const {
+	for (const auto& enemy : grid.enemies) {
 		if (getDistanceToEnemy(*enemy.get()) < radius) {
 			return enemy;
 		}
@@ -68,8 +67,8 @@ std::shared_ptr<Enemy> Tower::getClosestEnemyInRange() {
 
 void Tower::update_projectiles() {
 	for (unsigned int i = 0; i < projectiles.size(); ++i) {
-		if (projectiles[i]->isAlive()) {
-			projectiles[i]->update();
+		if (!projectiles[i].isDead()) {
+			projectiles[i].update();
 		} else {
 			projectiles.erase(projectiles.begin() + i);
 			i--;
@@ -78,23 +77,16 @@ void Tower::update_projectiles() {
 }
 
 void Tower::update() {
-	if (target.get() != nullptr) {
+	if (target != nullptr) {
 		rotateTurret();
-		if (target->isDead()) {
-			projectiles.clear();
+
+		if (cooldown_timer.getElapsedTime().asMilliseconds() > reload_time) {
+			projectiles.emplace_back(window, 21, tower_shape.getPosition(), target);
+			cooldown_timer.restart();
 		}
 		if (getDistanceToEnemy(*target.get()) > radius) { //if target is out of range
 			target = getClosestEnemyInRange(); // find new one
 		}
-		if (ready_to_fire) {
-			projectiles.push_back(std::make_unique<Projectile>(window, 21, tower_shape.getPosition(), target));
-			cooldown_timer.restart();
-			ready_to_fire = false;
-		}
-		else if (cooldown_timer.getElapsedTime().asSeconds() > reload_time){ //check timer
-			ready_to_fire = true;
-		}
-
 	}
 	else {
 		target = getClosestEnemyInRange(); // find new enemy

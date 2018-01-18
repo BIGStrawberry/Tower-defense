@@ -63,7 +63,7 @@ private:
 	/**
 	* projectile vector used to store the projectiles, and to update and render them.
 	*/
-	std::vector<std::unique_ptr<Projectile>> projectiles;
+	std::vector<Projectile> projectiles;
 
 	/**
 	* SFML window to draw on
@@ -88,7 +88,7 @@ private:
 	* @brief returns the distance to the Enemy using pythagoras theorem
 	*/
 
-	float getDistanceToEnemy(Enemy & rhs);
+	float getDistanceToEnemy(Enemy & rhs) const;
 
 	/**
 	* @brief caluclates the endpoint of the turret and sets the second vertex to that point.]
@@ -101,7 +101,7 @@ private:
 	Returns a shared_ptr with a nullptr when there is no enemy in the range.
 	*/
 
-	std::shared_ptr<Enemy> getClosestEnemyInRange();
+	std::shared_ptr<Enemy> getClosestEnemyInRange() const;
 
 	/**
 	* @brief updates the projectiles in the projectile vector, removing them if they are not alive
@@ -121,7 +121,7 @@ public:
 	/**
 	* @brief renders the Tower, projectiles, turret and range_circle if boolean render_range is true
 	*/
-	void render();
+	void render() const;
 
 	/**
 	* @brief rotates the turret, updates projectiles and updates the target pointer.

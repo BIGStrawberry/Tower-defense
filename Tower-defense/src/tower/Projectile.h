@@ -30,7 +30,7 @@ private:
 	/**
 	* bool to notify parent it should be removed.
 	*/
-	bool is_alive;
+	bool is_dead;
 	/**
 	* shape used to display the projectile
 	*/
@@ -38,7 +38,7 @@ private:
 	/**
 	SFML window to draw on
 	*/
-	sf::RenderWindow & window;
+	sf::RenderWindow * window;
 	/**
 	The enemy it is tracking and will deal damage to.
 	*/
@@ -51,7 +51,7 @@ public:
 	/**
 	* @brief renders the body
 	*/
-	void render();
+	void render() const;
 	/**
 	* @brief checks if the target is still alive, checks if it overlaps with enemy (deals damage) and calculates next jump using pythagoras theorem.
 	*/
@@ -59,7 +59,9 @@ public:
 	/**
 	* @brief returns wether projectile is still alive.
 	*/
-	bool isAlive();
+	bool isDead();
+
+	
 
 };
 
