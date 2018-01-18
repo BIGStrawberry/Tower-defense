@@ -28,6 +28,10 @@
     <ClCompile Include="src\helpers\Menu.cpp" />
     <ClCompile Include="src\helpers\MenuItem.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Player.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Player.h" />
     <ClCompile Include="src\states\MenuState.cpp" />
     <ClCompile Include="src\states\PlayState.cpp" />
     <ClCompile Include="src\states\ScoreState.cpp" />
