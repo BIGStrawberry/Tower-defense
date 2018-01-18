@@ -21,10 +21,14 @@ Grid::Grid(sf::RenderWindow & window, float tileSize):
 			placeTower(j, i, newTower);
 		}
 	}
+
+	//TODO remove grid lines (tileSize + 1 ) => tileSize
+	float enemySize = (tileSize + 1) / 4;
 	for (uint8_t i = 0; i < 5; ++i) {
-		sf::CircleShape enemy = sf::CircleShape(10);
+		sf::CircleShape enemy = sf::CircleShape(enemySize);
 		enemy.setFillColor(sf::Color::Red);
-		enemy.setPosition(static_cast<float>(20) * i, 10);
+		//TODO remove grid lines (tileSize + 1 ) => tileSize
+		enemy.setPosition((tileSize + 1) * i + xOffset + (tileSize+1)/4, yOffset + (tileSize + 1) / 4);
 		enemies.emplace_back(enemy);
 	}
 };
@@ -37,9 +41,11 @@ void Grid::render() const {
 			window.draw(*tower);
 		}
 	}
+	
 	for (const auto & enemy : enemies) {
 		window.draw(enemy);
 	}
+	
 }
 
 bool Grid::placeTower(uint8_t x, uint8_t y, std::shared_ptr<sf::RectangleShape> newTower) {
