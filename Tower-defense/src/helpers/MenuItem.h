@@ -28,6 +28,10 @@ private:
 	*/
 	sf::RectangleShape button;
 	/**
+	* @brief Shape of the button when selected
+	*/
+	sf::RectangleShape selectedButton;
+	/**
 	* @brief Button label
 	*/
 	sf::Text text;
@@ -47,7 +51,7 @@ public:
 	* @brief Getter for shape bounding box
 	* @return The bounding box
 	*/
-	sf::FloatRect getBounds() { return button.getGlobalBounds(); }
+	sf::FloatRect getBounds() const { return button.getGlobalBounds(); }
 
 	/**
 	* @brief Calls the action
@@ -60,6 +64,10 @@ public:
 	/**
 	* @brief Uses render function to render button/label but with a different color
 	*/
-	void renderSelected();
+	void renderSelected() const;
+	/**
+	* @brief Renders the label for the menuItem
+	*/
+	void MenuItem::renderText() const;
 };
 

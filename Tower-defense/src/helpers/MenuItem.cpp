@@ -6,16 +6,13 @@ MenuItem::MenuItem(sf::RenderWindow& window, std::function<void()> action, sf::V
 	window(window),
 	action(action),
 	button(size),
+	selectedButton(size),
 	text(text)
 {
 	button.setPosition(position);
+	selectedButton.setPosition(position);
+	selectedButton.setFillColor({200,0,0});
 	this->text.setFillColor(sf::Color{0,0,0});
-	// Center text inside the button
-	// TODO this does not work
-	sf::FloatRect textRect = text.getLocalBounds();
-	this->text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
-	// this->text.setPosition({position.x, position.y}); // We should use this one but it does not work
-	this->text.setPosition({position.x + size.x / 4, position.y + size.y / 1.5f});
 }
 
 void MenuItem::onPress() {
@@ -23,14 +20,21 @@ void MenuItem::onPress() {
 }
 
 void MenuItem::render() const {
-	// TODO draw button with text in middle
 	window.draw(button);
-	window.draw(text);
+	renderText();
 }
 
-void MenuItem::renderSelected() {
-	const auto& color = button.getFillColor();
-	button.setFillColor({200,0,0});
-	render();
-	button.setFillColor(color);
+void MenuItem::renderSelected() const {
+	window.draw(selectedButton);
+	renderText();
+}
+
+void MenuItem::renderText() const {
+	// For some reason we can't get the globalBounds in the constructor so we need to create a new Text object
+	// Center the text inside the button
+	sf::FloatRect textRect = text.getGlobalBounds();
+	sf::Text t(text);
+	t.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	t.setPosition({button.getPosition().x + button.getSize().x / 2, button.getPosition().y + button.getSize().y / 2});
+	window.draw(t);
 }
