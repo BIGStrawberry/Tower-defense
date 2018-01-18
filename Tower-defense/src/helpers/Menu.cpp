@@ -22,6 +22,7 @@ void Menu::onPress() {
 }
 
 void Menu::onMouseMoved(sf::Event evt) {
+	selectedIndex = -1;
 	for (uint8_t i = 0; i < menuItems.size(); ++i) {
 		const auto& menuItem = menuItems[i];
 		if (menuItem.getBounds().contains(static_cast<float>(evt.mouseMove.x), static_cast<float>(evt.mouseMove.y))) {

@@ -2,7 +2,7 @@
 
 #include <memory>
 #include <vector>
-#include "../States/State.h"
+#include "../states/State.h"
 
 /**
 * @class GameStateManager

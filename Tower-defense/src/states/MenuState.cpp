@@ -7,13 +7,13 @@ MenuState::MenuState(sf::RenderWindow& window):
 			window,
 			std::function<void()>([&window]() { GameStateManager::pushState(std::make_unique<PlayState>(window)); }),
 			{250, 75},
-			{static_cast<float>(window.getSize().x) / 2 - 255 / 2, 150},
+			{static_cast<float>(window.getSize().x) / 2 - 250 / 2, 150},
 			{"Play game", font, 20}
 		}, {
 			window,
 			std::function<void()>([&window]() { window.close(); }),
 			{250, 75},
-			{static_cast<float>(window.getSize().x) / 2 - 255 / 2, 350},
+			{static_cast<float>(window.getSize().x) / 2 - 250 / 2, 350},
 			{"Exit game", font, 20}
 		}
 	})
