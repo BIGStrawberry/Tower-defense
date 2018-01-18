@@ -112,9 +112,9 @@ private:
 public:
 	/**
 	* @brief 
-	constructs the Tower
-	constructs the turret
-	constructs the circle
+	constructs the Tower 
+	constructs the turret sets the first vertex point and the second, color.
+	constructs the circle, sets the radius, origin and size.
 	*/
 	Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, int radius, Grid& grid, int fire_rate);
 

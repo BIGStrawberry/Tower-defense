@@ -44,10 +44,6 @@ void Tower::render() {
 	if (render_range) {
 		window.draw(range_circle);
 	}
-	sf::Vector2f enemypos(1200, 700);
-	sf::CircleShape temp(10.0);
-	temp.setPosition(enemypos);
-	window.draw(temp);
 
 	for (auto& pt : projectiles) {
 		pt->render();

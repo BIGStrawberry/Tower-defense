@@ -17,7 +17,8 @@ int main() {
 	grid.path.push_back(sf::Vector2f(150.0f, 200.0f));
 	grid.path.push_back(sf::Vector2f(1280.0f, 720.0f));
 
-	Tower t(window, 10, sf::Vector2f(500, 200), 150, grid);
+	Tower t(window, 10, sf::Vector2f(500, 200), 150, grid, 1);
+	Tower t2(window, 10, sf::Vector2f(500, 400), 150, grid, 1);
 
 	grid.enemies.push_back(make_enemy(EnemyType::Normal, window, grid));
 
@@ -35,6 +36,7 @@ int main() {
 		}
 	
 		t.update();
+		t2.update();
 
 		window.clear(sf::Color(200, 200, 200));
 
@@ -42,6 +44,7 @@ int main() {
 			enemy->render();
 		}
 		t.render();
+		t2.render();
 		/*e->render();*/
 		//
 
