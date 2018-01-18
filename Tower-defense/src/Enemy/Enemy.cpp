@@ -9,7 +9,8 @@ Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, En
 	speed(EnemyDataContainer::get(type).speed),
 	hp(EnemyDataContainer::get(type).hp),
 	dmg(EnemyDataContainer::get(type).damage),
-	gold(EnemyDataContainer::get(type).gold)
+	gold(EnemyDataContainer::get(type).gold),
+	dead(false)
 {
 	body.setRadius(20);
 	body.setOrigin(sf::Vector2f(body.getRadius(), body.getRadius()));
