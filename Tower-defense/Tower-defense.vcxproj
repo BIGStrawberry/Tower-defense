@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Grid.cpp" />
     <ClCompile Include="src\Enemy\EnemyDataContainer.cpp" />
     <ClCompile Include="src\Enemy\EnemyAir.cpp" />
     <ClCompile Include="src\Enemy\EnemyGround.cpp" />
@@ -53,6 +54,9 @@
     <ClInclude Include="src\Enemy\Enemy.h" />
     <ClInclude Include="src\Enemy\EnemyType.h" />
     <ClInclude Include="src\Enemy\make_enemy.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Grid.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{e4699b1e-4ff1-4510-95fb-d03823b32527}</ProjectGuid>
