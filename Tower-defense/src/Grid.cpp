@@ -51,7 +51,7 @@ Grid::Grid(sf::RenderWindow & window, float tileSize):
 		for (uint8_t j = 0; j < COLUMNS; ++j) {
 			if (i % 7 == 0 && j % 5 == 0) {
 				sf::Vector2f pos{static_cast<float>(j) * (tileSize + lineSize) + xOffset , static_cast<float>(i) * (tileSize + lineSize) + yOffset};
-				placeTower(j, i, std::make_unique<Tower>(window, tileSize, pos, static_cast<int>(tileSize) * 2, enemies, 750));
+				placeTower(j, i, std::make_unique<Tower>(window, tileSize, pos, enemies, TowerType::Long));
 			}
 		}
 	}
@@ -66,7 +66,7 @@ void Grid::update() {
 
 	for (auto& enemy : enemies) {
 		// Somting does not work here
-		// enemy->update();
+		enemy->update();
 	}
 }
 

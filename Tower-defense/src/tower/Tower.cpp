@@ -2,14 +2,15 @@
 
 
 
-Tower::Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, int radius, std::vector<std::shared_ptr<Enemy>>& enemies, int reload_time):
-	radius(radius),
+Tower::Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, std::vector<std::shared_ptr<Enemy>>& enemies, TowerType type):
+	radius(TowerDataContainer::get(type).radius),
 	turret_length(10),
 	target(std::shared_ptr<Enemy>(nullptr)),
 	enemies(enemies),
+	damage(damage),
 	render_range(true),
 	ready_to_fire(true),
-	reload_time(reload_time),
+	reload_time(TowerDataContainer::get(type).reload_time),
 	window(window),
 	range_circle(static_cast<float>(radius)),
 	tower_shape(sf::Vector2f(size, size)),
@@ -80,7 +81,7 @@ void Tower::update() {
 	if (target != nullptr && !target->isDead()) {
 		rotateTurret();
 		if (cooldown_timer.getElapsedTime().asMilliseconds() > reload_time) {
-			projectiles.emplace_back(window, 21, tower_shape.getPosition(), target);
+			projectiles.emplace_back(window, 1, tower_shape.getPosition(), target);
 			cooldown_timer.restart();
 		}
 		if (getDistanceToEnemy(*target.get()) > radius) { //if target is out of range

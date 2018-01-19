@@ -17,7 +17,7 @@ class Enemy
 {
 protected:
 	sf::RenderWindow& window;
-	const std::vector<sf::Vector2f>& path;
+	const std::vector<sf::Vector2f> path;
 	float distance;
 	sf::CircleShape body;
 	sf::Vector2f next_target_pos;
@@ -39,7 +39,7 @@ public:
 	*/
 
 #pragma endregion
-	Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, EnemyType type);
+	Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f> path, EnemyType type);
 	~Enemy();
 
 #pragma region comment

@@ -31,11 +31,15 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\tower\Projectile.cpp" />
     <ClCompile Include="src\tower\Tower.cpp" />
+    <ClCompile Include="src\tower\TowerDataContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\tower\Projectile.h" />
     <ClInclude Include="src\tower\Tower.h" />
     <ClCompile Include="src\Player.cpp" />
+    <ClInclude Include="src\tower\TowerData.h" />
+    <ClInclude Include="src\tower\TowerType.h" />
+    <ClInclude Include="src\tower\TowerDataContainer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player.h" />

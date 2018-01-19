@@ -6,6 +6,7 @@
 #include "tower\Tower.h"
 #include "Enemy\Enemy.h"
 #include "Enemy\EnemyType.h"
+#include "tower\TowerType.h"
 
 /**
 * @class Grid
@@ -29,7 +30,7 @@ private:
 	static constexpr const uint8_t COLUMNS = 36;
 
 	/**
-	* @brief ROWS			The mounts of ROWS the grid has
+	* @brief ROWS			The amounts of ROWS the grid has
 	*/
 	static constexpr const uint8_t ROWS = 18;
 

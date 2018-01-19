@@ -6,6 +6,8 @@
 #include <SFML/System.hpp>
 #include "Projectile.h"
 #include "../Enemy/make_enemy.h"
+#include "TowerType.h"
+#include "TowerDataContainer.h"
 /**
 * @class Tower
 * @file Tower.cpp
@@ -36,6 +38,11 @@ private:
 	* time between each projectile in seconds
 	*/
 	int reload_time;
+
+	/**
+	* damage passed to the fired projectiles
+	*/
+	int damage;
 
 	/**
 	* bool to render the circle that displays the range of the tower
@@ -116,7 +123,7 @@ public:
 	constructs the turret sets the first vertex point and the second, color.
 	constructs the circle, sets the radius, origin and size.
 	*/
-	Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, int radius, std::vector<std::shared_ptr<Enemy>>& enemies, int fire_rate);
+	Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, std::vector<std::shared_ptr<Enemy>>& enemies, TowerType type);
 
 	/**
 	* @brief renders the Tower, projectiles, turret and range_circle if boolean render_range is true
