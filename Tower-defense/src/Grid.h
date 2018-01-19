@@ -24,6 +24,16 @@ private:
 	const float yOffset = 88;
 
 	/**
+	* @brief clock			A Clock object used for tracking the elapsed time between enemy spawns
+	*/
+	sf::Clock clock;
+
+	/**
+	* @brief spawnDelay		The amount of time in ms that needs to pass before an enemy can spawn
+	*/
+	sf::Time spawnDelay = sf::milliseconds(500);
+
+	/**
 	* @brief COLUMNS		The mounts of columns the grid has
 	*/
 	static constexpr const uint8_t COLUMNS = 36;
@@ -71,7 +81,9 @@ private:
 	/**
 	* @brief waveQueue		An array where all the enemies that need to spawn in the next wave will be stored in 
 	*/
-	std::vector<Enemy> waveQueue;
+	std::vector<std::shared_ptr<Enemy>> waveQueue;
+
+	
 
 public:
 	/**
@@ -98,4 +110,5 @@ public:
 	* @param newTower		The tower that needs to be placed on said coordinated
 	*/
 	bool placeTower(uint8_t x, uint8_t y, std::shared_ptr<Tower> newTower);
+
 };

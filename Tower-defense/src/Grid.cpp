@@ -41,7 +41,9 @@ Grid::Grid(sf::RenderWindow & window, float tileSize):
 				EnemyType::Flying
 			);
 		}
-		enemies.push_back(enemy);
+		//enemies.push_back(enemy);
+		waveQueue.push_back(enemy);
+		
 		// enemy.setPosition((tileSize + lineSize) * i + xOffset + (tileSize+lineSize)/4, yOffset + (tileSize + lineSize) / 4);
 		// enemies.emplace_back(enemy);
 	}
@@ -67,6 +69,15 @@ void Grid::update() {
 	for (auto& enemy : enemies) {
 		// Somting does not work here
 		// enemy->update();
+	}
+
+	// Checks if there are enemy's in the waveQueue and places them in the enemies vector
+	if (waveQueue.size() > 0 &&
+		clock.getElapsedTime() > spawnDelay) {
+		std::cout << "groter dan\n";
+		clock.restart();
+		enemies.push_back(waveQueue.back());
+		waveQueue.pop_back();
 	}
 }
 
