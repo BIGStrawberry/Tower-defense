@@ -2,7 +2,9 @@
 #include "../helpers/GameStateManager.h"
 
 PlayState::PlayState(sf::RenderWindow& window):
-	State(window) {}
+	State(window),
+	grid(window, 31)
+{}
 
 void PlayState::init() {
 	if (!font.loadFromFile("resources/fonts/consola.ttf")) {
@@ -15,9 +17,11 @@ void PlayState::init() {
 }
 
 void PlayState::update() {
+	grid.update();
 }
 
 void PlayState::render() const {
+	grid.render();
 	window.draw(text);
 }
 

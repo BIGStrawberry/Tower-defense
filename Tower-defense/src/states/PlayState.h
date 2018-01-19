@@ -4,11 +4,13 @@
 #include <SFML/Graphics.hpp>
 #include "State.h"
 #include "ScoreState.h"
+#include "../Grid.h"
 
 class PlayState: public State {
 private: 
 	sf::Font font;
 	sf::Text text;
+	Grid grid;
 public:
 	PlayState(sf::RenderWindow& window);
 

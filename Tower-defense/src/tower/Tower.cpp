@@ -2,11 +2,11 @@
 
 
 
-Tower::Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, int radius, Grid& grid, int reload_time):
+Tower::Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, int radius, std::vector<std::shared_ptr<Enemy>>& enemies, int reload_time):
 	radius(radius),
 	turret_length(10),
 	target(std::shared_ptr<Enemy>(nullptr)),
-	grid(grid),
+	enemies(enemies),
 	render_range(true),
 	ready_to_fire(true),
 	reload_time(reload_time),
@@ -57,7 +57,7 @@ void Tower::rotateTurret() {
 }
 
 std::shared_ptr<Enemy> Tower::getClosestEnemyInRange() const {
-	for (const auto& enemy : grid.enemies) {
+	for (const auto& enemy : enemies) {
 		if (getDistanceToEnemy(*enemy.get()) < radius) {
 			return enemy;
 		}

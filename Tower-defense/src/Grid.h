@@ -3,6 +3,9 @@
 #include <array>
 #include <memory>
 #include <vector>
+#include "tower\Tower.h"
+#include "Enemy\Enemy.h"
+#include "Enemy\EnemyType.h"
 
 /**
 * @class Grid
@@ -14,11 +17,11 @@ private:
 	/**
 	* @brief xOffset		The amount of space between the left screen boarder and the grid
 	*/
-	const float xOffset = 64;
+	const float xOffset = 80;
 	/**
 	* @brief yOffset		The amount of space between the top screen boarder and the grid
 	*/
-	const float yOffset = 72;
+	const float yOffset = 88;
 
 	/**
 	* @brief COLUMNS		The mounts of columns the grid has
@@ -58,17 +61,17 @@ private:
 	/**
 	* @brief towers			An array where all the placed towers will be stored in
 	*/
-	std::array<std::shared_ptr<sf::RectangleShape>, COLUMNS * ROWS > grid;
+	std::array<std::shared_ptr<Tower>, COLUMNS * ROWS > grid;
 
 	/**
 	* @brief enemies		An array where all the 'living' will be stored in
 	*/
-	std::vector<sf::CircleShape> enemies;
+	std::vector<std::shared_ptr<Enemy>> enemies;
 
 	/**
 	* @brief waveQueue		An array where all the enemies that need to spawn in the next wave will be stored in 
 	*/
-	std::vector<sf::CircleShape> waveQueue;
+	std::vector<Enemy> waveQueue;
 
 public:
 	/**
@@ -77,6 +80,11 @@ public:
 	* @param tileSize		The size of the grid tiles
 	*/
 	Grid(sf::RenderWindow & window, float tileSize);
+
+	/**
+	* @brief Updates the enemy and tower objects
+	*/
+	void update();
 
 	/**
 	* @brief Renders the enemy and tower objects
@@ -89,5 +97,5 @@ public:
 	* @param y				The y-coordinate where the tower needs to be placed
 	* @param newTower		The tower that needs to be placed on said coordinated
 	*/
-	bool placeTower(uint8_t x, uint8_t y, std::shared_ptr<sf::RectangleShape> newTower);
+	bool placeTower(uint8_t x, uint8_t y, std::shared_ptr<Tower> newTower);
 };
