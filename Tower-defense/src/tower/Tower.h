@@ -119,6 +119,23 @@ public:
 	Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, int radius, std::vector<std::shared_ptr<Enemy>>& enemies, int fire_rate);
 
 	/**
+	* @brief setter for position
+	* 
+	*/
+	void setPosition(const sf::Vector2f& pos) {
+		tower_shape.setPosition(pos);
+		range_circle.setPosition(tower_shape.getPosition());
+	}
+
+	/**
+	* @brief setter for color
+	*
+	*/
+	void setColor(const sf::Color& color) {
+		tower_shape.setFillColor(color);
+	}
+
+	/**
 	* @brief renders the Tower, projectiles, turret and range_circle if boolean render_range is true
 	*/
 	void render() const;
