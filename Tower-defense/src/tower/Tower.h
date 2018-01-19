@@ -21,6 +21,8 @@
 * It has a range circle which can be drawn around the tower when the render_range boolean is true.
 * The tower will search for enemies in order of distance from the base.
 
+* A tower will be given a TowerType, with which it can get the necessary TowerData for that type from the static TowerDataContainer.
+
 * It can be updated and rendered.
 */
 class Tower
