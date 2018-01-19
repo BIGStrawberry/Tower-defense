@@ -55,7 +55,7 @@ private:
 	/**
 	* Grid reference for list of the enemies.
 	*/
-	Grid & grid;
+	std::vector<std::shared_ptr<Enemy>>& enemies;
 	/**
 	* clock used to determine the time that has passed for reload.
 	*/
@@ -116,7 +116,7 @@ public:
 	constructs the turret sets the first vertex point and the second, color.
 	constructs the circle, sets the radius, origin and size.
 	*/
-	Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, int radius, Grid& grid, int fire_rate);
+	Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, int radius, std::vector<std::shared_ptr<Enemy>>& enemies, int fire_rate);
 
 	/**
 	* @brief renders the Tower, projectiles, turret and range_circle if boolean render_range is true
