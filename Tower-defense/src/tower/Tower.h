@@ -27,7 +27,7 @@
 */
 class Tower
 {
-private:
+protected:
 	/**
 	* radius in pixels
 	*/
@@ -117,6 +117,15 @@ private:
 	*/
 
 	void update_projectiles();
+
+
+	/**
+	* @brief virtual method shootProjectiles
+	Creates and stores a projectile in the projectiles container.
+	This method is virtual so that Towers that inherit from Tower can create a different type of projectile and store it.
+	*/
+	virtual void shootProjectile();
+
 
 public:
 	/**

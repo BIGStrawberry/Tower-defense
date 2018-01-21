@@ -77,11 +77,15 @@ void Tower::update_projectiles() {
 	}
 }
 
+void Tower::shootProjectile() {
+	projectiles.emplace_back(window, 1, tower_shape.getPosition(), target);
+}
+
 void Tower::update() {
 	if (target != nullptr && !target->isDead()) {
 		rotateTurret();
 		if (cooldown_timer.getElapsedTime().asMilliseconds() > reload_time) {
-			projectiles.emplace_back(window, 1, tower_shape.getPosition(), target);
+			shootProjectile();
 			cooldown_timer.restart();
 		}
 		if (getDistanceToEnemy(*target.get()) > radius) { //if target is out of range

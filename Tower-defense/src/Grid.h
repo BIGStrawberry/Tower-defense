@@ -6,8 +6,7 @@
 #include "tower\Tower.h"
 #include "Enemy\Enemy.h"
 #include "Enemy\EnemyType.h"
-#include "tower\TowerType.h"
-
+#include "tower\Tower.h"
 /**
 * @class Grid
 * @file Grid.h
@@ -30,7 +29,7 @@ private:
 	static constexpr const uint8_t COLUMNS = 36;
 
 	/**
-	* @brief ROWS			The amounts of ROWS the grid has
+	* @brief ROWS			The mounts of ROWS the grid has
 	*/
 	static constexpr const uint8_t ROWS = 18;
 
@@ -73,6 +72,8 @@ private:
 	* @brief waveQueue		An array where all the enemies that need to spawn in the next wave will be stored in 
 	*/
 	std::vector<Enemy> waveQueue;
+
+	std::vector<sf::Vector2f> path;
 
 public:
 	/**

@@ -1,7 +1,7 @@
 #include "Enemy.h"
 
 
-Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f> path, EnemyType type) :
+Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, EnemyType type) :
 	window(window),
 	path(path),
 	next_target_pos(path[0]),

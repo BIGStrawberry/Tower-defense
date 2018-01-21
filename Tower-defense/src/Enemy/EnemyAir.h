@@ -25,7 +25,7 @@ public:
 	*/
 
 #pragma endregion
-	EnemyAir(sf::RenderWindow& window, const std::vector<sf::Vector2f> path, EnemyType type);
+	EnemyAir(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, EnemyType type);
 	~EnemyAir();
 
 #pragma region comment

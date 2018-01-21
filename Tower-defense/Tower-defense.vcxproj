@@ -32,6 +32,7 @@
     <ClCompile Include="src\tower\Projectile.cpp" />
     <ClCompile Include="src\tower\Tower.cpp" />
     <ClCompile Include="src\tower\TowerDataContainer.cpp" />
+    <ClCompile Include="src\tower\TowerSlow.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\tower\Projectile.h" />
@@ -40,6 +41,7 @@
     <ClInclude Include="src\tower\TowerData.h" />
     <ClInclude Include="src\tower\TowerType.h" />
     <ClInclude Include="src\tower\TowerDataContainer.h" />
+    <ClInclude Include="src\tower\TowerSlow.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player.h" />

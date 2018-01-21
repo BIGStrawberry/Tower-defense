@@ -2,7 +2,7 @@
 
 
 
-EnemyAir::EnemyAir(sf::RenderWindow& window, const std::vector<sf::Vector2f> path, EnemyType type):
+EnemyAir::EnemyAir(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, EnemyType type):
 	Enemy(window, path, type)
 {
 	next_target_pos = *(path.end() - 1);
