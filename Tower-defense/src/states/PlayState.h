@@ -11,6 +11,7 @@
 #include "../tower/Tower.h"
 #include "../Action/Action.h"
 #include "../Player.h"
+#include "../tower/make_tower.h"
 
 class PlayState: public State {
 private: 

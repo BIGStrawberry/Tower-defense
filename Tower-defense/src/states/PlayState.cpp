@@ -20,14 +20,13 @@ void PlayState::rebuildGrid() {
 			grid.placeTower(
 				action.x,
 				action.y,
-				std::make_unique<Tower>(
-					window,
-					static_cast<float>(31),
-					sf::Vector2f{static_cast<float>(action.x) * 31,
-					static_cast<float>(action.y) * 31},
-					static_cast<int>(32) * 2,
-					dummyEnemies,
-					750)
+				make_tower(window,
+						   static_cast<float>(31),
+						   sf::Vector2f{static_cast<float>(action.x) * 31,
+						   static_cast<float>(action.y) * 31},
+						   dummyEnemies,
+						   TowerType::Normal // this should be action.towertype or something
+						   )
 			);
 			break;
 		case Action::ACTION_TYPE::SELL_TOWER:

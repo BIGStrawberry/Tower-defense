@@ -6,7 +6,8 @@
 #include "tower\Tower.h"
 #include "Enemy\Enemy.h"
 #include "Enemy\EnemyType.h"
-
+#include "tower\Tower.h"
+#include "tower\make_tower.h"
 /**
 * @class Grid
 * @file Grid.h
@@ -72,6 +73,8 @@ private:
 	* @brief waveQueue		An array where all the enemies that need to spawn in the next wave will be stored in 
 	*/
 	std::vector<Enemy> waveQueue;
+
+	std::vector<sf::Vector2f> path;
 
 public:
 	/**

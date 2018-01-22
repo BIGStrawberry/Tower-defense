@@ -7,6 +7,8 @@ Grid::Grid(sf::RenderWindow & window, float tileSize):
 	spawn(sf::Vector2f(tileSize,tileSize)),
 	base(sf::Vector2f(tileSize,tileSize))
 {
+
+
 	//TODO: cast round the result of the devided numers off, so the spawn will alway's be allinged with the grid
 	spawn.setPosition(xOffset - (tileSize + lineSize), static_cast<int>(ROWS / 2) * (tileSize + lineSize) + yOffset);
 	spawn.setOrigin(tileSize / 2, tileSize / 2);
@@ -15,29 +17,26 @@ Grid::Grid(sf::RenderWindow & window, float tileSize):
 	base.setFillColor(sf::Color::Green);
 	base.setOrigin(tileSize / 2, tileSize / 2);
 
+	path = {
+		spawn.getPosition(),
+		spawn.getPosition() + sf::Vector2f{32, 0},
+		spawn.getPosition() + sf::Vector2f{32, 32},
+		base.getPosition()
+	};
+
 	float enemySize = (tileSize + lineSize) / 4;
 	for (uint8_t i = 0; i < 5; ++i) {
 		std::shared_ptr<Enemy> enemy;
 		if (i == 0) {
 			enemy = std::make_shared<EnemyGround>(
 				window,
-				std::vector<sf::Vector2f>{
-				    spawn.getPosition(),
-					spawn.getPosition() + sf::Vector2f{32, 0},
-					spawn.getPosition() + sf::Vector2f{32, 32},
-					base.getPosition()
-			    },
+				path,
 				EnemyType::Normal
 			);
 		} else {
 			enemy = std::make_shared<EnemyAir>(
 				window,
-				std::vector<sf::Vector2f>{
-				    spawn.getPosition(),
-					spawn.getPosition() + sf::Vector2f{32, 0},
-					spawn.getPosition() + sf::Vector2f{32, 32},
-					base.getPosition()
-			    },
+				path,
 				EnemyType::Flying
 			);
 		}
@@ -51,7 +50,7 @@ Grid::Grid(sf::RenderWindow & window, float tileSize):
 		for (uint8_t j = 0; j < COLUMNS; ++j) {
 			if (i % 7 == 0 && j % 5 == 0) {
 				sf::Vector2f pos{static_cast<float>(j) * (tileSize + lineSize) + xOffset , static_cast<float>(i) * (tileSize + lineSize) + yOffset};
-				placeTower(j, i, std::make_unique<Tower>(window, tileSize, pos, static_cast<int>(tileSize) * 2, enemies, 750));
+				placeTower(j, i, make_tower(window, tileSize, pos, enemies, TowerType::Long));
 			}
 		}
 	}
@@ -66,7 +65,7 @@ void Grid::update() {
 
 	for (auto& enemy : enemies) {
 		// Somting does not work here
-		// enemy->update();
+		enemy->update();
 	}
 }
 
