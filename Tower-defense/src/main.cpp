@@ -25,7 +25,6 @@ int main() {
 	int render_counter = 0;
 
 	const sf::Time time_per_update = sf::seconds(1.f / 60.f);
-	const sf::Time second = sf::seconds(1);
 	sf::Clock update_clock;
 	sf::Clock stats_clock;
 
