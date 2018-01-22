@@ -6,6 +6,7 @@
 #include "tower\Tower.h"
 #include "Enemy\Enemy.h"
 #include "Enemy\EnemyType.h"
+#include "Pathfinding\Pathfinder.h"
 
 /**
 * @class Grid
@@ -73,6 +74,7 @@ private:
 	*/
 	std::vector<Enemy> waveQueue;
 
+	Pathfinder<COLUMNS * ROWS> pf;
 public:
 	/**
 	* @brief Grid Constructor

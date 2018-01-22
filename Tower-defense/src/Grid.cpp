@@ -5,7 +5,8 @@ Grid::Grid(sf::RenderWindow & window, float tileSize):
 	window(window),
 	tileSize(tileSize),
 	spawn(sf::Vector2f(tileSize,tileSize)),
-	base(sf::Vector2f(tileSize,tileSize))
+	base(sf::Vector2f(tileSize,tileSize)),
+	pf(grid, 36, 0, 5)
 {
 	//TODO: cast round the result of the devided numers off, so the spawn will alway's be allinged with the grid
 	spawn.setPosition(xOffset - (tileSize + lineSize), static_cast<int>(ROWS / 2) * (tileSize + lineSize) + yOffset);

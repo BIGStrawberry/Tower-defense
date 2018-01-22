@@ -29,10 +29,14 @@
     <ClCompile Include="src\helpers\Menu.cpp" />
     <ClCompile Include="src\helpers\MenuItem.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\Pathfinding\PathNode.cpp" />
     <ClCompile Include="src\tower\Projectile.cpp" />
     <ClCompile Include="src\tower\Tower.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Pathfinding\Pathfinder.h" />
+    <ClInclude Include="src\Pathfinding\PathNode.h" />
+    <ClInclude Include="src\Pathfinding\PathNodeList.h" />
     <ClInclude Include="src\tower\Projectile.h" />
     <ClInclude Include="src\tower\Tower.h" />
     <ClCompile Include="src\Player.cpp" />
