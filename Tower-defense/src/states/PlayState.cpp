@@ -5,32 +5,24 @@
 PlayState::PlayState(sf::RenderWindow& window):
 	State(window),
 	tileSize(31),
-	player(window, 15, 375, 0),
+	player(window, 15, 75, 0),
 	grid(window, tileSize),
 	dummyTower(nullptr)
 {}
 
 void PlayState::rebuildGrid() {
+	player.gold = player.startingGold;
 	grid.clearGrid();
 
 	for (auto& action : player.actions) {
 		switch (action.type) {
 		case Action::ACTION_TYPE::PLACE_TOWER:
 			//change 31 to tileSize
-			grid.placeTower(
-				action.x,
-				action.y,
-				make_tower(window,
-						   static_cast<float>(31),
-						   sf::Vector2f{static_cast<float>(action.x) * 31,
-						   static_cast<float>(action.y) * 31},
-						   dummyEnemies,
-						   TowerType::Normal // this should be action.towertype or something
-						   )
-			);
+			grid.placeTower(action.x, action.y, TowerType::Normal);
+			player.gold -= action.cost;
 			break;
 		case Action::ACTION_TYPE::SELL_TOWER:
-			//TODO: REMOVE TOWER
+			//TODO: REMOVE
 			//TODO: RETURN GOLD OF TOWER
 			//TODO: Call grid.sellTower(), or something like that
 			break;
@@ -77,14 +69,15 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 		// TODO: Pass player score not 1337
 		GameStateManager::pushState(std::make_unique<ScoreState>(window, 1337));
 	} else if (evt.key.code == sf::Keyboard::A) {
-		dummyTower = std::make_unique<Tower>(
-			window,
-			tileSize,
-			placePosition,
-			static_cast<int>(tileSize) * 2,
-			dummyEnemies,
-			750
-		);	
+		dummyTower = make_tower(window,
+								static_cast<float>(tileSize),
+								sf::Vector2f{
+									static_cast<float>(sf::Mouse::getPosition(window).x) * tileSize,
+									static_cast<float>(sf::Mouse::getPosition(window).y) * tileSize
+		                        },
+								dummyEnemies,
+								TowerType::Normal // this should be action.towertype or something
+		);
 	} else if (evt.key.code == sf::Keyboard::U) {
 		player.undoAction();
 		rebuildGrid();
@@ -99,12 +92,12 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 
 	// sf::RenderWindow & window, float size, sf::Vector2f pos, int radius, std::vector<std::shared_ptr<Enemy>>& enemies, int reload_time
 	if (grid.canBePlaced(x,y)) {
-		grid.placeTower(x,y,std::make_unique<Tower>(window, tileSize, placePosition, static_cast<int>(tileSize) * 2, dummyEnemies, 750));
 		std::cout << "Success!" << std::endl;
 		// TODO: Save action in actions list, Move tower cost to grid class
 		if (player.gold >= dummyCost) {
 			player.gold -= dummyCost; // TODO: replace this with tower cost
 			player.addAction(x, y, Action::ACTION_TYPE::PLACE_TOWER, dummyCost);
+			grid.placeTower(x, y, TowerType::Normal);
 		}
 	} else {
 		std::cout << "Oei" << std::endl;

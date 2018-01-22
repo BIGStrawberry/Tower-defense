@@ -29,7 +29,7 @@ public:
 	* @param gold		amount of gold the player has
 	* @param score		amount of score the player has
 	*/
-	Player(sf::RenderWindow & window, uint8_t lives, uint32_t gold, uint32_t score);
+	Player(sf::RenderWindow & window, uint8_t lives, uint32_t startingGold, uint32_t score);
 
 	/**
 	* @brief A vector containing all the actions performed by the player
@@ -44,7 +44,7 @@ public:
 	/**
 	* @brief Public variable for the amount of gold the player has
 	*/
-	uint32_t gold;
+	uint32_t startingGold, gold;
 
 	/**
 	* @brief Public variable for the amount of score the player has
@@ -56,9 +56,9 @@ public:
 	* @param x	-	x position of the tower which the action was used on
 	* @param y	-	y position of the tower which the action was used on
 	* @param type	-	type of the tower the action was performed on
-	* @param actionCost	- amount of gold the action has cost
+	* @param cost	- amount of gold the action has cost
 	*/
-	void addAction(uint8_t x, uint8_t y, Action::ACTION_TYPE type, uint32_t actionCost);
+	void addAction(uint8_t x, uint8_t y, Action::ACTION_TYPE type, uint32_t cost);
 
 	/**
 	* @brief Removes the last action from the actions vector

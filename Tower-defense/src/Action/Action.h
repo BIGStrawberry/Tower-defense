@@ -20,7 +20,7 @@ public:
 	/**
 	* @brief cost of the action
 	*/
-	uint32_t actionCost;
+	uint32_t cost;
 
 	/**
 	* @brief indexes in grid of the action performed

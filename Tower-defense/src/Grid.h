@@ -104,9 +104,9 @@ public:
 	* @brief Places towers on the target grid location
 	* @param x				The x-index where the tower needs to be placed
 	* @param y				The y-index where the tower needs to be placed
-	* @param newTower		The tower that needs to be placed
+	* @param towerType		The type of tower that needs to be placed
 	*/
-	void placeTower(uint8_t x, uint8_t y, std::shared_ptr<Tower> newTower);
+	void placeTower(uint8_t x, uint8_t y, TowerType towerType);
 
 	/**
 	* @brief Clears all the towers from the grid

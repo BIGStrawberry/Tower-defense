@@ -25,7 +25,7 @@ private:
 	float yOffset = 8;
 	Player player;
 	Grid grid;
-	std::unique_ptr<Tower> dummyTower;
+	std::shared_ptr<Tower> dummyTower;
 	uint32_t dummyCost = 10;
 	std::vector<std::shared_ptr<Enemy>> dummyEnemies;
 	sf::Vector2f placePosition;
