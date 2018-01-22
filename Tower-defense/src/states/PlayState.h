@@ -3,11 +3,13 @@
 #include <math.h>
 #include <memory>
 #include <iostream>
+#include <memory>
 #include <SFML/Graphics.hpp>
 #include "State.h"
 #include "ScoreState.h"
 #include "../Grid.h"
 #include "../tower/Tower.h"
+#include "../Action/Action.h"
 #include "../Player.h"
 
 class PlayState: public State {
@@ -20,14 +22,19 @@ private:
 	*/
 	float lineSize = 1;
 	float yOffset = 8;
-	Grid grid;
 	Player player;
+	Grid grid;
 	std::unique_ptr<Tower> dummyTower;
 	uint32_t dummyCost = 10;
 	std::vector<std::shared_ptr<Enemy>> dummyEnemies;
 	sf::Vector2f placePosition;
 public:
 	PlayState(sf::RenderWindow& window);
+
+	/**
+	* @brief rebuilds the grid based on the actions which the user has performed
+	*/
+	void rebuildGrid();
 
 	void init() override;
 	void update() override;

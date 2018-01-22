@@ -103,3 +103,9 @@ void Grid::placeTower(uint8_t x, uint8_t y, std::shared_ptr<Tower> newTower) {
 		grid[x + y * COLUMNS] = newTower;
 	}
 }
+
+void Grid::clearGrid() {
+	for (auto & tower : grid) {
+		tower = nullptr;
+	}
+}
