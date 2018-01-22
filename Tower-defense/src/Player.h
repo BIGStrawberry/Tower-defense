@@ -1,6 +1,8 @@
 #pragma once
 #include <cstdint>
+#include <vector>
 #include <SFML/graphics.hpp>
+#include "Action/Action.h"
 
 /**
 * @class Player
@@ -9,8 +11,16 @@
 */
 class Player {
 private:
+	/**
+	* @brief SFML window instance
+	*/
 	sf::RenderWindow & window;
-
+	/**
+	* @brief Amount of actions the player has made since the last wave
+	* @description Must be cleared everytime a new wave spawns, to prevent players undo-ing all actions for free
+	*/
+	uint8_t numActions;
+	
 public:
 	/**
 	* @brief Player Constructor
@@ -20,6 +30,11 @@ public:
 	* @param score		amount of score the player has
 	*/
 	Player(sf::RenderWindow & window, uint8_t lives, uint32_t gold, uint32_t score);
+
+	/**
+	* @brief A vector containing all the actions performed by the player
+	*/
+	std::vector<Action> actions;
 
 	/**
 	* @brief Public variable for the amount of lives the player has
@@ -35,4 +50,23 @@ public:
 	* @brief Public variable for the amount of score the player has
 	*/
 	uint32_t score;
+
+	/**
+	* @brief Adds an action to the action vector
+	* @param x	-	x position of the tower which the action was used on
+	* @param y	-	y position of the tower which the action was used on
+	* @param type	-	type of the tower the action was performed on
+	* @param actionCost	- amount of gold the action has cost
+	*/
+	void addAction(uint8_t x, uint8_t y, Action::ACTION_TYPE type, uint32_t actionCost);
+
+	/**
+	* @brief Removes the last action from the actions vector
+	*/
+	void undoAction();
+
+	/**
+	* @brief Resets the variable numActions to 0
+	*/
+	void resetNumActions();
 };

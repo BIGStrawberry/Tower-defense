@@ -87,8 +87,8 @@ void Grid::render() const {
 
 bool Grid::placeTower(uint8_t x, uint8_t y, std::shared_ptr<Tower> newTower) {
 	//checks invalid position and there is already a tower placed on target location
-	if (x <= 0 && x >= COLUMNS && 
-		y <= 0 && y >= ROWS &&
+	if (x < 0 || x >= COLUMNS || 
+		y < 0 || y >= ROWS    ||
 		grid[x + y * COLUMNS] != nullptr
 		) {
 		return false;
@@ -96,4 +96,10 @@ bool Grid::placeTower(uint8_t x, uint8_t y, std::shared_ptr<Tower> newTower) {
 	grid[x + y * COLUMNS] = newTower;
 	//TODO: pathfinding check
 	return true;
+}
+
+void Grid::clearGrid() {
+	for (auto & tower : grid) {
+		tower = nullptr;
+	}
 }

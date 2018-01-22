@@ -98,4 +98,9 @@ public:
 	* @param newTower		The tower that needs to be placed on said coordinated
 	*/
 	bool placeTower(uint8_t x, uint8_t y, std::shared_ptr<Tower> newTower);
+
+	/**
+	* @brief Clears all the towers from the grid
+	*/
+	void clearGrid();
 };

@@ -53,7 +53,7 @@ private:
 	std::shared_ptr<Enemy> target;
 
 	/**
-	* Grid reference for list of the enemies.
+	* reference for vector of the enemies, used to choose a new target from.
 	*/
 	std::vector<std::shared_ptr<Enemy>>& enemies;
 	/**
