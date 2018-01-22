@@ -4,6 +4,16 @@
 #include "Helpers/GameStateManager.h"
 #include "States/MenuState.h"
 
+/*
+Gameloop
+The update method of the current state is called 60 times per second.
+This is done by keeping up the time that has passed between the last and the current update
+and when the time is bigger than 1/60th of a second the currentstate update method is called.
+The input and render methods are called the remaining time.
+Every second the update and render counter will be set in the title as updates per second and frames per second.
+
+*/
+
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Game State Manager");
 	sf::Event evt;
@@ -11,6 +21,15 @@ int main() {
 	// The game starts in the MenuState
 	GameStateManager::pushState(std::make_shared<MenuState>(window));
 
+	int update_counter = 0;
+	int render_counter = 0;
+
+	const sf::Time time_per_update = sf::seconds(1.f / 60.f);
+	const sf::Time second = sf::seconds(1);
+	sf::Clock update_clock;
+	sf::Clock stats_clock;
+
+	sf::Time delta_time; // time between last update and current update call
 	while (window.isOpen()) {
 		while (window.pollEvent(evt)) {
 			switch (evt.type) {
@@ -37,9 +56,15 @@ int main() {
 		/**********/
 		/**UPDATE**/
 		/**********/
-		// TODO: game loop
-		// Update the active state
-		GameStateManager::getCurrentState()->update();
+		sf::Time elapsedTime = update_clock.restart();
+		delta_time += elapsedTime;
+		while (delta_time >= time_per_update) {
+			delta_time -= time_per_update;
+			update_counter++;
+			// Update the active state
+			GameStateManager::getCurrentState()->update();
+		}
+
 		/**********/
 		/**RENDER**/
 		/**********/
@@ -47,6 +72,18 @@ int main() {
 		// Draw the active state
 		GameStateManager::getCurrentState()->render();
 		window.display();
+		render_counter++;
+
+		sf::sleep(time_per_update); // call this when you want to limit your fps
+
+		//update fps and ups 
+		if (stats_clock.getElapsedTime() > sf::seconds(1)) {
+			stats_clock.restart();
+			std::string temp = "ups = " + std::to_string(update_counter) + " fps = " + std::to_string(render_counter);
+			window.setTitle(temp);
+			update_counter = render_counter = 0;
+		}
+
 	}
 
 	return 0;
