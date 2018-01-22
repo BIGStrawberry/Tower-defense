@@ -7,6 +7,7 @@
 #include "Enemy\Enemy.h"
 #include "Enemy\EnemyType.h"
 #include "tower\Tower.h"
+#include "tower\make_tower.h"
 /**
 * @class Grid
 * @file Grid.h
