@@ -39,7 +39,7 @@ public:
 	/**
 	* @brief Public variable for the amount of lives the player has
 	*/
-	uint8_t lives;
+	int8_t lives;
 
 	/**
 	* @brief Public variable for the amount of gold the player has

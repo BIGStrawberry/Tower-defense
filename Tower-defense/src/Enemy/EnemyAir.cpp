@@ -18,17 +18,17 @@ EnemyAir::~EnemyAir()
 
 void EnemyAir::update()
 {
+	//Air unit has reached base
 	if (speed > distance)
 	{
 		body.setPosition(next_target_pos);
-		//deal dmg
-		dead = true;
-		gold = 0;
+		state = States::Reached_Base;
 	}
 	else
 	{
 		body.setPosition(body.getPosition() + (vector * speed));
 		distance -= speed;
+		
 	}
 	
 }

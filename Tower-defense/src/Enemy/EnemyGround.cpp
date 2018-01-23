@@ -46,9 +46,7 @@ void EnemyGround::update()
 		}
 		else
 		{
-			//deal dmg
-			dead = true;
-			gold = 0;
+			state = States::Reached_Base;
 			return;
 		}
 

@@ -6,7 +6,7 @@ PlayState::PlayState(sf::RenderWindow& window):
 	State(window),
 	tileSize(31),
 	player(window, 15, 75, 0),
-	grid(window, tileSize),
+	grid(window, 31, player),
 	dummyTower(nullptr)
 {}
 
@@ -133,3 +133,4 @@ void PlayState::onMouseMoved(sf::Event& evt) {
 		}
 	}
 }
+
