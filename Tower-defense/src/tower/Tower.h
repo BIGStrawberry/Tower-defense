@@ -6,6 +6,8 @@
 #include <SFML/System.hpp>
 #include "Projectile.h"
 #include "../Enemy/make_enemy.h"
+#include "TowerType.h"
+#include "TowerDataContainer.h"
 /**
 * @class Tower
 * @file Tower.cpp
@@ -19,11 +21,13 @@
 * It has a range circle which can be drawn around the tower when the render_range boolean is true.
 * The tower will search for enemies in order of distance from the base.
 
+* A tower will be given a TowerType, with which it can get the necessary TowerData for that type from the static TowerDataContainer.
+
 * It can be updated and rendered.
 */
 class Tower
 {
-private:
+protected:
 	/**
 	* radius in pixels
 	*/
@@ -36,6 +40,11 @@ private:
 	* time between each projectile in seconds
 	*/
 	int reload_time;
+
+	/**
+	* damage passed to the fired projectiles
+	*/
+	int damage;
 
 	/**
 	* bool to render the circle that displays the range of the tower
@@ -82,7 +91,10 @@ private:
 	* VertexArray Linestrip used to draw the turret.
 	*/
 	sf::VertexArray turret;
-
+	/**
+	* @brief type of tower
+	*/
+	TowerType type;
 
 	/**
 	* @brief returns the distance to the Enemy using pythagoras theorem
@@ -109,6 +121,15 @@ private:
 
 	void update_projectiles();
 
+
+	/**
+	* @brief virtual method shootProjectiles
+	Creates and stores a projectile in the projectiles container.
+	This method is virtual so that Towers that inherit from Tower can create a different type of projectile and store it.
+	*/
+	virtual void shootProjectile();
+
+
 public:
 	/**
 	* @brief 
@@ -116,7 +137,31 @@ public:
 	constructs the turret sets the first vertex point and the second, color.
 	constructs the circle, sets the radius, origin and size.
 	*/
-	Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, int radius, std::vector<std::shared_ptr<Enemy>>& enemies, int fire_rate);
+	Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, std::vector<std::shared_ptr<Enemy>>& enemies, TowerType type);
+
+	/**
+	* @brief setter for position
+	* 
+	*/
+	void setPosition(const sf::Vector2f& pos) {
+		tower_shape.setPosition(pos);
+		range_circle.setPosition(tower_shape.getPosition());
+	}
+
+	/**
+	* @brief setter for color
+	*
+	*/
+	void setColor(const sf::Color& color) {
+		tower_shape.setFillColor(color);
+	}
+
+	/**
+	* @brief getter for towertype
+	*/
+	TowerType getType() {
+		return type;
+	}
 
 	/**
 	* @brief renders the Tower, projectiles, turret and range_circle if boolean render_range is true

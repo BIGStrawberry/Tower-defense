@@ -4,10 +4,10 @@
 #include <memory>
 #include <vector>
 #include "tower\Tower.h"
+#include "tower\make_tower.h"
 #include "Enemy\Enemy.h"
 #include "Enemy\EnemyType.h"
 #include "Player.h"
-
 /**
 * @class Grid
 * @file Grid.h
@@ -90,6 +90,8 @@ private:
 	Player player;
 
 
+	std::vector<sf::Vector2f> path;
+
 public:
 	/**
 	* @brief Grid Constructor
@@ -109,11 +111,21 @@ public:
 	void render() const;
 
 	/**
-	* @brief Places towers on the target grid location
-	* @param x				The x-coordinate where the tower needs to be placed
-	* @param y				The y-coordinate where the tower needs to be placed
-	* @param newTower		The tower that needs to be placed on said coordinated
+	* @brief Checks if a tower can be placed at x,y
+	* @param x				The x-index where the tower needs to be placed
+	* @param y				The y-index where the tower needs to be placed
 	*/
-	bool placeTower(uint8_t x, uint8_t y, std::shared_ptr<Tower> newTower);
+	bool canBePlaced(uint8_t x, uint8_t y);
+	/**
+	* @brief Places towers on the target grid location
+	* @param x				The x-index where the tower needs to be placed
+	* @param y				The y-index where the tower needs to be placed
+	* @param towerType		The type of tower that needs to be placed
+	*/
+	void placeTower(uint8_t x, uint8_t y, TowerType towerType);
 
+	/**
+	* @brief Clears all the towers from the grid
+	*/
+	void clearGrid();
 };
