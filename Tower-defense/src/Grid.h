@@ -6,7 +6,8 @@
 #include "tower\Tower.h"
 #include "Enemy\Enemy.h"
 #include "Enemy\EnemyType.h"
-
+#include "tower\Tower.h"
+#include "tower\make_tower.h"
 /**
 * @class Grid
 * @file Grid.h
@@ -73,6 +74,8 @@ private:
 	*/
 	std::vector<Enemy> waveQueue;
 
+	std::vector<sf::Vector2f> path;
+
 public:
 	/**
 	* @brief Grid Constructor
@@ -98,4 +101,9 @@ public:
 	* @param newTower		The tower that needs to be placed on said coordinated
 	*/
 	bool placeTower(uint8_t x, uint8_t y, std::shared_ptr<Tower> newTower);
+
+	/**
+	* @brief Clears all the towers from the grid
+	*/
+	void clearGrid();
 };

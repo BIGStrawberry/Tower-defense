@@ -17,7 +17,9 @@ Every second the update and render counter will be set in the title as updates p
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Game State Manager");
 	sf::Event evt;
-
+	window.setVerticalSyncEnabled(true);
+	//window.setFramerateLimit(10);
+	EnemyDataContainer::load();
 	// The game starts in the MenuState
 	GameStateManager::pushState(std::make_shared<MenuState>(window));
 
