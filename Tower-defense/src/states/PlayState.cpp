@@ -19,7 +19,6 @@ void PlayState::rebuildGrid() {
 		case Action::ACTION_TYPE::PLACE_TOWER:
 			//change 31 to tileSize
 			grid.placeTower(action.x, action.y, action.tower_type);
-			player.gold -= action.cost;
 			break;
 		case Action::ACTION_TYPE::SELL_TOWER:
 			//TODO: REMOVE
@@ -50,6 +49,8 @@ void PlayState::update() {
 	if (dummyTower != nullptr) {
 		dummyTower->setPosition(placePosition);
 	}
+
+	std::cout << "Player gold: " << player.gold << std::endl;
 }
 
 void PlayState::render() const {
@@ -101,12 +102,10 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 		uint8_t x = static_cast<uint8_t>(ceil(static_cast<float>(placePosition.x) / fullSize)) - 3;
 		uint8_t y = static_cast<uint8_t>(ceil(static_cast<float>(placePosition.y) / fullSize)) - 3;
 
-		// sf::RenderWindow & window, float size, sf::Vector2f pos, int radius, std::vector<std::shared_ptr<Enemy>>& enemies, int reload_time
 		if (grid.canBePlaced(x, y)) {
 			std::cout << "Success!" << std::endl;
-			// TODO: Save action in actions list, Move tower cost to grid class
+			// TODO: Replace dummyCost with actual tower cost, Move tower cost to grid class
 			if (player.gold >= dummyCost) {
-				player.gold -= dummyCost; // TODO: replace this with tower cost
 				player.addAction(x, y, dummyCost, Action::ACTION_TYPE::PLACE_TOWER, dummyTower->getType());
 				grid.placeTower(x, y, dummyTower->getType());
 			}

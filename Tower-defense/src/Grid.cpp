@@ -124,15 +124,16 @@ bool Grid::canBePlaced(uint8_t x, uint8_t y) {
 }
 
 void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType) {
-	try {
-		calculatePath();
-	} catch (const UnreachableBase&) {
-		return;
+	sf::Vector2f pos{static_cast<float>(x) * (tileSize + lineSize) + xOffset , static_cast<float>(y) * (tileSize + lineSize) + yOffset};
+	if (canBePlaced(x, y)) {
+		grid[x + y * COLUMNS] = make_tower(window, tileSize, pos, enemies, towerType);
 	}
 
-	if (canBePlaced(x, y)) {
-		sf::Vector2f pos{static_cast<float>(x) * (tileSize + lineSize) + xOffset , static_cast<float>(y) * (tileSize + lineSize) + yOffset};
-		grid[x + y * COLUMNS] = make_tower(window, tileSize, pos, enemies, towerType);
+	try {
+		calculatePath();
+		player.gold -= 10; // TODO: Replace with tower gold
+	} catch (const UnreachableBase&) {
+		grid[x + y * COLUMNS] = nullptr; // This tower was blocking so we remove it
 	}
 }
 
