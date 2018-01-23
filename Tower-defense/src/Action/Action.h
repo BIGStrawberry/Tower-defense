@@ -1,5 +1,6 @@
 #pragma once
 #include <cstdint>
+#include "../tower/TowerType.h"
 
 /**
 * @class Action
@@ -33,10 +34,15 @@ public:
 	ACTION_TYPE type;
 
 	/**
+	* @brief type of the tower the action was performed on
+	*/
+	TowerType tower_type;
+
+	/**
 	* @brief Constructor
 	* @param index - index for the tower affected in the action
 	* @param type - The type of action the player made
 	* @param actionCost - Amount of gold the player paid or received from the action
 	*/
-	Action(uint8_t x, uint8_t y, ACTION_TYPE type, uint32_t actionCost);
+	Action(uint8_t x, uint8_t y, uint32_t actionCost, ACTION_TYPE type, TowerType tower_type);
 };

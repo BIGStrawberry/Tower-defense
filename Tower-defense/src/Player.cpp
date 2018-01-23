@@ -8,8 +8,8 @@ Player::Player(sf::RenderWindow & window, uint8_t lives, uint32_t startingGold, 
 	score(score) {}
 
 
-void Player::addAction(uint8_t x, uint8_t y, Action::ACTION_TYPE type, uint32_t actionCost) {
-	actions.emplace_back(x, y, type, actionCost);
+void Player::addAction(uint8_t x, uint8_t y, uint32_t actionCost, Action::ACTION_TYPE type, TowerType tower_type) {
+	actions.emplace_back(x, y, actionCost, type, tower_type);
 	numActions++;
 }
 

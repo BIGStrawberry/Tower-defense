@@ -58,7 +58,7 @@ public:
 	* @param type	-	type of the tower the action was performed on
 	* @param cost	- amount of gold the action has cost
 	*/
-	void addAction(uint8_t x, uint8_t y, Action::ACTION_TYPE type, uint32_t cost);
+	void addAction(uint8_t x, uint8_t y, uint32_t cost, Action::ACTION_TYPE type, TowerType tower_type);
 
 	/**
 	* @brief Removes the last action from the actions vector

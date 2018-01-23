@@ -91,7 +91,10 @@ protected:
 	* VertexArray Linestrip used to draw the turret.
 	*/
 	sf::VertexArray turret;
-
+	/**
+	* @brief type of tower
+	*/
+	TowerType type;
 
 	/**
 	* @brief returns the distance to the Enemy using pythagoras theorem
@@ -151,6 +154,13 @@ public:
 	*/
 	void setColor(const sf::Color& color) {
 		tower_shape.setFillColor(color);
+	}
+
+	/**
+	* @brief getter for towertype
+	*/
+	TowerType getType() {
+		return type;
 	}
 
 	/**

@@ -18,7 +18,7 @@ void PlayState::rebuildGrid() {
 		switch (action.type) {
 		case Action::ACTION_TYPE::PLACE_TOWER:
 			//change 31 to tileSize
-			grid.placeTower(action.x, action.y, TowerType::Normal);
+			grid.placeTower(action.x, action.y, action.tower_type);
 			player.gold -= action.cost;
 			break;
 		case Action::ACTION_TYPE::SELL_TOWER:
@@ -43,8 +43,6 @@ void PlayState::init() {
 	text.setString("Press Esc to go back to menu");
 	// TODO: Better center d;)
 	text.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, static_cast<float>(window.getSize().y) / 2 - 24});
-
-	player.addAction(20, 10, Action::ACTION_TYPE::PLACE_TOWER, 10);
 }
 
 void PlayState::update() {
@@ -81,26 +79,38 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 	} else if (evt.key.code == sf::Keyboard::U) {
 		player.undoAction();
 		rebuildGrid();
+	} else if (evt.key.code == sf::Keyboard::S) {
+		dummyTower = make_tower(window,
+								static_cast<float>(tileSize),
+								sf::Vector2f{
+			static_cast<float>(sf::Mouse::getPosition(window).x) * tileSize,
+			static_cast<float>(sf::Mouse::getPosition(window).y) * tileSize
+		},
+								dummyEnemies,
+								TowerType::Long // this should be action.towertype or something
+		);
 	}
 };
 
 void PlayState::onMouseButtonPressed(sf::Event& evt) {
-	// TODO: The grid should have a position insted of a x/y offset, so that we can substract the position instead of 3
-	float fullSize = tileSize + lineSize;
-	uint8_t x = static_cast<uint8_t>(ceil(static_cast<float>(placePosition.x) / fullSize)) - 3;
-	uint8_t y = static_cast<uint8_t>(ceil(static_cast<float>(placePosition.y) / fullSize)) - 3;
+	if (dummyTower != nullptr) {
+		// TODO: The grid should have a position insted of a x/y offset, so that we can substract the position instead of 3
+		float fullSize = tileSize + lineSize;
+		uint8_t x = static_cast<uint8_t>(ceil(static_cast<float>(placePosition.x) / fullSize)) - 3;
+		uint8_t y = static_cast<uint8_t>(ceil(static_cast<float>(placePosition.y) / fullSize)) - 3;
 
-	// sf::RenderWindow & window, float size, sf::Vector2f pos, int radius, std::vector<std::shared_ptr<Enemy>>& enemies, int reload_time
-	if (grid.canBePlaced(x,y)) {
-		std::cout << "Success!" << std::endl;
-		// TODO: Save action in actions list, Move tower cost to grid class
-		if (player.gold >= dummyCost) {
-			player.gold -= dummyCost; // TODO: replace this with tower cost
-			player.addAction(x, y, Action::ACTION_TYPE::PLACE_TOWER, dummyCost);
-			grid.placeTower(x, y, TowerType::Normal);
+		// sf::RenderWindow & window, float size, sf::Vector2f pos, int radius, std::vector<std::shared_ptr<Enemy>>& enemies, int reload_time
+		if (grid.canBePlaced(x, y)) {
+			std::cout << "Success!" << std::endl;
+			// TODO: Save action in actions list, Move tower cost to grid class
+			if (player.gold >= dummyCost) {
+				player.gold -= dummyCost; // TODO: replace this with tower cost
+				player.addAction(x, y, dummyCost, Action::ACTION_TYPE::PLACE_TOWER, dummyTower->getType());
+				grid.placeTower(x, y, dummyTower->getType());
+			}
+		} else {
+			std::cout << "Oei" << std::endl;
 		}
-	} else {
-		std::cout << "Oei" << std::endl;
 	}
 }
 
