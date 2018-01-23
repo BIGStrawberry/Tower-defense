@@ -15,7 +15,8 @@ Tower::Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, std::vecto
 	window(window),
 	range_circle(static_cast<float>(radius)),
 	tower_shape(sf::Vector2f(size, size)),
-	turret(sf::VertexArray(sf::LinesStrip, 2))
+	turret(sf::VertexArray(sf::LinesStrip, 2)),
+	type(type)
 
 {
 	turret[0].position = pos;
