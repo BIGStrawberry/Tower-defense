@@ -44,7 +44,7 @@ public:
 	/**
 	* @brief Public variable for the amount of gold the player has
 	*/
-	uint32_t startingGold, gold;
+	int32_t startingGold, gold;
 
 	/**
 	* @brief Public variable for the amount of score the player has

@@ -11,7 +11,7 @@ PlayState::PlayState(sf::RenderWindow& window):
 {}
 
 void PlayState::rebuildGrid() {
-	player.gold = player.startingGold;
+	player.gold = player.startingGold; // TODO: Replace starting gold with accumulated gold
 	grid.clearGrid();
 
 	for (auto& action : player.actions) {
@@ -49,8 +49,6 @@ void PlayState::update() {
 	if (dummyTower != nullptr) {
 		dummyTower->setPosition(placePosition);
 	}
-
-	std::cout << "Player gold: " << player.gold << std::endl;
 }
 
 void PlayState::render() const {
@@ -105,8 +103,8 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 		if (grid.canBePlaced(x, y)) {
 			std::cout << "Success!" << std::endl;
 			// TODO: Replace dummyCost with actual tower cost, Move tower cost to grid class
-			if (player.gold >= dummyCost) {
-				player.addAction(x, y, dummyCost, Action::ACTION_TYPE::PLACE_TOWER, dummyTower->getType());
+			if (player.gold >= dummyTower->getCost()) {
+				player.addAction(x, y, dummyTower->getCost(), Action::ACTION_TYPE::PLACE_TOWER, dummyTower->getType());
 				grid.placeTower(x, y, dummyTower->getType());
 			}
 		} else {
@@ -127,7 +125,7 @@ void PlayState::onMouseMoved(sf::Event& evt) {
 
 		if (!grid.canBePlaced(static_cast<uint8_t>(indexes.x), static_cast<uint8_t>(indexes.y))) {
 			dummyTower->setColor(sf::Color::Red);
-		} else if (player.gold < dummyCost) { // TODO: replace this with tower cost
+		} else if (player.gold < dummyTower->getCost()) { // TODO: replace this with tower cost
 			dummyTower->setColor(sf::Color::Yellow);
 		} else {
 			dummyTower->setColor(sf::Color::Green);

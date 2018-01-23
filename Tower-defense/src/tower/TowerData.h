@@ -1,4 +1,5 @@
 #pragma once
+#include "SFML\Graphics.hpp"
 
 #pragma region comment
 /**
@@ -7,7 +8,8 @@
 #pragma endregion
 
 struct TowerData {
-	int radius;
-	int reload_time;
-	int damage;
+	float radius;
+	sf::Time reload_time;
+	int32_t damage;
+	int32_t cost;
 };
