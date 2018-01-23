@@ -6,6 +6,7 @@
 #include "tower\Tower.h"
 #include "Enemy\Enemy.h"
 #include "Enemy\EnemyType.h"
+#include "Player.h"
 
 /**
 * @class Grid
@@ -83,7 +84,11 @@ private:
 	*/
 	std::vector<std::shared_ptr<Enemy>> waveQueue;
 
-	
+	/**
+	* @brief player			An player object of the player that is playing the game
+	*/
+	Player player;
+
 
 public:
 	/**
@@ -91,7 +96,7 @@ public:
 	* @param window			SFML window instance
 	* @param tileSize		The size of the grid tiles
 	*/
-	Grid(sf::RenderWindow & window, float tileSize);
+	Grid(sf::RenderWindow & window, float tileSize, Player & player);
 
 	/**
 	* @brief Updates the enemy and tower objects

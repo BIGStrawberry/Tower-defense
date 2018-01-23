@@ -3,7 +3,8 @@
 
 PlayState::PlayState(sf::RenderWindow& window):
 	State(window),
-	grid(window, 31)
+	player(window,  20, 200, 0),
+	grid(window, 31, player)
 {}
 
 void PlayState::init() {

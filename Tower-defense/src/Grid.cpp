@@ -1,11 +1,14 @@
 #include "Grid.h"
-#include <iostream>
+#include "helpers\GameStateManager.h"
+#include "states\ScoreState.h"
 
-Grid::Grid(sf::RenderWindow & window, float tileSize):
+
+Grid::Grid(sf::RenderWindow & window, float tileSize, Player & player):
 	window(window),
 	tileSize(tileSize),
 	spawn(sf::Vector2f(tileSize,tileSize)),
-	base(sf::Vector2f(tileSize,tileSize))
+	base(sf::Vector2f(tileSize,tileSize)),
+	player(player)
 {
 	//TODO: cast round the result of the devided numers off, so the spawn will alway's be allinged with the grid
 	spawn.setPosition(xOffset - (tileSize + lineSize), static_cast<int>(ROWS / 2) * (tileSize + lineSize) + yOffset);
@@ -66,15 +69,27 @@ void Grid::update() {
 		}
 	}
 
-	for (auto& enemy : enemies) {
-		// Somting does not work here
-		// enemy->update();
+	for (size_t i = 0; i < enemies.size(); ++i) {
+		Enemy& enemy = *enemies[i];
+		if (enemy.state == Enemy::States::Walking) {
+			enemy.update();
+		} else if (enemy.state == Enemy::States::Dead) {
+			player.gold += enemy.getGold();
+			enemies.erase(enemies.begin() + i);
+			i--;
+		} else if (enemy.state == Enemy::States::Reached_Base) {
+			player.lives -= enemy.getDmg();
+			if (player.lives <= 0) {
+				GameStateManager::pushState(std::make_unique<ScoreState>(window, 1337));
+			}
+			enemies.erase(enemies.begin() + i);
+			i--;
+		}
 	}
 
 	// Checks if there are enemy's in the waveQueue and places them in the enemies vector
 	if (waveQueue.size() > 0 &&
 		clock.getElapsedTime() > spawnDelay) {
-		std::cout << "groter dan\n";
 		clock.restart();
 		enemies.push_back(waveQueue.back());
 		waveQueue.pop_back();

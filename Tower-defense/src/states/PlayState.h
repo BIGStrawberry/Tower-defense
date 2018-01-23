@@ -5,11 +5,13 @@
 #include "State.h"
 #include "ScoreState.h"
 #include "../Grid.h"
+#include "../Player.h"
 
 class PlayState: public State {
 private: 
 	sf::Font font;
 	sf::Text text;
+	Player player;
 	Grid grid;
 public:
 	PlayState(sf::RenderWindow& window);
