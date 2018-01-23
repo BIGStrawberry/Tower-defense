@@ -92,7 +92,7 @@ private:
 	/**
 	* @brief player			An player object of the player that is playing the game
 	*/
-	Player player;
+	Player& player;
 
 	Pathfinder<COLUMNS * ROWS> pathfinder;
 
