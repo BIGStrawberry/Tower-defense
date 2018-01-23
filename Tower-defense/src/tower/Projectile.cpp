@@ -22,7 +22,7 @@ void Projectile::render() const {
 }
 
 void Projectile::update() {
-	if (!target->isDead()) {
+	if (target->state == Enemy::States::Walking) {
 		if (body.getGlobalBounds().intersects(target->getBounds())) {
 			target->decreaseHp(damage);
 			is_dead = true;

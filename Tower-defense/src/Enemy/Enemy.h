@@ -26,7 +26,17 @@ protected:
 	int hp;
 	int dmg;
 	int gold;
-	bool dead;
+public:
+	#pragma region comment
+	/**
+	* @brief States for Enemies that indicate if the enemy is either moving/dead/reached the base
+	*/
+
+	#pragma endregion
+	enum class States {
+		Walking, Dead, Reached_Base
+	};
+	States state = States::Walking;
 
 public:
 #pragma region comment
@@ -83,6 +93,14 @@ public:
 	virtual void update() = 0;
 #pragma region comment
 	/**
+	* @brief returns dmg attribute
+	* @details This function returns the amount of damage the player would take when this enemy reaches the base.
+	*/
+
+#pragma endregion
+	const int getDmg() const;
+#pragma region comment
+	/**
 	* @brief returns gold attribute
 	* @details This function returns the amount of gold that the player
 	* gets in case Enemy gets killed.
@@ -99,12 +117,4 @@ public:
 
 #pragma endregion
 	sf::FloatRect getBounds() const;
-#pragma region comment
-	/**
-	* @brief getter for bool dead
-	* @details This function returns whether the Enemy has been marked as dead.
-	*/
-
-#pragma endregion
-	const bool isDead() const;
 };

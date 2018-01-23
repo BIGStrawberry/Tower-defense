@@ -8,10 +8,10 @@
 #include "State.h"
 #include "ScoreState.h"
 #include "../Grid.h"
-#include "../tower/Tower.h"
-#include "../Action/Action.h"
 #include "../Player.h"
+#include "../tower/Tower.h"
 #include "../tower/make_tower.h"
+#include "../Action/Action.h"
 
 class PlayState: public State {
 private: 

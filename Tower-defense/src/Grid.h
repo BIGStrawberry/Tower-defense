@@ -4,10 +4,10 @@
 #include <memory>
 #include <vector>
 #include "tower\Tower.h"
+#include "tower\make_tower.h"
 #include "Enemy\Enemy.h"
 #include "Enemy\EnemyType.h"
-#include "tower\Tower.h"
-#include "tower\make_tower.h"
+#include "Player.h"
 /**
 * @class Grid
 * @file Grid.h
@@ -23,6 +23,16 @@ private:
 	* @brief yOffset		The amount of space between the top screen boarder and the grid
 	*/
 	const float yOffset = 88;
+
+	/**
+	* @brief clock			A Clock object used for tracking the elapsed time between enemy spawns
+	*/
+	sf::Clock clock;
+
+	/**
+	* @brief spawnDelay		The amount of time in ms that needs to pass before an enemy can spawn
+	*/
+	sf::Time spawnDelay = sf::milliseconds(500);
 
 	/**
 	* @brief COLUMNS		The mounts of columns the grid has
@@ -72,7 +82,13 @@ private:
 	/**
 	* @brief waveQueue		An array where all the enemies that need to spawn in the next wave will be stored in 
 	*/
-	std::vector<Enemy> waveQueue;
+	std::vector<std::shared_ptr<Enemy>> waveQueue;
+
+	/**
+	* @brief player			An player object of the player that is playing the game
+	*/
+	Player player;
+
 
 	std::vector<sf::Vector2f> path;
 
@@ -82,7 +98,7 @@ public:
 	* @param window			SFML window instance
 	* @param tileSize		The size of the grid tiles
 	*/
-	Grid(sf::RenderWindow & window, float tileSize);
+	Grid(sf::RenderWindow & window, float tileSize, Player & player);
 
 	/**
 	* @brief Updates the enemy and tower objects
