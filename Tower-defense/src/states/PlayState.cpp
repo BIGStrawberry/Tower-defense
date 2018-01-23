@@ -5,7 +5,7 @@
 PlayState::PlayState(sf::RenderWindow& window):
 	State(window),
 	tileSize(31),
-	player(window, 15, 75, 0),
+	player(window, 115, 75, 0),
 	grid(window, 31, player),
 	dummyTower(nullptr)
 {}
@@ -89,6 +89,8 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 								dummyEnemies,
 								TowerType::Long // this should be action.towertype or something
 		);
+	} else if (evt.key.code == sf::Keyboard::W) {
+		grid.startWave();
 	}
 };
 
