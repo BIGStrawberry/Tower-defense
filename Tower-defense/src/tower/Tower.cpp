@@ -77,7 +77,7 @@ void Tower::update_projectiles() {
 }
 
 void Tower::update() {
-	if (target != nullptr && !target->isDead()) {
+	if (target != nullptr && target->state == Enemy::States::Walking) {
 		rotateTurret();
 		if (cooldown_timer.getElapsedTime().asMilliseconds() > reload_time) {
 			projectiles.emplace_back(window, 21, tower_shape.getPosition(), target);
