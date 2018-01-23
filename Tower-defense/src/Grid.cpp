@@ -7,8 +7,6 @@ Grid::Grid(sf::RenderWindow & window, float tileSize):
 	spawn(sf::Vector2f(tileSize,tileSize)),
 	base(sf::Vector2f(tileSize,tileSize))
 {
-
-
 	//TODO: cast round the result of the devided numers off, so the spawn will alway's be allinged with the grid
 	spawn.setPosition(xOffset - (tileSize + lineSize), static_cast<int>(ROWS / 2) * (tileSize + lineSize) + yOffset);
 	spawn.setOrigin(tileSize / 2, tileSize / 2);
@@ -41,16 +39,13 @@ Grid::Grid(sf::RenderWindow & window, float tileSize):
 			);
 		}
 		enemies.push_back(enemy);
-		// enemy.setPosition((tileSize + lineSize) * i + xOffset + (tileSize+lineSize)/4, yOffset + (tileSize + lineSize) / 4);
-		// enemies.emplace_back(enemy);
 	}
 
 
 	for (uint8_t i = 0; i < ROWS; ++i) {
 		for (uint8_t j = 0; j < COLUMNS; ++j) {
 			if (i % 7 == 0 && j % 5 == 0) {
-				sf::Vector2f pos{static_cast<float>(j) * (tileSize + lineSize) + xOffset , static_cast<float>(i) * (tileSize + lineSize) + yOffset};
-				placeTower(j, i, make_tower(window, tileSize, pos, enemies, TowerType::Long));
+				placeTower(j, i, TowerType::Long);
 			}
 		}
 	}
@@ -84,17 +79,24 @@ void Grid::render() const {
 	
 }
 
-bool Grid::placeTower(uint8_t x, uint8_t y, std::shared_ptr<Tower> newTower) {
+bool Grid::canBePlaced(uint8_t x, uint8_t y) {
 	//checks invalid position and there is already a tower placed on target location
-	if (x < 0 || x >= COLUMNS || 
-		y < 0 || y >= ROWS    ||
+	if (x < 0 || x >= COLUMNS ||
+		y < 0 || y >= ROWS ||
 		grid[x + y * COLUMNS] != nullptr
 		) {
 		return false;
 	}
-	grid[x + y * COLUMNS] = newTower;
-	//TODO: pathfinding check
+
+	// TODO: Pathfinding check
 	return true;
+}
+
+void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType) {
+	if (canBePlaced(x, y)) {
+		sf::Vector2f pos{static_cast<float>(x) * (tileSize + lineSize) + xOffset , static_cast<float>(y) * (tileSize + lineSize) + yOffset};
+		grid[x + y * COLUMNS] = make_tower(window, tileSize, pos, enemies, towerType);
+	}
 }
 
 void Grid::clearGrid() {

@@ -91,7 +91,10 @@ protected:
 	* VertexArray Linestrip used to draw the turret.
 	*/
 	sf::VertexArray turret;
-
+	/**
+	* @brief type of tower
+	*/
+	TowerType type;
 
 	/**
 	* @brief returns the distance to the Enemy using pythagoras theorem
@@ -135,6 +138,30 @@ public:
 	constructs the circle, sets the radius, origin and size.
 	*/
 	Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, std::vector<std::shared_ptr<Enemy>>& enemies, TowerType type);
+
+	/**
+	* @brief setter for position
+	* 
+	*/
+	void setPosition(const sf::Vector2f& pos) {
+		tower_shape.setPosition(pos);
+		range_circle.setPosition(tower_shape.getPosition());
+	}
+
+	/**
+	* @brief setter for color
+	*
+	*/
+	void setColor(const sf::Color& color) {
+		tower_shape.setFillColor(color);
+	}
+
+	/**
+	* @brief getter for towertype
+	*/
+	TowerType getType() {
+		return type;
+	}
 
 	/**
 	* @brief renders the Tower, projectiles, turret and range_circle if boolean render_range is true
