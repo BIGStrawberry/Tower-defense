@@ -17,7 +17,7 @@ Every second the update and render counter will be set in the title as updates p
 int main() {
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Game State Manager");
 	sf::Event evt;
-	window.setVerticalSyncEnabled(true);
+	//window.setVerticalSyncEnabled(true);
 	//window.setFramerateLimit(10);
 	EnemyDataContainer::load();
 	// The game starts in the MenuState
@@ -75,7 +75,7 @@ int main() {
 		window.display();
 		render_counter++;
 
-		sf::sleep(time_per_update); // call this when you want to limit your fps
+		sf::sleep(sf::milliseconds(10)); // call this when you want to limit your fps
 
 		//update fps and ups 
 		if (stats_clock.getElapsedTime() > sf::seconds(1)) {

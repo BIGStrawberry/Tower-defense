@@ -8,6 +8,8 @@
 #include "Enemy\Enemy.h"
 #include "Enemy\EnemyType.h"
 #include "Player.h"
+#include "Pathfinding\Pathfinder.h"
+
 /**
 * @class Grid
 * @file Grid.h
@@ -43,6 +45,9 @@ private:
 	* @brief ROWS			The mounts of ROWS the grid has
 	*/
 	static constexpr const uint8_t ROWS = 18;
+
+	static constexpr const uint16_t START_INDEX = 0 + 9 * COLUMNS;
+	static constexpr const uint16_t END_INDEX = COLUMNS - 1 + 9 * COLUMNS;
 
 	/**
 	* @brief tileSize		The length and with of the grid tiles
@@ -89,6 +94,7 @@ private:
 	*/
 	Player player;
 
+	Pathfinder<COLUMNS * ROWS> pathfinder;
 
 	std::vector<sf::Vector2f> path;
 
@@ -109,6 +115,17 @@ public:
 	* @brief Renders the enemy and tower objects
 	*/
 	void render() const;
+
+	/**
+	* @brief Calculates and sets path
+	* @details
+	* Uses the PathFinder class to calculate the path
+	*/
+	void calculatePath();
+	/**
+	* @brief Starts the wave
+	*/
+	void startWave();
 
 	/**
 	* @brief Checks if a tower can be placed at x,y

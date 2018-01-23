@@ -8,7 +8,8 @@ Grid::Grid(sf::RenderWindow & window, float tileSize, Player & player):
 	tileSize(tileSize),
 	spawn(sf::Vector2f(tileSize,tileSize)),
 	base(sf::Vector2f(tileSize,tileSize)),
-	player(player)
+	player(player),
+	pathfinder(grid, COLUMNS, START_INDEX, END_INDEX)
 {
 	//TODO: cast round the result of the devided numers off, so the spawn will alway's be allinged with the grid
 	spawn.setPosition(xOffset - (tileSize + lineSize), static_cast<int>(ROWS / 2) * (tileSize + lineSize) + yOffset);
@@ -24,34 +25,6 @@ Grid::Grid(sf::RenderWindow & window, float tileSize, Player & player):
 		spawn.getPosition() + sf::Vector2f{32, 32},
 		base.getPosition()
 	};
-
-	float enemySize = (tileSize + lineSize) / 4;
-	for (uint8_t i = 0; i < 5; ++i) {
-		std::shared_ptr<Enemy> enemy;
-		if (i == 0) {
-			enemy = std::make_shared<EnemyGround>(
-				window,
-				path,
-				EnemyType::Normal
-			);
-		} else {
-			enemy = std::make_shared<EnemyAir>(
-				window,
-				path,
-				EnemyType::Flying
-			);
-		}
-		waveQueue.push_back(enemy);
-	}
-
-
-	for (uint8_t i = 0; i < ROWS; ++i) {
-		for (uint8_t j = 0; j < COLUMNS; ++j) {
-			if (i % 7 == 0 && j % 5 == 0) {
-				placeTower(j, i, TowerType::Long);
-			}
-		}
-	}
 };
 
 void Grid::update() {
@@ -103,20 +76,60 @@ void Grid::render() const {
 	
 }
 
+void Grid::calculatePath() {
+	path.clear();
+	std::vector<int> indexPath = pathfinder.find();
+	std::reverse(indexPath.begin(), indexPath.end());
+
+	for (const auto& index : indexPath) {
+		// 1d index to 2d index
+		uint8_t x = index % COLUMNS;
+		uint8_t y = index / COLUMNS;
+		sf::Vector2f pos{static_cast<float>(x) * (tileSize + lineSize) + xOffset , static_cast<float>(y) * (tileSize + lineSize) + yOffset};
+		path.emplace_back(pos);
+	}
+}
+
+void Grid::startWave() {
+	try {
+		calculatePath();
+	} catch (const UnreachableBase&) {
+		// TODO: Place error sound
+		return;
+	}
+
+	for (uint8_t i = 0; i < 5; ++i) {
+		std::shared_ptr<Enemy> enemy;
+		if (i % 4 == 0) {
+			enemy = make_enemy(EnemyType::Flying, window, path);
+		} else {
+			enemy = make_enemy(EnemyType::Normal, window, path);
+		}
+		waveQueue.push_back(enemy);
+	}
+}
+
 bool Grid::canBePlaced(uint8_t x, uint8_t y) {
 	//checks invalid position and there is already a tower placed on target location
 	if (x < 0 || x >= COLUMNS ||
 		y < 0 || y >= ROWS ||
+		x + y * COLUMNS == START_INDEX ||
+		x + y * COLUMNS == END_INDEX ||
 		grid[x + y * COLUMNS] != nullptr
 		) {
 		return false;
 	}
 
-	// TODO: Pathfinding check
 	return true;
 }
 
 void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType) {
+	try {
+		calculatePath();
+	} catch (const UnreachableBase&) {
+		return;
+	}
+
 	if (canBePlaced(x, y)) {
 		sf::Vector2f pos{static_cast<float>(x) * (tileSize + lineSize) + xOffset , static_cast<float>(y) * (tileSize + lineSize) + yOffset};
 		grid[x + y * COLUMNS] = make_tower(window, tileSize, pos, enemies, towerType);
