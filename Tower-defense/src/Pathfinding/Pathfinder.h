@@ -7,12 +7,24 @@
 #include <vector>
 #include <memory>
 
-
+/**
+* @class UnreachableBase
+* @brief Exception for pathfinder
+* @details This exception is to be thrown when no passable path
+* is found.
+*/
 class UnreachableBase : public std::exception
 {
 };
 
-
+/**
+* @class Pathfinder
+* @brief A* Pathfinder class
+* @details This class implements the A* pathfinding algorithm, to calculate the
+* shortest path between two given points on the grid. It returns a vector of indices.
+* No diagonal moves are supported. H values are calculated using the manhattan method.
+* G values are set to 10.
+*/
 template<int N>
 class Pathfinder
 {
@@ -27,6 +39,14 @@ private:
 	PathNode* target;
 	PathNode* active;
 
+
+	/**
+	* @brief resets all the PathNodes
+	* @details This function clears the open list, and resets all the
+	* variables of the contained PathNodes to default. Passable state of
+	* the nodes will be updated based on the reference grid. This function
+	* is automatically called at the beginning of every find() call.
+	*/
 	void reset()
 	{
 		open_list.clear();
@@ -43,6 +63,13 @@ private:
 		}
 		active = begin;
 	}
+
+	/**
+	* @brief sets neighbours of node
+	* @details This function sets the neighbours of the given node.
+	* This function needs to be called once per node, and is done by
+	* the constructor.
+	*/
 	void setNeighbours(PathNode* node)
 	{
 		int idx = node->getIndex() - 1;
@@ -67,7 +94,10 @@ private:
 		}
 	}
 
-
+	/**
+	* @brief calculates H values
+	* @details This function calculates H values of all nodes.
+	*/
 	void calculate_h()
 	{
 		int trow = target->getIndex() / row_length;
@@ -82,6 +112,14 @@ private:
 
 
 public:
+	/**
+	* @brief Pathfinder Constructor
+	* @param std::array<std::shared_ptr<Tower>, N>&			This is a reference to the grid, on which the pathfinding is
+	*														to be called.
+	* @param int:											The length of a row.
+	* @param int:											Index of starting point.
+	* @param int:											Index of end point.
+	*/
 	Pathfinder(std::array<std::shared_ptr<Tower>, N>& tiles, int row_length, int s, int t) :
 		tiles(tiles),
 		row_length(row_length),
@@ -110,6 +148,14 @@ public:
 		active = begin;
 	}
 
+
+	/**
+	* @brief returns shortest path
+	* @details This function returns the indices of the shortest path
+	*  between the two points passed to the constructor earlier. This
+	* path includes the given two point as well. If there is no path
+	* to be found, UnreachableBase exception will be thrown.
+	*/
 	std::vector<int> find()
 	{
 		std::vector<int> path;
