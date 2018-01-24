@@ -75,7 +75,7 @@ void Tower::update_projectiles() {
 }
 
 void Tower::shootProjectile() {
-	projectiles.emplace_back(window, 1, tower_shape.getPosition(), target);
+	projectiles.emplace_back(window, towerData.damage, tower_shape.getPosition(), target);
 }
 
 void Tower::update() {
