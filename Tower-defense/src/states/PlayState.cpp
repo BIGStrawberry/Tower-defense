@@ -5,7 +5,7 @@
 PlayState::PlayState(sf::RenderWindow& window):
 	State(window),
 	tileSize(31),
-	player(window, 20, 375, 0),
+	player(window, 20, 375),
 	grid(window, 31, player),
 	dummyTower(nullptr)
 {}
@@ -82,7 +82,7 @@ void PlayState::cleanUp() {}
 void PlayState::onKeyPressed(sf::Event& evt) {
 	if (evt.key.code ==  sf::Keyboard::Escape) {
 		// TODO: Pass player score not 1337
-		GameStateManager::pushState(std::make_unique<ScoreState>(window, 1337));
+		GameStateManager::pushState(std::make_unique<ScoreState>(window, player));
 	} else if (evt.key.code == sf::Keyboard::A) {
 		deselect();
 		dummyTower = make_tower(window,
@@ -135,6 +135,10 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 			if (player.gold >= dummyTower->getCost()) {
 				player.addAction(x, y, dummyTower->getCost(), Action::ACTION_TYPE::PLACE_TOWER, dummyTower->getType());
 				grid.placeTower(x, y, dummyTower->getType());
+				dummyTower = nullptr;
+			}
+			else
+			{
 				dummyTower = nullptr;
 			}
 		} else {

@@ -27,6 +27,21 @@ Grid::Grid(sf::RenderWindow & window, float tileSize, Player & player):
 	};
 };
 
+
+void Grid::calculatePath() {
+	path.clear();
+	std::vector<int> indexPath = pathfinder.find();
+	std::reverse(indexPath.begin(), indexPath.end());
+
+	for (const auto& index : indexPath) {
+		// 1d index to 2d index
+		uint8_t x = index % COLUMNS;
+		uint8_t y = index / COLUMNS;
+		sf::Vector2f pos{static_cast<float>(x) * (tileSize + lineSize) + xOffset , static_cast<float>(y) * (tileSize + lineSize) + yOffset};
+		path.emplace_back(pos);
+	}
+}
+
 void Grid::update() {
 	for (auto& tower : grid) {
 		if (tower != nullptr) {
@@ -39,13 +54,14 @@ void Grid::update() {
 		if (enemy.state == Enemy::States::Walking) {
 			enemy.update();
 		} else if (enemy.state == Enemy::States::Dead) {
+			player.numberOfEnemiesKilled++;
 			player.gold += enemy.getGold();
 			enemies.erase(enemies.begin() + i);
 			i--;
 		} else if (enemy.state == Enemy::States::Reached_Base) {
 			player.lives -= enemy.getDmg();
 			if (player.lives <= 0) {
-				GameStateManager::pushState(std::make_unique<ScoreState>(window, 1337));
+				GameStateManager::pushState(std::make_unique<ScoreState>(window, player));
 			}
 			enemies.erase(enemies.begin() + i);
 			i--;
@@ -74,20 +90,6 @@ void Grid::render() const {
 		enemy->render();
 	}
 	
-}
-
-void Grid::calculatePath() {
-	path.clear();
-	std::vector<int> indexPath = pathfinder.find();
-	std::reverse(indexPath.begin(), indexPath.end());
-
-	for (const auto& index : indexPath) {
-		// 1d index to 2d index
-		uint8_t x = index % COLUMNS;
-		uint8_t y = index / COLUMNS;
-		sf::Vector2f pos{static_cast<float>(x) * (tileSize + lineSize) + xOffset , static_cast<float>(y) * (tileSize + lineSize) + yOffset};
-		path.emplace_back(pos);
-	}
 }
 
 void Grid::startWave() {
