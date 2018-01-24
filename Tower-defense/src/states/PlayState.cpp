@@ -83,6 +83,7 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 		// TODO: Pass player score not 1337
 		GameStateManager::pushState(std::make_unique<ScoreState>(window, 1337));
 	} else if (evt.key.code == sf::Keyboard::A) {
+		deselect();
 		dummyTower = make_tower(window,
 								static_cast<float>(tileSize),
 								sf::Vector2f{
@@ -136,6 +137,10 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 			if (player.gold >= dummyTower->getCost()) {
 				player.addAction(x, y, dummyTower->getCost(), Action::ACTION_TYPE::PLACE_TOWER, dummyTower->getType());
 				grid.placeTower(x, y, dummyTower->getType());
+				dummyTower = nullptr;
+			}
+			else
+			{
 				dummyTower = nullptr;
 			}
 		} else {
