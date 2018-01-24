@@ -30,5 +30,12 @@ void EnemyAir::update()
 		distance -= speed;
 		
 	}
+
+	if (slowed) {
+		if (slow_timer.getElapsedTime() >= slow_duration) {
+			slowed = false;
+			speed = original_speed;
+		}
+	}
 	
 }

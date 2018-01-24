@@ -61,7 +61,7 @@ protected:
 	/**
 	* projectile vector used to store the projectiles, and to update and render them.
 	*/
-	std::vector<Projectile> projectiles;
+	std::vector<std::unique_ptr<Projectile>> projectiles;
 
 	/**
 	* SFML window to draw on
