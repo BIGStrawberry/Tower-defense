@@ -152,7 +152,14 @@ public:
 		return type;
 	}
 
+	/**
+	* @brief Returns bounds of tower
+	*/
 	sf::FloatRect getBounds();
+
+	/**
+	* @brief Sets flag to render range circle
+	*/
 	void enableRangeRender(bool s);
 
 	/**
@@ -162,6 +169,9 @@ public:
 		return towerData.cost;
 	}
 
+	/**
+	* @brief Returns the tower's position
+	*/
 	sf::Vector2f getPosition();
 
 	/**
