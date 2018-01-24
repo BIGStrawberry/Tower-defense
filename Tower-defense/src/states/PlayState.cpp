@@ -114,8 +114,8 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 		if (selected)
 		{
 			player.addAction((uint8_t)selected->getPosition().x, (uint8_t)selected->getPosition().y, (uint32_t)-0.8 * selected->getCost(), Action::ACTION_TYPE::SELL_TOWER, selected->getType());
-			std::cout << "$$$";
-			player.gold += (uint32_t)0.8 * selected->getCost();
+			std::cout << player.gold;
+			player.gold += (uint32_t)(0.8 * selected->getCost());
 			grid.removeTower(selected);
 			selected = nullptr;
 		}
