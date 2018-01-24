@@ -158,3 +158,15 @@ std::shared_ptr<Tower> Grid::intersects(sf::Vector2f cursor_pos)
 	}
 	return nullptr;
 }
+
+void Grid::removeTower(std::shared_ptr<Tower> t)
+{
+	for (auto& p : grid)
+	{
+		if (p == t)
+		{
+			p = nullptr;
+			return;
+		}
+	}
+}

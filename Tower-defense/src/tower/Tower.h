@@ -162,6 +162,8 @@ public:
 		return towerData.cost;
 	}
 
+	sf::Vector2f getPosition();
+
 	/**
 	* @brief renders the Tower, projectiles, turret and range_circle if boolean render_range is true
 	*/

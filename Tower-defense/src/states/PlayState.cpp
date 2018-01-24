@@ -108,10 +108,23 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 	} else if (evt.key.code == sf::Keyboard::W) {
 		grid.startWave();
 	}
+	else if (evt.key.code == sf::Keyboard::Q)
+	{
+		if (selected)
+		{
+			player.addAction((uint8_t)selected->getPosition().x, (uint8_t)selected->getPosition().y, (uint32_t)-0.8 * selected->getCost(), Action::ACTION_TYPE::SELL_TOWER, selected->getType());
+			std::cout << "$$$";
+			player.gold += (uint32_t)0.8 * selected->getCost();
+			grid.removeTower(selected);
+			selected = nullptr;
+		}
+		
+	}
 };
 
 void PlayState::onMouseButtonPressed(sf::Event& evt) {
 	if (dummyTower != nullptr) {
+		deselect();
 		// TODO: The grid should have a position insted of a x/y offset, so that we can substract the position instead of 3
 		float fullSize = tileSize + lineSize;
 		uint8_t x = static_cast<uint8_t>(ceil(static_cast<float>(placePosition.x) / fullSize)) - 3;

@@ -79,6 +79,10 @@ sf::FloatRect Tower::getBounds()
 	return tower_shape.getGlobalBounds();
 }
 
+sf::Vector2f Tower::getPosition()
+{
+	return tower_shape.getPosition();
+}
 
 void Tower::enableRangeRender(bool s)
 {
