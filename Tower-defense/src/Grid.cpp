@@ -142,3 +142,19 @@ void Grid::clearGrid() {
 		tower = nullptr;
 	}
 }
+
+
+std::shared_ptr<Tower> Grid::intersects(sf::Vector2f cursor_pos)
+{
+	for (auto t : grid)
+	{
+		if (t)
+		{
+			if (t->getBounds().contains(cursor_pos))
+			{
+				return t;
+			}
+		}
+	}
+	return nullptr;
+}

@@ -145,4 +145,6 @@ public:
 	* @brief Clears all the towers from the grid
 	*/
 	void clearGrid();
+
+	std::shared_ptr<Tower> intersects(sf::Vector2f cursor_pos);
 };

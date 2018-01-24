@@ -152,6 +152,9 @@ public:
 		return type;
 	}
 
+	sf::FloatRect getBounds();
+	void enableRangeRender(bool s);
+
 	/**
 	* @brief getter for tower cost
 	*/

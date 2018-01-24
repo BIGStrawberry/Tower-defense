@@ -10,6 +10,23 @@ PlayState::PlayState(sf::RenderWindow& window):
 	dummyTower(nullptr)
 {}
 
+void PlayState::select(std::shared_ptr<Tower> t)
+{
+	selected = t;
+	selected->setColor(sf::Color::Blue);
+	selected->enableRangeRender(true);
+}
+
+void PlayState::deselect()
+{
+	if (selected)
+	{
+		selected->setColor(sf::Color::White);
+		selected->enableRangeRender(false);
+		selected = nullptr;
+	}
+}
+
 void PlayState::rebuildGrid() {
 	player.gold = player.startingGold; // TODO: Replace starting gold with accumulated gold
 	grid.clearGrid();
@@ -106,9 +123,23 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 			if (player.gold >= dummyTower->getCost()) {
 				player.addAction(x, y, dummyTower->getCost(), Action::ACTION_TYPE::PLACE_TOWER, dummyTower->getType());
 				grid.placeTower(x, y, dummyTower->getType());
+				dummyTower = nullptr;
 			}
 		} else {
 			std::cout << "Oei" << std::endl;
+		}
+	}
+	else
+	{
+		std::shared_ptr<Tower> tmp_tower = grid.intersects(sf::Vector2f((float)evt.mouseButton.x, (float)evt.mouseButton.y));
+		if (tmp_tower)
+		{
+			deselect();
+			select(tmp_tower);
+		}
+		else
+		{
+			deselect();
 		}
 	}
 }

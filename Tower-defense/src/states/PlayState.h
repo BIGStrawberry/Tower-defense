@@ -26,8 +26,12 @@ private:
 	Player player;
 	Grid grid;
 	std::shared_ptr<Tower> dummyTower;
+	std::shared_ptr<Tower> selected;
 	std::vector<std::shared_ptr<Enemy>> dummyEnemies;
 	sf::Vector2f placePosition;
+
+	void select(std::shared_ptr<Tower> t);
+	void deselect();
 public:
 	PlayState(sf::RenderWindow& window);
 
