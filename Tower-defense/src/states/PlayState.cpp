@@ -5,7 +5,7 @@
 PlayState::PlayState(sf::RenderWindow& window):
 	State(window),
 	tileSize(31),
-	player(window, 20, 375),
+	player(window, 20, 3715),
 	grid(window, 31, player),
 	dummyTower(nullptr)
 {}
@@ -36,7 +36,7 @@ void PlayState::rebuildGrid() {
 		switch (action.type) {
 		case Action::ACTION_TYPE::PLACE_TOWER:
 			//change 31 to tileSize
-			grid.placeTower(action.x, action.y, action.tower_type);
+			grid.placeTower(action.x, action.y, action.tower_type, false);
 			break;
 		case Action::ACTION_TYPE::SELL_TOWER:
 			//TODO: REMOVE
@@ -134,8 +134,7 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 			std::cout << "Success!" << std::endl;
 			// TODO: Replace dummyCost with actual tower cost, Move tower cost to grid class
 			if (player.getGold() >= dummyTower->getCost()) {
-				player.addAction(x, y, dummyTower->getCost(), Action::ACTION_TYPE::PLACE_TOWER, dummyTower->getType());
-				grid.placeTower(x, y, dummyTower->getType());
+				grid.placeTower(x, y, dummyTower->getType(), true);
 				dummyTower = nullptr;
 			}
 			else
