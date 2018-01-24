@@ -142,6 +142,14 @@ public:
 	void placeTower(uint8_t x, uint8_t y, TowerType towerType);
 
 	/**
+	* @brief Upgrades towers on the target grid location
+	* @param x				The x-index of the tower
+	* @param y				The y-index of the tower
+	*/
+	void upgradeTower(uint8_t x, uint8_t y);
+
+
+	/**
 	* @brief Clears all the towers from the grid
 	*/
 	void clearGrid();

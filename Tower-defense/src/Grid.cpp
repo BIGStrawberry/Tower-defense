@@ -138,6 +138,11 @@ void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType) {
 	}
 }
 
+void Grid::upgradeTower(uint8_t x, uint8_t y, TowerType towerType) {
+	grid[x + y * COLUMNS]->upgrade();
+	player.gold -= grid[x + y * COLUMNS]->getUpgradeCost();
+}
+
 void Grid::clearGrid() {
 	for (auto & tower : grid) {
 		tower = nullptr;

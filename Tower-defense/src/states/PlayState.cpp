@@ -29,6 +29,7 @@ void PlayState::rebuildGrid() {
 			//TODO: UPGRADE TOWERS
 			//TODO: TAKE GOLD FOR UPGRADING THE TOWER
 			//TODO: Call grid.upgradeTower(), or something like that
+			grid.upgradeTower(action.x, action.y);
 			break;
 		}
 	}
@@ -111,6 +112,7 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 			std::cout << "Oei" << std::endl;
 		}
 	}
+	//when upgraded, create and store action.
 }
 
 void PlayState::onMouseMoved(sf::Event& evt) {

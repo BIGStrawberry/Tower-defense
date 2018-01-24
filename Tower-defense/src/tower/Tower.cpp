@@ -13,7 +13,9 @@ Tower::Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, std::vecto
 	tower_shape(sf::Vector2f(size, size)),
 	turret(sf::VertexArray(sf::LinesStrip, 2)),
 	type(type),
-	range_circle(towerData.radius)
+	range_circle(towerData.radius),
+	upgrade_level(0),
+	upgrade_cost(towerData.cost)
 {
 	turret[0].position = pos;
 	turret[0].color = sf::Color::Black;
@@ -94,4 +96,22 @@ void Tower::update() {
 	}
 	update_projectiles();
 
+}
+
+
+void Tower::upgrade() {
+	if (upgrade_level < 3) {
+		upgrade_level++;
+		towerData.damage *= 10;
+		upgrade_cost *= 2;
+		towerData.radius *= 2;
+		tower_shape.setFillColor(sf::Color(80 * upgrade_level, 80 * upgrade_level, 80 * upgrade_level));
+	}
+	else {
+		std::cout << "Oei, kan niet meer upgraden\n";
+	}
+}
+
+uint8_t Tower::getUpgradeLevel() {
+	return upgrade_level;
 }
