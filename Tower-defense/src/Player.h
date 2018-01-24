@@ -27,9 +27,8 @@ public:
 	* @param window		SFML window instance
 	* @param lives		amount of lives the player has
 	* @param gold		amount of gold the player has
-	* @param score		amount of score the player has
 	*/
-	Player(sf::RenderWindow & window, uint8_t lives, uint32_t startingGold, uint32_t score);
+	Player(sf::RenderWindow & window, uint8_t lives, uint32_t startingGold);
 
 	/**
 	* @brief A vector containing all the actions performed by the player
@@ -46,10 +45,22 @@ public:
 	*/
 	int32_t startingGold, gold;
 
-	/**
-	* @brief Public variable for the amount of score the player has
+	/*
+	* @brief Public variable to track the amount of towers placed on the grid
 	*/
-	uint32_t score;
+	uint32_t numberOfTowersPlaced;
+	/*
+	* @brief Public variable to track the amount of towers the player has upgraded
+	*/
+	uint32_t numberOfTowersUpgraded;
+	/*
+	* @brief Public variable to track the amount of enemies killed
+	*/
+	uint32_t numberOfEnemiesKilled;
+	/*
+	* @brief Public variable to track the amount of waves completed
+	*/
+	uint32_t numberOfWavesCompleted;
 
 	/**
 	* @brief Adds an action to the action vector

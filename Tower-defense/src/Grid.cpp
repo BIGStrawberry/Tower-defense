@@ -6,11 +6,10 @@
 Grid::Grid(sf::RenderWindow & window, float tileSize, Player & player):
 	window(window),
 	tileSize(tileSize),
-	spawn(sf::Vector2f(tileSize,tileSize)),
-	base(sf::Vector2f(tileSize,tileSize)),
+	spawn(sf::Vector2f(tileSize, tileSize)),
+	base(sf::Vector2f(tileSize, tileSize)),
 	player(player),
-	pathfinder(grid, COLUMNS, START_INDEX, END_INDEX)
-{
+	pathfinder(grid, COLUMNS, START_INDEX, END_INDEX) {
 	//TODO: cast round the result of the devided numers off, so the spawn will alway's be allinged with the grid
 	spawn.setPosition(xOffset - (tileSize + lineSize), static_cast<int>(ROWS / 2) * (tileSize + lineSize) + yOffset);
 	spawn.setOrigin(tileSize / 2, tileSize / 2);
@@ -18,13 +17,6 @@ Grid::Grid(sf::RenderWindow & window, float tileSize, Player & player):
 	base.setPosition(xOffset + COLUMNS * (tileSize + lineSize), static_cast<int>(ROWS / 2) * (tileSize + lineSize) + yOffset);
 	base.setFillColor(sf::Color::Green);
 	base.setOrigin(tileSize / 2, tileSize / 2);
-
-	path = {
-		spawn.getPosition(),
-		spawn.getPosition() + sf::Vector2f{32, 0},
-		spawn.getPosition() + sf::Vector2f{32, 32},
-		base.getPosition()
-	};
 };
 
 void Grid::update() {
@@ -45,7 +37,7 @@ void Grid::update() {
 		} else if (enemy.state == Enemy::States::Reached_Base) {
 			player.lives -= enemy.getDmg();
 			if (player.lives <= 0) {
-				GameStateManager::pushState(std::make_unique<ScoreState>(window, 1337));
+				GameStateManager::pushState(std::make_unique<ScoreState>(window, player));
 			}
 			enemies.erase(enemies.begin() + i);
 			i--;
@@ -63,27 +55,13 @@ void Grid::update() {
 		++waveNumber;
 		waveClock.restart(); // Start countdown till next wave
 	}
-	
+
 	// Starts wave when time is up
 	if (preWave && waveClock.getElapsedTime() > waveDelay) {
 		startWave();
 	}
 }
 
-void Grid::render() const {
-	window.draw(spawn);
-	window.draw(base);
-	for (const auto& tower:grid) {
-		if (tower != nullptr) {
-			tower->render();
-		}
-	}
-	
-	for (const auto & enemy : enemies) {
-		enemy->render();
-	}
-	
-}
 
 void Grid::calculatePath() {
 	path.clear();
@@ -97,6 +75,21 @@ void Grid::calculatePath() {
 		sf::Vector2f pos{static_cast<float>(x) * (tileSize + lineSize) + xOffset , static_cast<float>(y) * (tileSize + lineSize) + yOffset};
 		path.emplace_back(pos);
 	}
+}
+
+void Grid::render() const {
+	window.draw(spawn);
+	window.draw(base);
+	for (const auto& tower : grid) {
+		if (tower != nullptr) {
+			tower->render();
+		}
+	}
+
+	for (const auto & enemy : enemies) {
+		enemy->render();
+	}
+
 }
 
 void Grid::startWave() {
@@ -152,7 +145,7 @@ void Grid::startWave() {
 
 bool Grid::canBePlaced(uint8_t x, uint8_t y) {
 	//checks invalid position and there is already a tower placed on target location
-	if (!preWave || 
+	if (!preWave ||
 		x < 0 || x >= COLUMNS ||
 		y < 0 || y >= ROWS ||
 		x + y * COLUMNS == START_INDEX ||
@@ -182,5 +175,28 @@ void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType) {
 void Grid::clearGrid() {
 	for (auto & tower : grid) {
 		tower = nullptr;
+	}
+}
+
+
+std::shared_ptr<Tower> Grid::intersects(sf::Vector2f cursor_pos) {
+	for (auto t : grid) {
+		if (t) {
+			if (t->getBounds().contains(cursor_pos)) {
+				return t;
+			}
+		}
+	}
+	return nullptr;
+}
+
+void Grid::removeTower(std::shared_ptr<Tower> selected) {
+	for (auto& p : grid) {
+		if (p == selected) {
+			p = nullptr;
+			player.addAction(static_cast<uint8_t>(selected->getPosition().x), static_cast<uint8_t>(selected->getPosition().y), static_cast<uint32_t>(-0.8 * selected->getCost()), Action::ACTION_TYPE::SELL_TOWER, selected->getType());
+			player.gold += static_cast<uint32_t>(0.8 * selected->getCost());
+			return;
+		}
 	}
 }

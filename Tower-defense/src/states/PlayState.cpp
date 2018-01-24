@@ -5,10 +5,28 @@
 PlayState::PlayState(sf::RenderWindow& window):
 	State(window),
 	tileSize(31),
-	player(window, 20, 375, 0),
+	player(window, 20, 375),
 	grid(window, 31, player),
 	dummyTower(nullptr)
 {}
+
+void PlayState::select(std::shared_ptr<Tower> t)
+{
+	deselect();
+	selected = t;
+	selected->setColor(sf::Color::Blue);
+	selected->enableRangeRender(true);
+}
+
+void PlayState::deselect()
+{
+	if (selected)
+	{
+		selected->setColor(sf::Color::White);
+		selected->enableRangeRender(false);
+		selected = nullptr;
+	}
+}
 
 void PlayState::rebuildGrid() {
 	player.gold = player.startingGold; // TODO: Replace starting gold with accumulated gold
@@ -63,9 +81,9 @@ void PlayState::cleanUp() {}
 
 void PlayState::onKeyPressed(sf::Event& evt) {
 	if (evt.key.code ==  sf::Keyboard::Escape) {
-		// TODO: Pass player score not 1337
-		GameStateManager::pushState(std::make_unique<ScoreState>(window, 1337));
+		GameStateManager::pushState(std::make_unique<PauseState>(window, player));
 	} else if (evt.key.code == sf::Keyboard::A) {
+		deselect();
 		dummyTower = make_tower(window,
 								static_cast<float>(tileSize),
 								sf::Vector2f{
@@ -94,10 +112,20 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 	} else if (evt.key.code == sf::Keyboard::W) {
 		grid.startWave();
 	}
+	else if (evt.key.code == sf::Keyboard::Q)
+	{
+		if (selected)
+		{
+			grid.removeTower(selected);
+			deselect();
+		}
+		
+	}
 };
 
 void PlayState::onMouseButtonPressed(sf::Event& evt) {
 	if (dummyTower != nullptr) {
+		deselect();
 		// TODO: The grid should have a position insted of a x/y offset, so that we can substract the position instead of 3
 		float fullSize = tileSize + lineSize;
 		uint8_t x = static_cast<uint8_t>(ceil(static_cast<float>(placePosition.x) / fullSize)) - 3;
@@ -109,9 +137,26 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 			if (player.gold >= dummyTower->getCost()) {
 				player.addAction(x, y, dummyTower->getCost(), Action::ACTION_TYPE::PLACE_TOWER, dummyTower->getType());
 				grid.placeTower(x, y, dummyTower->getType());
+				dummyTower = nullptr;
+			}
+			else
+			{
+				dummyTower = nullptr;
 			}
 		} else {
 			std::cout << "Oei" << std::endl;
+		}
+	}
+	else
+	{
+		std::shared_ptr<Tower> tmp_tower = grid.intersects(sf::Vector2f(static_cast<float>(evt.mouseButton.x), static_cast<float>(evt.mouseButton.y)));
+		if (tmp_tower)
+		{
+			select(tmp_tower);
+		}
+		else
+		{
+			deselect();
 		}
 	}
 }

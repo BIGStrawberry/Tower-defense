@@ -72,17 +72,16 @@ private:
 	*/
 	void setNeighbours(PathNode* node)
 	{
-		int idx = node->getIndex() - 1;
-		if (idx >= 0)
+		int idx = node->getIndex();
+		if (idx % row_length != 0)
 		{
-			node->setNeighbour(&grid[idx]);
+			node->setNeighbour(&grid[idx - 1]);
 		}
-		idx += 2;
-		if (idx < row_length)
+		if ((idx + 1) % row_length != 0)
 		{
-			node->setNeighbour(&grid[idx]);
+			node->setNeighbour(&grid[idx + 1]);
 		}
-		idx = idx - 1 - row_length;
+		idx -= row_length;
 		if (idx >= 0)
 		{
 			node->setNeighbour(&grid[idx]);

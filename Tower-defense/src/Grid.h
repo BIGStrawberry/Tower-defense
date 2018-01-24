@@ -184,4 +184,15 @@ public:
 	* @brief Clears all the towers from the grid
 	*/
 	void clearGrid();
+
+	/**
+	* @brief Returns pointer to the tower which contains the given coordinate.
+	* Returns nullptr if no towers have been clicked on.
+	*/
+	std::shared_ptr<Tower> intersects(sf::Vector2f cursor_pos);
+
+	/**
+	* @brief Removes tower from the grid
+	*/
+	void removeTower(std::shared_ptr<Tower> t);
 };

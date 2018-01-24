@@ -6,6 +6,7 @@
 #include <SFML/Graphics.hpp>
 #include "State.h"
 #include "ScoreState.h"
+#include "PauseState.h"
 #include "../Grid.h"
 #include "../Player.h"
 #include "../tower/Tower.h"
@@ -25,8 +26,20 @@ private:
 	Player player;
 	Grid grid;
 	std::shared_ptr<Tower> dummyTower;
+	std::shared_ptr<Tower> selected;
 	std::vector<std::shared_ptr<Enemy>> dummyEnemies;
 	sf::Vector2f placePosition;
+
+	/**
+	* @brief Sets given tower as selected, changes rendering settings.
+	*/
+	void select(std::shared_ptr<Tower> t);
+
+	/**
+	* @brief Sets rendering settings of selected to default, then sets
+	* selected to nullptr.
+	*/
+	void deselect();
 public:
 	PlayState(sf::RenderWindow& window);
 
