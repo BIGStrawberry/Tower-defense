@@ -1,11 +1,16 @@
 #include "Player.h"
 
-Player::Player(sf::RenderWindow & window, uint8_t lives, uint32_t startingGold, uint32_t score):
+Player::Player(sf::RenderWindow & window, uint8_t lives, uint32_t startingGold):
 	window(window),
 	lives(lives),
 	startingGold(startingGold),
-	gold(startingGold),
-	score(score) {}
+	gold(startingGold) 
+{
+	numberOfEnemiesKilled = 0;
+	numberOfTowersPlaced = 0;
+	numberOfTowersUpgraded = 0;
+	numberOfWavesCompleted = 0;
+}
 
 
 void Player::addAction(uint8_t x, uint8_t y, uint32_t actionCost, Action::ACTION_TYPE type, TowerType tower_type) {

@@ -39,13 +39,14 @@ void Grid::update() {
 		if (enemy.state == Enemy::States::Walking) {
 			enemy.update();
 		} else if (enemy.state == Enemy::States::Dead) {
+			player.numberOfEnemiesKilled++;
 			player.gold += enemy.getGold();
 			enemies.erase(enemies.begin() + i);
 			i--;
 		} else if (enemy.state == Enemy::States::Reached_Base) {
 			player.lives -= enemy.getDmg();
 			if (player.lives <= 0) {
-				GameStateManager::pushState(std::make_unique<ScoreState>(window, 1337));
+				GameStateManager::pushState(std::make_unique<ScoreState>(window, player));
 			}
 			enemies.erase(enemies.begin() + i);
 			i--;
