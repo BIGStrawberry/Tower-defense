@@ -26,7 +26,6 @@ private:
 	Player player;
 	Grid grid;
 	std::shared_ptr<Tower> dummyTower;
-	uint32_t dummyCost = 10;
 	std::vector<std::shared_ptr<Enemy>> dummyEnemies;
 	sf::Vector2f placePosition;
 public:

@@ -8,6 +8,8 @@
 #include "../Enemy/make_enemy.h"
 #include "TowerType.h"
 #include "TowerDataContainer.h"
+#include "TowerData.h"
+
 /**
 * @class Tower
 * @file Tower.cpp
@@ -29,31 +31,18 @@ class Tower
 {
 protected:
 	/**
-	* radius in pixels
+	* @brief tower data
 	*/
-	int radius;
+	TowerData towerData;
 	/**
 	* turret_lenght in pixels
 	*/
 	int turret_length;
-	/**
-	* time between each projectile in seconds
-	*/
-	int reload_time;
-
-	/**
-	* damage passed to the fired projectiles
-	*/
-	int damage;
 
 	/**
 	* bool to render the circle that displays the range of the tower
 	*/
 	bool render_range;
-	/**
-	* bool used for rate of fire
-	*/
-	bool ready_to_fire;
 
 
 	/**
@@ -161,6 +150,13 @@ public:
 	*/
 	TowerType getType() {
 		return type;
+	}
+
+	/**
+	* @brief getter for tower cost
+	*/
+	int32_t getCost() const {
+		return towerData.cost;
 	}
 
 	/**

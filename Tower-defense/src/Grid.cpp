@@ -131,7 +131,7 @@ void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType) {
 
 	try {
 		calculatePath();
-		player.gold -= 10; // TODO: Replace with tower gold
+		player.gold -= grid[x + y * COLUMNS]->getCost(); // TODO: Maybe its more efficient ask the cost before we put it in the array
 	} catch (const UnreachableBase&) {
 		grid[x + y * COLUMNS] = nullptr; // This tower was blocking so we remove it
 	}
