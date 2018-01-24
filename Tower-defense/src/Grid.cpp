@@ -27,6 +27,21 @@ Grid::Grid(sf::RenderWindow & window, float tileSize, Player & player):
 	};
 };
 
+
+void Grid::calculatePath() {
+	path.clear();
+	std::vector<int> indexPath = pathfinder.find();
+	std::reverse(indexPath.begin(), indexPath.end());
+
+	for (const auto& index : indexPath) {
+		// 1d index to 2d index
+		uint8_t x = index % COLUMNS;
+		uint8_t y = index / COLUMNS;
+		sf::Vector2f pos{static_cast<float>(x) * (tileSize + lineSize) + xOffset , static_cast<float>(y) * (tileSize + lineSize) + yOffset};
+		path.emplace_back(pos);
+	}
+}
+
 void Grid::update() {
 	for (auto& tower : grid) {
 		if (tower != nullptr) {
@@ -75,20 +90,6 @@ void Grid::render() const {
 		enemy->render();
 	}
 	
-}
-
-void Grid::calculatePath() {
-	path.clear();
-	std::vector<int> indexPath = pathfinder.find();
-	std::reverse(indexPath.begin(), indexPath.end());
-
-	for (const auto& index : indexPath) {
-		// 1d index to 2d index
-		uint8_t x = index % COLUMNS;
-		uint8_t y = index / COLUMNS;
-		sf::Vector2f pos{static_cast<float>(x) * (tileSize + lineSize) + xOffset , static_cast<float>(y) * (tileSize + lineSize) + yOffset};
-		path.emplace_back(pos);
-	}
 }
 
 void Grid::startWave() {
@@ -141,5 +142,35 @@ void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType) {
 void Grid::clearGrid() {
 	for (auto & tower : grid) {
 		tower = nullptr;
+	}
+}
+
+
+std::shared_ptr<Tower> Grid::intersects(sf::Vector2f cursor_pos)
+{
+	for (auto t : grid)
+	{
+		if (t)
+		{
+			if (t->getBounds().contains(cursor_pos))
+			{
+				return t;
+			}
+		}
+	}
+	return nullptr;
+}
+
+void Grid::removeTower(std::shared_ptr<Tower> selected)
+{
+	for (auto& p : grid)
+	{
+		if (p == selected)
+		{
+			p = nullptr;
+			player.addAction(static_cast<uint8_t>(selected->getPosition().x), static_cast<uint8_t>(selected->getPosition().y), static_cast<uint32_t>(-0.8 * selected->getCost()), Action::ACTION_TYPE::SELL_TOWER, selected->getType());
+			player.gold += static_cast<uint32_t>(0.8 * selected->getCost());
+			return;
+		}
 	}
 }

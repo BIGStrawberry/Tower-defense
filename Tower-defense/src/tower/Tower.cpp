@@ -8,7 +8,7 @@ Tower::Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, std::vecto
 	turret_length(10),
 	target(std::shared_ptr<Enemy>(nullptr)),
 	enemies(enemies),
-	render_range(true),
+	render_range(false),
 	window(window),
 	tower_shape(sf::Vector2f(size, size)),
 	turret(sf::VertexArray(sf::LinesStrip, 2)),
@@ -73,6 +73,22 @@ void Tower::update_projectiles() {
 		}
 	}
 }
+
+sf::FloatRect Tower::getBounds()
+{
+	return tower_shape.getGlobalBounds();
+}
+
+sf::Vector2f Tower::getPosition()
+{
+	return tower_shape.getPosition();
+}
+
+void Tower::enableRangeRender(bool s)
+{
+	render_range = s;
+}
+
 
 void Tower::shootProjectile() {
 	projectiles.emplace_back(window, towerData.damage, tower_shape.getPosition(), target);

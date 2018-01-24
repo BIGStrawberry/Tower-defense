@@ -153,11 +153,26 @@ public:
 	}
 
 	/**
+	* @brief Returns bounds of tower
+	*/
+	sf::FloatRect getBounds();
+
+	/**
+	* @brief Sets flag to render range circle
+	*/
+	void enableRangeRender(bool s);
+
+	/**
 	* @brief getter for tower cost
 	*/
 	int32_t getCost() const {
 		return towerData.cost;
 	}
+
+	/**
+	* @brief Returns the tower's position
+	*/
+	sf::Vector2f getPosition();
 
 	/**
 	* @brief renders the Tower, projectiles, turret and range_circle if boolean render_range is true
