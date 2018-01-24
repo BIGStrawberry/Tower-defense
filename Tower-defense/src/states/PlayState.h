@@ -7,6 +7,7 @@
 #include <SFML/Graphics.hpp>
 #include "State.h"
 #include "ScoreState.h"
+#include "PauseState.h"
 #include "../Grid.h"
 #include "../Player.h"
 #include "../tower/Tower.h"
