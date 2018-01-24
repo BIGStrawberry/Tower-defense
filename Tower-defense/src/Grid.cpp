@@ -159,13 +159,15 @@ std::shared_ptr<Tower> Grid::intersects(sf::Vector2f cursor_pos)
 	return nullptr;
 }
 
-void Grid::removeTower(std::shared_ptr<Tower> t)
+void Grid::removeTower(std::shared_ptr<Tower> selected)
 {
 	for (auto& p : grid)
 	{
-		if (p == t)
+		if (p == selected)
 		{
 			p = nullptr;
+			player.addAction(static_cast<uint8_t>(selected->getPosition().x), static_cast<uint8_t>(selected->getPosition().y), static_cast<uint32_t>(-0.8 * selected->getCost()), Action::ACTION_TYPE::SELL_TOWER, selected->getType());
+			player.gold += static_cast<uint32_t>(0.8 * selected->getCost());
 			return;
 		}
 	}

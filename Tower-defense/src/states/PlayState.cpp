@@ -12,6 +12,7 @@ PlayState::PlayState(sf::RenderWindow& window):
 
 void PlayState::select(std::shared_ptr<Tower> t)
 {
+	deselect();
 	selected = t;
 	selected->setColor(sf::Color::Blue);
 	selected->enableRangeRender(true);
@@ -113,11 +114,8 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 	{
 		if (selected)
 		{
-			player.addAction((uint8_t)selected->getPosition().x, (uint8_t)selected->getPosition().y, (uint32_t)-0.8 * selected->getCost(), Action::ACTION_TYPE::SELL_TOWER, selected->getType());
-			std::cout << player.gold;
-			player.gold += (uint32_t)(0.8 * selected->getCost());
 			grid.removeTower(selected);
-			selected = nullptr;
+			deselect();
 		}
 		
 	}
@@ -139,20 +137,15 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 				grid.placeTower(x, y, dummyTower->getType());
 				dummyTower = nullptr;
 			}
-			else
-			{
-				dummyTower = nullptr;
-			}
 		} else {
 			std::cout << "Oei" << std::endl;
 		}
 	}
 	else
 	{
-		std::shared_ptr<Tower> tmp_tower = grid.intersects(sf::Vector2f((float)evt.mouseButton.x, (float)evt.mouseButton.y));
+		std::shared_ptr<Tower> tmp_tower = grid.intersects(sf::Vector2f(static_cast<float>(evt.mouseButton.x), static_cast<float>(evt.mouseButton.y)));
 		if (tmp_tower)
 		{
-			deselect();
 			select(tmp_tower);
 		}
 		else
