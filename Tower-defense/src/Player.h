@@ -20,6 +20,11 @@ private:
 	* @description Must be cleared everytime a new wave spawns, to prevent players undo-ing all actions for free
 	*/
 	uint32_t numActions;
+
+	/**
+	* @brief Public variable for the amount of gold the player has
+	*/
+	int32_t gold, accumulatedGold;
 	
 public:
 	/**
@@ -40,27 +45,48 @@ public:
 	*/
 	int8_t lives;
 
-	/**
-	* @brief Public variable for the amount of gold the player has
-	*/
-	int32_t startingGold, gold;
-
 	/*
 	* @brief Public variable to track the amount of towers placed on the grid
 	*/
-	uint32_t numberOfTowersPlaced;
+	uint32_t numberOfTowersPlaced = 0;
 	/*
 	* @brief Public variable to track the amount of towers the player has upgraded
 	*/
-	uint32_t numberOfTowersUpgraded;
+	uint32_t numberOfTowersUpgraded = 0;
 	/*
 	* @brief Public variable to track the amount of enemies killed
 	*/
-	uint32_t numberOfEnemiesKilled;
+	uint32_t numberOfEnemiesKilled = 0;
 	/*
 	* @brief Public variable to track the amount of waves completed
 	*/
-	uint32_t numberOfWavesCompleted;
+	uint32_t numberOfWavesCompleted = 0;
+
+
+	/**
+	* @brief Function to add gold to the variable gold
+	*/
+	void addGold(int32_t amount);
+
+	/**
+	* @brief Function to remove gold to the variable gold
+	*/
+	void removeGold(int32_t amount);
+
+	/**
+	* @brief Function to reset the variable gold to the accumulatedGold
+	*/
+	void resetGold();
+
+	/**
+	* @brief Function to get the amount of gold the player has
+	*/
+	int32_t getGold();
+
+	/**
+	* @brief Function to get the accumulated gold of the player
+	*/
+	int32_t getAccumulatedGold();
 
 	/**
 	* @brief Adds an action to the action vector
