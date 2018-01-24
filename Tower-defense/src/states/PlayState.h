@@ -1,7 +1,6 @@
 #pragma once
 
 #include <math.h>
-#include <memory>
 #include <iostream>
 #include <memory>
 #include <SFML/Graphics.hpp>

@@ -52,12 +52,21 @@ void Grid::update() {
 		}
 	}
 
-	// Checks if there are enemy's in the waveQueue and places them in the enemies vector
-	if (waveQueue.size() > 0 &&
-		clock.getElapsedTime() > spawnDelay) {
+	// Checks if there are enemy's in the waveQueue and places them in the enemies vector (only in wave state)
+	if (!preWave && waveQueue.size() > 0 && clock.getElapsedTime() > spawnDelay) {
 		clock.restart();
 		enemies.push_back(waveQueue.back());
 		waveQueue.pop_back();
+	} else if (!preWave && waveQueue.size() == 0 && enemies.size() == 0) { // Wave completed
+		std::cout << "Wave: " << waveNumber << " completed" << std::endl;
+		preWave = true; // Set state to preWave state
+		++waveNumber;
+		waveClock.restart(); // Start countdown till next wave
+	}
+	
+	// Starts wave when time is up
+	if (preWave && waveClock.getElapsedTime() > waveDelay) {
+		startWave();
 	}
 }
 
@@ -98,20 +107,53 @@ void Grid::startWave() {
 		return;
 	}
 
-	for (uint8_t i = 0; i < 5; ++i) {
-		std::shared_ptr<Enemy> enemy;
-		if (i % 4 == 0) {
-			enemy = make_enemy(EnemyType::Flying, window, path);
-		} else {
-			enemy = make_enemy(EnemyType::Normal, window, path);
+	// Wave already started
+	if (!preWave) return;
+
+	// Spawn a extra group every 10 waves
+	uint16_t numberOfGroups = waveNumber / 10 + 1;
+	for (uint16_t i = 0; i < numberOfGroups; ++i) {
+		// Tank
+		uint32_t randInt = rand() % 100;
+		if (waveNumber == TANK_START_WAVE || (waveNumber >= TANK_START_WAVE && randInt <= TANK_SPAWN_RATE)) {
+			for (uint8_t i = 0; i < TANK_PER_GROUP; ++i) {
+				waveQueue.push_back(make_enemy(EnemyType::Tank, window, path, waveNumber));
+			}
 		}
-		waveQueue.push_back(enemy);
+
+		// Normal
+		randInt = rand() % 100;
+		if (waveNumber == NORMAL_START_WAVE || (waveNumber >= NORMAL_START_WAVE && randInt <= NORMAL_SPAWN_RATE)) {
+			for (uint8_t i = 0; i < NORMAL_PER_GROUP; ++i) {
+				waveQueue.push_back(make_enemy(EnemyType::Normal, window, path, waveNumber));
+			}
+		}
+
+		// Speed
+		randInt = rand() % 100;
+		if (waveNumber == FAST_START_WAVE || (waveNumber >= FAST_START_WAVE && randInt <= FAST_SPAWN_RATE)) {
+			for (uint8_t i = 0; i < FAST_PER_GROUP; ++i) {
+				waveQueue.push_back(make_enemy(EnemyType::Fast, window, path, waveNumber));
+			}
+		}
+
+		// Flying
+		randInt = rand() % 100;
+		if (waveNumber == FLYING_START_WAVE || (waveNumber >= FLYING_START_WAVE && randInt <= FLYING_SPAWN_RATE)) {
+			for (uint8_t i = 0; i < FLYING_PER_GROUP; ++i) {
+				waveQueue.push_back(make_enemy(EnemyType::Flying, window, path, waveNumber));
+			}
+		}
 	}
+	// Reverse the vector so we can use it as a queue
+	std::reverse(waveQueue.begin(), waveQueue.end());
+	preWave = false;
 }
 
 bool Grid::canBePlaced(uint8_t x, uint8_t y) {
 	//checks invalid position and there is already a tower placed on target location
-	if (x < 0 || x >= COLUMNS ||
+	if (!preWave || 
+		x < 0 || x >= COLUMNS ||
 		y < 0 || y >= ROWS ||
 		x + y * COLUMNS == START_INDEX ||
 		x + y * COLUMNS == END_INDEX ||

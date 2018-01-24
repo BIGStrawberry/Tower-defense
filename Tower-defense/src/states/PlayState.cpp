@@ -76,8 +76,11 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 								TowerType::Normal // this should be action.towertype or something
 		);
 	} else if (evt.key.code == sf::Keyboard::U) {
-		player.undoAction();
-		rebuildGrid();
+		// Prevent undo during a wave
+		if (grid.isInPreWave()) {
+			player.undoAction();
+			rebuildGrid();
+		}
 	} else if (evt.key.code == sf::Keyboard::S) {
 		dummyTower = make_tower(window,
 								static_cast<float>(tileSize),
