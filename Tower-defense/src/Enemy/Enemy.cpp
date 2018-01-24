@@ -9,8 +9,7 @@ Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, En
 	speed(EnemyDataContainer::get(type).speed),
 	hp(EnemyDataContainer::get(type).hp),
 	dmg(EnemyDataContainer::get(type).damage),
-	gold(EnemyDataContainer::get(type).gold),
-	dead(false)
+	gold(EnemyDataContainer::get(type).gold)
 {
 	body.setRadius(20);
 	body.setOrigin(sf::Vector2f(body.getRadius(), body.getRadius()));
@@ -32,8 +31,13 @@ void Enemy::decreaseHp(int dmg)
 	hp -= dmg;
 	if (hp <= 0)
 	{
-		dead = true;
+		state = States::Dead;
 	}
+}
+
+const int Enemy::getDmg() const
+{
+	return dmg;
 }
 
 const int Enemy::getGold() const
@@ -44,11 +48,6 @@ const int Enemy::getGold() const
 sf::FloatRect Enemy::getBounds() const
 {
 	return body.getGlobalBounds();
-}
-
-const bool Enemy::isDead() const
-{
-	return dead;
 }
 
 Enemy::~Enemy()

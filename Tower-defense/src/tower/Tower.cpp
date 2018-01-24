@@ -1,34 +1,32 @@
 #include "Tower.h"
+#include <iostream>
 
 
 
-Tower::Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, int radius, std::vector<std::shared_ptr<Enemy>>& enemies, int reload_time):
-	radius(radius),
+Tower::Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, std::vector<std::shared_ptr<Enemy>>& enemies, TowerType type):
+	towerData(TowerDataContainer::get(type)),
 	turret_length(10),
 	target(std::shared_ptr<Enemy>(nullptr)),
 	enemies(enemies),
 	render_range(true),
-	ready_to_fire(true),
-	reload_time(reload_time),
 	window(window),
-	range_circle(static_cast<float>(radius)),
 	tower_shape(sf::Vector2f(size, size)),
-	turret(sf::VertexArray(sf::LinesStrip, 2))
-
+	turret(sf::VertexArray(sf::LinesStrip, 2)),
+	type(type),
+	range_circle(towerData.radius)
 {
 	turret[0].position = pos;
 	turret[0].color = sf::Color::Black;
 	turret[1].color = sf::Color::Black;
 	turret[1].position = pos;
 	tower_shape.setOrigin(sf::Vector2f(size/2, size/2));
-	range_circle.setOrigin(sf::Vector2f(static_cast<float>(radius), static_cast<float>(radius)));
+	range_circle.setOrigin(sf::Vector2f(towerData.radius, towerData.radius));
 	range_circle.setFillColor(sf::Color::Transparent);
 	range_circle.setOutlineColor(sf::Color::Black);
 	range_circle.setOutlineThickness(1.0);
 
 	tower_shape.setPosition(pos);
 	range_circle.setPosition(pos);
-
 }
 
 
@@ -58,7 +56,7 @@ void Tower::rotateTurret() {
 
 std::shared_ptr<Enemy> Tower::getClosestEnemyInRange() const {
 	for (const auto& enemy : enemies) {
-		if (getDistanceToEnemy(*enemy.get()) < radius) {
+		if (getDistanceToEnemy(*enemy.get()) < towerData.radius) {
 			return enemy;
 		}
 	}
@@ -76,14 +74,18 @@ void Tower::update_projectiles() {
 	}
 }
 
+void Tower::shootProjectile() {
+	projectiles.emplace_back(window, 1, tower_shape.getPosition(), target);
+}
+
 void Tower::update() {
-	if (target != nullptr && !target->isDead()) {
+	if (target != nullptr && target->state == Enemy::States::Walking) {
 		rotateTurret();
-		if (cooldown_timer.getElapsedTime().asMilliseconds() > reload_time) {
-			projectiles.emplace_back(window, 21, tower_shape.getPosition(), target);
+		if (cooldown_timer.getElapsedTime() > towerData.reload_time) {
+			shootProjectile();
 			cooldown_timer.restart();
 		}
-		if (getDistanceToEnemy(*target.get()) > radius) { //if target is out of range
+		if (getDistanceToEnemy(*target.get()) > towerData.radius) { //if target is out of range
 			target = getClosestEnemyInRange(); // find new one
 		}
 	}

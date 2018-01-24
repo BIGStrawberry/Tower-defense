@@ -13,7 +13,6 @@ Projectile::Projectile(sf::RenderWindow & window, int damage, sf::Vector2f posit
 	body.setFillColor(sf::Color::Black);
 	body.setOrigin(sf::Vector2f(3, 3));
 	body.setPosition(position);
-	std::cout << "test";
 }
 
 
@@ -23,8 +22,7 @@ void Projectile::render() const {
 }
 
 void Projectile::update() {
-//	std::cout << target->isDead() << " " << isDead() << " \n";
-	if (!target->isDead()) {
+	if (target->state == Enemy::States::Walking) {
 		if (body.getGlobalBounds().intersects(target->getBounds())) {
 			target->decreaseHp(damage);
 			is_dead = true;
@@ -38,7 +36,6 @@ void Projectile::update() {
 	}
 	else {
 		is_dead = true;
-		//std::cout << is_dead;
 	}
 	
 
