@@ -86,7 +86,7 @@ public:
 	/**
 	* @brief Function to get the accumulated gold of the player
 	*/
-	int32_t getAccumulatedGold();
+	int32_t getAccumulatedGold() const;
 
 	/**
 	* @brief Adds an action to the action vector
