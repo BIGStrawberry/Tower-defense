@@ -58,6 +58,15 @@ int main() {
 			case sf::Event::MouseMoved:
 				GameStateManager::getCurrentState()->onMouseMoved(evt);
 				break;
+			case sf::Event::JoystickMoved:
+				GameStateManager::getCurrentState()->onJoystickMoved(evt);
+				break;
+			case sf::Event::JoystickConnected:
+				GameStateManager::getCurrentState()->onJoystickConnected(evt);
+				break;
+			case sf::Event::JoystickDisconnected:
+				GameStateManager::getCurrentState()->onJoystickDisconnected(evt);
+				break;
 			}
 		}
 		/**********/

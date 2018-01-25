@@ -27,14 +27,23 @@ void MenuState::init() {
 	text.setString("A Mazing Tower Defence");
 	// TODO: Better center d;)
 	text.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 24.0f});
+
+	for (uint8_t i = 0; i < 4; ++i) {
+		if (sf::Joystick::isConnected(i)) {
+			easterEgg = std::move(std::make_unique<SpearContainer>(window));
+			break;
+		}
+	}
 }
 
 void MenuState::update() {
+	if (easterEgg != nullptr) easterEgg->update();
 }
 
 void MenuState::render() const {
 	window.draw(text);
 
+	if (easterEgg != nullptr) easterEgg->render();
 	menu.render();
 }
 
@@ -61,4 +70,17 @@ void MenuState::onMouseButtonPressed(sf::Event& evt) {
 
 void MenuState::onMouseMoved(sf::Event& evt) {
 	menu.onMouseMoved(evt);
+}
+
+void MenuState::onJoystickMoved(sf::Event& evt) {
+	if (easterEgg != nullptr) easterEgg->onJoystickMoved(evt);
+}
+
+void MenuState::onJoystickConnected(sf::Event& evt) {
+	if (easterEgg != nullptr) easterEgg->connectController(evt.joystickConnect.joystickId);
+	else easterEgg = std::move(std::make_unique<SpearContainer>(window));
+}
+
+void MenuState::onJoystickDisconnected(sf::Event& evt) {
+	if (easterEgg != nullptr) easterEgg->disconnectController(evt.joystickConnect.joystickId);
 }
