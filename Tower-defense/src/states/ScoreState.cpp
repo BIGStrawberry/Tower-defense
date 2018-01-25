@@ -30,14 +30,12 @@ ScoreState::ScoreState(sf::RenderWindow& window, const Player & player):
 	scoreWavesCompleted("Waves completed: " + std::to_string(player.numberOfWavesCompleted), font),
 	scoreTowersPlaced  ("Towers placed: "   + std::to_string(player.numberOfTowersPlaced), font),
 	scoreTowersUpgraded("Towers upgraded: " + std::to_string(player.numberOfTowersUpgraded), font),
-	scoreEnemiesKilled ("Enemies killed: "  + std::to_string(player.numberOfEnemiesKilled), font)
+	scoreEnemiesKilled ("Enemies killed: "  + std::to_string(player.numberOfEnemiesKilled), font),
+	scoreAccumulatedGold("Total gold earned: " + std::to_string(player.getAccumulatedGold()), font)
 {}
 
 uint32_t ScoreState::calculateScore(const Player & player) {
-	return  (player.numberOfEnemiesKilled * 10) + 
-		(player.numberOfTowersPlaced * 25) +
-		(player.numberOfTowersUpgraded * 25) +
-	    (player.numberOfWavesCompleted * (player.numberOfWavesCompleted * 10));
+	return static_cast<int>((player.getAccumulatedGold() * (player.numberOfWavesCompleted * 0.5)));
 }
 
 void ScoreState::init() {
@@ -51,6 +49,7 @@ void ScoreState::init() {
 	scoreTowersPlaced.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 475.0f});
 	scoreTowersUpgraded.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 500.0f});
 	scoreWavesCompleted.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 525.0f});
+	scoreAccumulatedGold.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 550.0f});
 }
 
 void ScoreState::update() {
@@ -62,6 +61,7 @@ void ScoreState::render() const {
 	window.draw(scoreTowersPlaced);
 	window.draw(scoreTowersUpgraded);
 	window.draw(scoreWavesCompleted);
+	window.draw(scoreAccumulatedGold);
 	menu.render();
 }
 
