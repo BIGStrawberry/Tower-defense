@@ -23,7 +23,7 @@ int32_t Player::getGold() {
 	return gold;
 }
 
-int32_t Player::getAccumulatedGold() {
+int32_t Player::getAccumulatedGold() const {
 	return accumulatedGold;
 }
 

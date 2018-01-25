@@ -5,7 +5,7 @@
 PlayState::PlayState(sf::RenderWindow& window):
 	State(window),
 	tileSize(31),
-	player(window, 20, 3715),
+	player(window, 20, 375),
 	grid(window, 31, player),
 	dummyTower(nullptr)
 {}
@@ -46,8 +46,6 @@ void PlayState::rebuildGrid() {
 			break;
 		}
 	}
-	std::cout << "player gold: " << player.getGold() << std::endl;
-	std::cout << "player accumulatedGold: " << player.getAccumulatedGold() << std::endl;
 }
 
 void PlayState::init() {
