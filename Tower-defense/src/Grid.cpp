@@ -128,15 +128,16 @@ bool Grid::canBePlaced(uint8_t x, uint8_t y) {
 void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType, bool saveAction) {
 	sf::Vector2f pos{static_cast<float>(x) * (tileSize + lineSize) + xOffset , static_cast<float>(y) * (tileSize + lineSize) + yOffset};
 	if (canBePlaced(x, y)) {
-		if (saveAction) {
-			player.addAction(x, y, TowerDataContainer::get(towerType).cost, Action::ACTION_TYPE::PLACE_TOWER, towerType);
-			std::cout << "Save Action" << std::endl;
-		}
 		grid[x + y * COLUMNS] = make_tower(window, tileSize, pos, enemies, towerType);
 	}
 
 	try {
 		calculatePath();
+
+		if (saveAction) {
+			player.addAction(x, y, TowerDataContainer::get(towerType).cost, Action::ACTION_TYPE::PLACE_TOWER, towerType);
+		}
+
 		// TODO: Maybe its more efficient ask the cost before we put it in the array
 		player.removeGold(grid[x + y * COLUMNS]->getCost());
 	} catch (const UnreachableBase&) {
