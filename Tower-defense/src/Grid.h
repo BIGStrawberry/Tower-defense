@@ -177,8 +177,9 @@ public:
 	* @param x				The x-index where the tower needs to be placed
 	* @param y				The y-index where the tower needs to be placed
 	* @param towerType		The type of tower that needs to be placed
+	* @param saveAction		Bool to see if the action needs to be saved
 	*/
-	void placeTower(uint8_t x, uint8_t y, TowerType towerType);
+	void placeTower(uint8_t x, uint8_t y, TowerType towerType, bool saveAction = false);
 
 	/**
 	* @brief Upgrades towers on the target grid location
