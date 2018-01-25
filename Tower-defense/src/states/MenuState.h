@@ -21,8 +21,10 @@ public:
 	void cleanUp() override;
 
 	void onKeyPressed(sf::Event& evt) override;
-	void onKeyReleased(sf::Event& evt) override {};
 	void onMouseButtonPressed(sf::Event& evt) override;
-	void onMouseButtonReleased(sf::Event& evt) override {};
 	void onMouseMoved(sf::Event& evt) override;
+	void onJoystickMoved(sf::Event& evt) override;
+	void onJoystickConnected(sf::Event& evt) override;
+	void onJoystickDisconnected(sf::Event& evt) override;
+
 };

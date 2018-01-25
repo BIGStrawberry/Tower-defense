@@ -62,3 +62,12 @@ void MenuState::onMouseButtonPressed(sf::Event& evt) {
 void MenuState::onMouseMoved(sf::Event& evt) {
 	menu.onMouseMoved(evt);
 }
+
+void MenuState::onJoystickMoved(sf::Event& evt) {
+}
+
+void MenuState::onJoystickConnected(sf::Event& evt) {
+}
+
+void MenuState::onJoystickDisconnected(sf::Event& evt) {
+}
