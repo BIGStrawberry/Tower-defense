@@ -3,15 +3,33 @@
 Player::Player(sf::RenderWindow & window, uint8_t lives, uint32_t startingGold):
 	window(window),
 	lives(lives),
-	startingGold(startingGold),
-	gold(startingGold) 
-{
-	numberOfEnemiesKilled = 0;
-	numberOfTowersPlaced = 0;
-	numberOfTowersUpgraded = 0;
-	numberOfWavesCompleted = 0;
+	gold(startingGold),
+	accumulatedGold(startingGold)
+{}
+
+
+void Player::addGold(int32_t amount, bool increase_accumulated) {
+	gold += amount;
+	if (increase_accumulated) {
+		accumulatedGold += amount;
+	}
 }
 
+void Player::resetGold() {
+	gold = accumulatedGold;
+}
+
+int32_t Player::getGold() {
+	return gold;
+}
+
+int32_t Player::getAccumulatedGold() const {
+	return accumulatedGold;
+}
+
+void Player::removeGold(int32_t amount) {
+	gold -= amount;
+}
 
 void Player::addAction(uint8_t x, uint8_t y, uint32_t actionCost, Action::ACTION_TYPE type, TowerType tower_type) {
 	actions.emplace_back(x, y, actionCost, type, tower_type);

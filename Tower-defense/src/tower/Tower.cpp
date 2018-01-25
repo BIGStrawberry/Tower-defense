@@ -13,7 +13,10 @@ Tower::Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, std::vecto
 	tower_shape(sf::Vector2f(size, size)),
 	turret(sf::VertexArray(sf::LinesStrip, 2)),
 	type(type),
-	range_circle(towerData.radius)
+	range_circle(towerData.radius),
+	upgrade_level(0),
+	upgrade_cost(towerData.cost),
+	acculumated_cost(towerData.cost)
 {
 	turret[0].position = pos;
 	turret[0].color = sf::Color::Black;
@@ -110,4 +113,21 @@ void Tower::update() {
 	}
 	update_projectiles();
 
+}
+
+
+void Tower::upgrade() {
+	upgrade_level++;
+	towerData.damage *= 1.25;
+	acculumated_cost += upgrade_cost;
+	upgrade_cost *= 2;
+	towerData.radius *= 1.5;
+	range_circle.setRadius(towerData.radius); 
+	range_circle.setOrigin(sf::Vector2f(towerData.radius, towerData.radius));
+	std::cout << "upgraded to level " << static_cast<int>(upgrade_level) << "\n";
+	
+}
+
+uint8_t Tower::getUpgradeLevel() {
+	return upgrade_level;
 }

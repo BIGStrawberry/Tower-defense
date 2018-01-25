@@ -12,7 +12,7 @@
 class ScoreState: public State {
 private:
 	sf::Font font;
-	sf::Text scoreText, scoreEnemiesKilled, scoreTowersPlaced, scoreWavesCompleted,  scoreTowersUpgraded;
+	sf::Text scoreText, scoreEnemiesKilled, scoreTowersPlaced, scoreWavesCompleted,  scoreTowersUpgraded, scoreAccumulatedGold;
 	Menu menu;
 	const Player & player;
 public:

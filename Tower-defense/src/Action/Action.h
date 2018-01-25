@@ -26,7 +26,7 @@ public:
 	/**
 	* @brief indexes in grid of the action performed
 	*/
-	uint8_t x,y;
+	uint8_t x, y;
 
 	/**
 	* @brief type of action

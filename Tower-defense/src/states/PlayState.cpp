@@ -29,24 +29,20 @@ void PlayState::deselect()
 }
 
 void PlayState::rebuildGrid() {
-	player.gold = player.startingGold; // TODO: Replace starting gold with accumulated gold
 	grid.clearGrid();
+	player.resetGold(); //Sets gold to the accumulatedGold
 
 	for (auto& action : player.actions) {
 		switch (action.type) {
 		case Action::ACTION_TYPE::PLACE_TOWER:
 			//change 31 to tileSize
-			grid.placeTower(action.x, action.y, action.tower_type);
+			grid.placeTower(action.x, action.y, action.tower_type, false);
 			break;
 		case Action::ACTION_TYPE::SELL_TOWER:
-			//TODO: REMOVE
-			//TODO: RETURN GOLD OF TOWER
-			//TODO: Call grid.sellTower(), or something like that
+			grid.removeTower(action.x, action.y, false);
 			break;
 		case Action::ACTION_TYPE::UPGRADE_TOWER:
-			//TODO: UPGRADE TOWERS
-			//TODO: TAKE GOLD FOR UPGRADING THE TOWER
-			//TODO: Call grid.upgradeTower(), or something like that
+			grid.upgradeTower(action.x, action.y, false);
 			break;
 		}
 	}
@@ -84,12 +80,16 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 		GameStateManager::pushState(std::make_unique<PauseState>(window, player));
 	} else if (evt.key.code == sf::Keyboard::A) {
 		deselect();
+		float fullSize = tileSize + lineSize;
+		auto indexes = sf::Vector2f(
+			ceil(static_cast<float>((sf::Mouse::getPosition(window).x) / fullSize)) - 3,
+			ceil(static_cast<float>((sf::Mouse::getPosition(window).y) / fullSize)) - 3
+		);
+
+		placePosition = sf::Vector2f(indexes.x * fullSize + 80, indexes.y * fullSize + 88);
 		dummyTower = make_tower(window,
 								static_cast<float>(tileSize),
-								sf::Vector2f{
-									static_cast<float>(sf::Mouse::getPosition(window).x) * tileSize,
-									static_cast<float>(sf::Mouse::getPosition(window).y) * tileSize
-		                        },
+								placePosition,
 								dummyEnemies,
 								TowerType::Normal // this should be action.towertype or something
 		);
@@ -100,12 +100,16 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 			rebuildGrid();
 		}
 	} else if (evt.key.code == sf::Keyboard::S) {
+		deselect();
+		float fullSize = tileSize + lineSize;
+		auto indexes = sf::Vector2f(
+			ceil(static_cast<float>((sf::Mouse::getPosition(window).x) / fullSize)) - 3,
+			ceil(static_cast<float>((sf::Mouse::getPosition(window).y) / fullSize)) - 3
+		);
+		placePosition = sf::Vector2f(indexes.x * fullSize + 80, indexes.y * fullSize + 88);
 		dummyTower = make_tower(window,
 								static_cast<float>(tileSize),
-								sf::Vector2f{
-			static_cast<float>(sf::Mouse::getPosition(window).x) * tileSize,
-			static_cast<float>(sf::Mouse::getPosition(window).y) * tileSize
-		},
+								placePosition,
 								dummyEnemies,
 								TowerType::Long // this should be action.towertype or something
 		);
@@ -116,10 +120,27 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 	{
 		if (selected)
 		{
-			grid.removeTower(selected);
+			float fullSize = tileSize + lineSize;
+			uint8_t x = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().x) / fullSize)) - 3;
+			uint8_t y = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().y) / fullSize)) - 3;
+			grid.removeTower(x, y);
 			deselect();
 		}
 		
+	}
+	else if (evt.key.code == sf::Keyboard::Y) {
+
+		if (selected) {
+			if (player.getGold() >= selected->getUpgradeCost()) {
+
+				float fullSize = tileSize + lineSize;
+				uint8_t x = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().x) / fullSize)) - 3;
+				uint8_t y = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().y) / fullSize)) - 3;
+
+				grid.upgradeTower(x, y);
+			}
+		}
+
 	}
 };
 
@@ -134,9 +155,8 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 		if (grid.canBePlaced(x, y)) {
 			std::cout << "Success!" << std::endl;
 			// TODO: Replace dummyCost with actual tower cost, Move tower cost to grid class
-			if (player.gold >= dummyTower->getCost()) {
-				player.addAction(x, y, dummyTower->getCost(), Action::ACTION_TYPE::PLACE_TOWER, dummyTower->getType());
-				grid.placeTower(x, y, dummyTower->getType());
+			if (player.getGold() >= dummyTower->getCost()) {
+				grid.placeTower(x, y, dummyTower->getType(), true);
 				dummyTower = nullptr;
 			}
 			else
@@ -173,7 +193,7 @@ void PlayState::onMouseMoved(sf::Event& evt) {
 
 		if (!grid.canBePlaced(static_cast<uint8_t>(indexes.x), static_cast<uint8_t>(indexes.y))) {
 			dummyTower->setColor(sf::Color::Red);
-		} else if (player.gold < dummyTower->getCost()) { // TODO: replace this with tower cost
+		} else if (player.getGold() < dummyTower->getCost()) { // TODO: replace this with tower cost
 			dummyTower->setColor(sf::Color::Yellow);
 		} else {
 			dummyTower->setColor(sf::Color::Green);
