@@ -29,6 +29,13 @@ private:
 	std::shared_ptr<Tower> selected;
 	std::vector<std::shared_ptr<Enemy>> dummyEnemies;
 	sf::Vector2f placePosition;
+	sf::Text UILives;
+	sf::Text UIGold;
+	sf::RectangleShape UIWaveClock;
+	std::array<std::shared_ptr<Tower>, 3> UITowers;
+	sf::RectangleShape UISellButton;
+	sf::RectangleShape UIUpgradeButton;
+	sf::RectangleShape UIUndoButton;
 
 	/**
 	* @brief Sets given tower as selected, changes rendering settings.

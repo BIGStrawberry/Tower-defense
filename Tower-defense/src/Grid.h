@@ -196,4 +196,14 @@ public:
 	* @brief Removes tower from the grid
 	*/
 	void removeTower(std::shared_ptr<Tower> t);
+
+	/**
+	* @brief returns the remaining time before the next wave starts
+	*/
+	sf::Time getWaveClock();
+
+	/**
+	* @brief returns the maximum duration of the time between waves
+	*/
+	sf::Time getWaveDelay();
 };

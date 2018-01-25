@@ -7,7 +7,13 @@ PlayState::PlayState(sf::RenderWindow& window):
 	tileSize(31),
 	player(window, 20, 375),
 	grid(window, 31, player),
-	dummyTower(nullptr)
+	dummyTower(nullptr),
+	UILives("Lives: " + std::to_string(player.lives), font, 30),
+	UIGold("Gold: " + std::to_string(player.getGold()), font, 30),
+	UIWaveClock(sf::Vector2f(static_cast<float>(window.getSize().x), 10)),
+	UISellButton(sf::Vector2f{tileSize,tileSize}),
+	UIUpgradeButton(sf::Vector2f{tileSize,tileSize}),
+	UIUndoButton(sf::Vector2f{tileSize,tileSize})
 {}
 
 void PlayState::select(std::shared_ptr<Tower> t)
@@ -60,6 +66,19 @@ void PlayState::init() {
 	text.setString("Press Esc to go back to menu");
 	// TODO: Better center d;)
 	text.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, static_cast<float>(window.getSize().y) / 2 - 24});
+	UILives.setPosition({static_cast<float>(window.getSize().x) / 16 * 4, static_cast<float>(window.getSize().y / 32)});
+	UIGold.setPosition({static_cast<float>(window.getSize().x) / 16 * 8, static_cast<float>(window.getSize().y / 32)});
+	UIWaveClock.setPosition(0, 0);
+	UIWaveClock.setFillColor(sf::Color::Red);
+
+	UISellButton.setPosition(sf::Vector2f{static_cast<float>(window.getSize().x / 32 * 31), static_cast<float>(window.getSize().y / 32 * 4)});
+	UIUpgradeButton.setPosition(sf::Vector2f{static_cast<float>(window.getSize().x / 32 * 31), static_cast<float>(window.getSize().y / 32 * 4 + tileSize + 1)}
+);
+	UIUndoButton.setPosition(sf::Vector2f{static_cast<float>(window.getSize().x / 32 * 31), static_cast<float>(window.getSize().y / 32 * 4 + 2 * tileSize + 2)});
+
+	UITowers[0] = make_tower(window, tileSize, sf::Vector2f{static_cast<float>(window.getSize().x) / 16, static_cast<float>(window.getSize().y) / 16 * 15}, dummyEnemies, TowerType::Normal);
+	UITowers[1] = make_tower(window, tileSize, sf::Vector2f{static_cast<float>(window.getSize().x) / 16 + tileSize + 1 , static_cast<float>(window.getSize().y) / 16 * 15}, dummyEnemies, TowerType::Long);
+	UITowers[2] = make_tower(window, tileSize, sf::Vector2f{static_cast<float>(window.getSize().x) / 16 + (tileSize + 1) * 2, static_cast<float>(window.getSize().y) / 16 * 15}, dummyEnemies, TowerType::Slow);
 }
 
 void PlayState::update() {
@@ -67,6 +86,9 @@ void PlayState::update() {
 	if (dummyTower != nullptr) {
 		dummyTower->setPosition(placePosition);
 	}
+	UILives.setString("Lives: " + std::to_string(player.lives));
+	UIGold.setString("Gold: " + std::to_string(player.getGold()));
+	UIWaveClock.setSize(sf::Vector2f(static_cast<float>(window.getSize().x) - static_cast<float>(window.getSize().x) / grid.getWaveDelay().asSeconds() * grid.getWaveClock().asSeconds(), 10));
 }
 
 void PlayState::render() const {
@@ -74,6 +96,15 @@ void PlayState::render() const {
 	window.draw(text);
 	if (dummyTower != nullptr) {
 		dummyTower->render();
+	}
+	window.draw(UILives);
+	window.draw(UIGold);
+	window.draw(UIWaveClock);
+	window.draw(UISellButton);
+	window.draw(UIUpgradeButton);
+	window.draw(UIUndoButton);
+	for (const auto& tower : UITowers) {
+		tower->render();
 	}
 }
 
@@ -156,6 +187,19 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 		else
 		{
 			deselect();
+		}
+	}
+	for (const auto& UITower : UITowers) {
+		if (UITower->getBounds().contains(sf::Vector2f(static_cast<float>(evt.mouseButton.x), static_cast<float>(evt.mouseButton.y)))) {
+			dummyTower = make_tower(window,
+									static_cast<float>(tileSize),
+									sf::Vector2f{
+										static_cast<float>(sf::Mouse::getPosition(window).x),
+										static_cast<float>(sf::Mouse::getPosition(window).y)
+									},
+									dummyEnemies,
+									UITower->getType() // this should be action.towertype or something
+			);
 		}
 	}
 }

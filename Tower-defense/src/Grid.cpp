@@ -210,3 +210,11 @@ void Grid::removeTower(std::shared_ptr<Tower> selected) {
 		}
 	}
 }
+
+sf::Time Grid::getWaveClock() {
+	return waveClock.getElapsedTime();
+}
+
+sf::Time Grid::getWaveDelay() {
+	return waveDelay;
+}
