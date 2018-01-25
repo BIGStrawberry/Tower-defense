@@ -131,11 +131,14 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 	else if (evt.key.code == sf::Keyboard::Y) {
 
 		if (selected) {
-			float fullSize = tileSize + lineSize;
-			uint8_t x = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().x) / fullSize)) - 3;
-			uint8_t y = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().y) / fullSize)) - 3;
+			if (player.getGold() >= selected->getUpgradeCost()) {
 
-			grid.upgradeTower(x, y);
+				float fullSize = tileSize + lineSize;
+				uint8_t x = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().x) / fullSize)) - 3;
+				uint8_t y = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().y) / fullSize)) - 3;
+
+				grid.upgradeTower(x, y);
+			}
 		}
 
 	}
