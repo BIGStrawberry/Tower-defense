@@ -3,8 +3,8 @@
 
 
 
-EnemyGround::EnemyGround(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, EnemyType type):
-	Enemy(window, path, type),
+EnemyGround::EnemyGround(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, EnemyType type, uint16_t waveNumber):
+	Enemy(window, path, type, waveNumber),
 	target_counter(0)
 {
 	body.setFillColor(sf::Color::Red);

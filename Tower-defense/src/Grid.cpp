@@ -6,11 +6,10 @@
 Grid::Grid(sf::RenderWindow & window, float tileSize, Player & player):
 	window(window),
 	tileSize(tileSize),
-	spawn(sf::Vector2f(tileSize,tileSize)),
-	base(sf::Vector2f(tileSize,tileSize)),
+	spawn(sf::Vector2f(tileSize, tileSize)),
+	base(sf::Vector2f(tileSize, tileSize)),
 	player(player),
-	pathfinder(grid, COLUMNS, START_INDEX, END_INDEX)
-{
+	pathfinder(grid, COLUMNS, START_INDEX, END_INDEX) {
 	//TODO: cast round the result of the devided numers off, so the spawn will alway's be allinged with the grid
 	spawn.setPosition(xOffset - (tileSize + lineSize), static_cast<int>(ROWS / 2) * (tileSize + lineSize) + yOffset);
 	spawn.setOrigin(tileSize / 2, tileSize / 2);
@@ -18,13 +17,6 @@ Grid::Grid(sf::RenderWindow & window, float tileSize, Player & player):
 	base.setPosition(xOffset + COLUMNS * (tileSize + lineSize), static_cast<int>(ROWS / 2) * (tileSize + lineSize) + yOffset);
 	base.setFillColor(sf::Color::Green);
 	base.setOrigin(tileSize / 2, tileSize / 2);
-
-	path = {
-		spawn.getPosition(),
-		spawn.getPosition() + sf::Vector2f{32, 0},
-		spawn.getPosition() + sf::Vector2f{32, 32},
-		base.getPosition()
-	};
 };
 
 void Grid::update() {
@@ -39,7 +31,6 @@ void Grid::update() {
 		if (enemy.state == Enemy::States::Walking) {
 			enemy.update();
 		} else if (enemy.state == Enemy::States::Dead) {
-			player.numberOfEnemiesKilled++;
 			player.gold += enemy.getGold();
 			enemies.erase(enemies.begin() + i);
 			i--;
@@ -53,29 +44,24 @@ void Grid::update() {
 		}
 	}
 
-	// Checks if there are enemy's in the waveQueue and places them in the enemies vector
-	if (waveQueue.size() > 0 &&
-		clock.getElapsedTime() > spawnDelay) {
+	// Checks if there are enemy's in the waveQueue and places them in the enemies vector (only in wave state)
+	if (!preWave && waveQueue.size() > 0 && clock.getElapsedTime() > spawnDelay) {
 		clock.restart();
 		enemies.push_back(waveQueue.back());
 		waveQueue.pop_back();
+	} else if (!preWave && waveQueue.size() == 0 && enemies.size() == 0) { // Wave completed
+		std::cout << "Wave: " << waveNumber << " completed" << std::endl;
+		preWave = true; // Set state to preWave state
+		++waveNumber;
+		waveClock.restart(); // Start countdown till next wave
+	}
+
+	// Starts wave when time is up
+	if (preWave && waveClock.getElapsedTime() > waveDelay) {
+		startWave();
 	}
 }
 
-void Grid::render() const {
-	window.draw(spawn);
-	window.draw(base);
-	for (const auto& tower:grid) {
-		if (tower != nullptr) {
-			tower->render();
-		}
-	}
-	
-	for (const auto & enemy : enemies) {
-		enemy->render();
-	}
-	
-}
 
 void Grid::calculatePath() {
 	path.clear();
@@ -91,6 +77,21 @@ void Grid::calculatePath() {
 	}
 }
 
+void Grid::render() const {
+	window.draw(spawn);
+	window.draw(base);
+	for (const auto& tower : grid) {
+		if (tower != nullptr) {
+			tower->render();
+		}
+	}
+
+	for (const auto & enemy : enemies) {
+		enemy->render();
+	}
+
+}
+
 void Grid::startWave() {
 	try {
 		calculatePath();
@@ -99,20 +100,53 @@ void Grid::startWave() {
 		return;
 	}
 
-	for (uint8_t i = 0; i < 5; ++i) {
-		std::shared_ptr<Enemy> enemy;
-		if (i % 4 == 0) {
-			enemy = make_enemy(EnemyType::Flying, window, path);
-		} else {
-			enemy = make_enemy(EnemyType::Normal, window, path);
+	// Wave already started
+	if (!preWave) return;
+
+	// Spawn a extra group every 10 waves
+	uint16_t numberOfGroups = waveNumber / 10 + 1;
+	for (uint16_t i = 0; i < numberOfGroups; ++i) {
+		// Tank
+		uint32_t randInt = rand() % 100;
+		if (waveNumber == TANK_START_WAVE || (waveNumber >= TANK_START_WAVE && randInt <= TANK_SPAWN_RATE)) {
+			for (uint8_t i = 0; i < TANK_PER_GROUP; ++i) {
+				waveQueue.push_back(make_enemy(EnemyType::Tank, window, path, waveNumber));
+			}
 		}
-		waveQueue.push_back(enemy);
+
+		// Normal
+		randInt = rand() % 100;
+		if (waveNumber == NORMAL_START_WAVE || (waveNumber >= NORMAL_START_WAVE && randInt <= NORMAL_SPAWN_RATE)) {
+			for (uint8_t i = 0; i < NORMAL_PER_GROUP; ++i) {
+				waveQueue.push_back(make_enemy(EnemyType::Normal, window, path, waveNumber));
+			}
+		}
+
+		// Speed
+		randInt = rand() % 100;
+		if (waveNumber == FAST_START_WAVE || (waveNumber >= FAST_START_WAVE && randInt <= FAST_SPAWN_RATE)) {
+			for (uint8_t i = 0; i < FAST_PER_GROUP; ++i) {
+				waveQueue.push_back(make_enemy(EnemyType::Fast, window, path, waveNumber));
+			}
+		}
+
+		// Flying
+		randInt = rand() % 100;
+		if (waveNumber == FLYING_START_WAVE || (waveNumber >= FLYING_START_WAVE && randInt <= FLYING_SPAWN_RATE)) {
+			for (uint8_t i = 0; i < FLYING_PER_GROUP; ++i) {
+				waveQueue.push_back(make_enemy(EnemyType::Flying, window, path, waveNumber));
+			}
+		}
 	}
+	// Reverse the vector so we can use it as a queue
+	std::reverse(waveQueue.begin(), waveQueue.end());
+	preWave = false;
 }
 
 bool Grid::canBePlaced(uint8_t x, uint8_t y) {
 	//checks invalid position and there is already a tower placed on target location
-	if (x < 0 || x >= COLUMNS ||
+	if (!preWave ||
+		x < 0 || x >= COLUMNS ||
 		y < 0 || y >= ROWS ||
 		x + y * COLUMNS == START_INDEX ||
 		x + y * COLUMNS == END_INDEX ||
@@ -135,16 +169,41 @@ void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType) {
 		player.gold -= grid[x + y * COLUMNS]->getCost(); // TODO: Maybe its more efficient ask the cost before we put it in the array
 	} catch (const UnreachableBase&) {
 		grid[x + y * COLUMNS] = nullptr; // This tower was blocking so we remove it
+
 	}
 }
 
-void Grid::upgradeTower(uint8_t x, uint8_t y, TowerType towerType) {
+void Grid::upgradeTower(uint8_t x, uint8_t y) {
 	grid[x + y * COLUMNS]->upgrade();
-	player.gold -= grid[x + y * COLUMNS]->getUpgradeCost();
+	//player. -= grid[x + y * COLUMNS]->getUpgradeCost();
 }
+
 
 void Grid::clearGrid() {
 	for (auto & tower : grid) {
 		tower = nullptr;
+	}
+}
+
+
+std::shared_ptr<Tower> Grid::intersects(sf::Vector2f cursor_pos) {
+	for (auto t : grid) {
+		if (t) {
+			if (t->getBounds().contains(cursor_pos)) {
+				return t;
+			}
+		}
+	}
+	return nullptr;
+}
+
+void Grid::removeTower(std::shared_ptr<Tower> selected) {
+	for (auto& p : grid) {
+		if (p == selected) {
+			p = nullptr;
+			player.addAction(static_cast<uint8_t>(selected->getPosition().x), static_cast<uint8_t>(selected->getPosition().y), static_cast<uint32_t>(-0.8 * selected->getCost()), Action::ACTION_TYPE::SELL_TOWER, selected->getType());
+			player.gold += static_cast<uint32_t>(0.8 * selected->getCost());
+			return;
+		}
 	}
 }

@@ -16,4 +16,4 @@
 */
 
 #pragma endregion
-std::shared_ptr<Enemy> make_enemy(EnemyType type, sf::RenderWindow& window, std::vector<sf::Vector2f>& path);
+std::shared_ptr<Enemy> make_enemy(EnemyType type, sf::RenderWindow& window, std::vector<sf::Vector2f>& path, uint16_t waveNumber);
