@@ -26,7 +26,7 @@ protected:
 	/**
 	* Amount that will be substracted from the enemy when it overlaps
 	*/
-	int damage;
+	float damage;
 	/**
 	* bool to notify parent it should be removed.
 	*/
@@ -54,7 +54,7 @@ public:
 	/**
 	@brief constructs the projectile, sets color, origin and position.
 	*/
-	Projectile(sf::RenderWindow & window, int damage, sf::Vector2f position, std::shared_ptr<Enemy> & target);
+	Projectile(sf::RenderWindow & window, float damage, sf::Vector2f position, std::shared_ptr<Enemy> & target);
 	/**
 	* @brief renders the body
 	*/

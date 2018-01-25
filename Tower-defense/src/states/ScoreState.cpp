@@ -1,7 +1,7 @@
 #include "ScoreState.h"
 #include "../helpers/GameStateManager.h"
 
-ScoreState::ScoreState(sf::RenderWindow& window, uint32_t score):
+ScoreState::ScoreState(sf::RenderWindow& window, const Player & player):
 	State(window),
 	menu(window, {{
 			window,
@@ -25,27 +25,43 @@ ScoreState::ScoreState(sf::RenderWindow& window, uint32_t score):
 			{"Back to Menu", font, 20}
 		}
 	}),
-	score(score)
+	player(player),
+	scoreText("Game over! Your score is: "  + std::to_string(calculateScore(player)), font),
+	scoreWavesCompleted("Waves completed: " + std::to_string(player.numberOfWavesCompleted), font),
+	scoreTowersPlaced  ("Towers placed: "   + std::to_string(player.numberOfTowersPlaced), font),
+	scoreTowersUpgraded("Towers upgraded: " + std::to_string(player.numberOfTowersUpgraded), font),
+	scoreEnemiesKilled ("Enemies killed: "  + std::to_string(player.numberOfEnemiesKilled), font),
+	scoreAccumulatedGold("Total gold earned: " + std::to_string(player.getAccumulatedGold()), font)
 {}
+
+uint32_t ScoreState::calculateScore(const Player & player) {
+	return static_cast<int>((player.getAccumulatedGold() * (player.numberOfWavesCompleted * 0.5)));
+}
 
 void ScoreState::init() {
 	if (!font.loadFromFile("resources/fonts/consola.ttf")) {
 		std::cout << "Could not load consola.ttf" << std::endl;
 	}
-	text.setFont(font);
-	std::string str("Game over! Your score: ");
-	str += std::to_string(static_cast<int>(score));
-	text.setString(str);
-	// TODO: Better center d;)
-	text.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 24.0f});
+
+	//TODO: Better alignment d;)
+	scoreText.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 24.0f});
+	scoreEnemiesKilled.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 450.0f});
+	scoreTowersPlaced.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 475.0f});
+	scoreTowersUpgraded.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 500.0f});
+	scoreWavesCompleted.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 525.0f});
+	scoreAccumulatedGold.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 550.0f});
 }
 
 void ScoreState::update() {
 }
 
 void ScoreState::render() const {
-	window.draw(text);
-
+	window.draw(scoreText);
+	window.draw(scoreEnemiesKilled);
+	window.draw(scoreTowersPlaced);
+	window.draw(scoreTowersUpgraded);
+	window.draw(scoreWavesCompleted);
+	window.draw(scoreAccumulatedGold);
 	menu.render();
 }
 

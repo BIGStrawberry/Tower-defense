@@ -53,10 +53,11 @@ public:
 	* @param std::vector<sf::Vector2f>&	path: Vector reference, which contains (at least 1) coordinate point(s).
 	*									The enemy will follow the given path, until it reaches the base (last coordinate).
 	* @param EnemyType					Type of the Enemy.
+	* @param waveNumber					The current wave to calculate the Enemy hp
 	*/
 
 #pragma endregion
-	Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, EnemyType type);
+	Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, EnemyType type, uint16_t waveNumber);
 	~Enemy();
 
 #pragma region comment

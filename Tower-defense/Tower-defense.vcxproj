@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\tower\ProjectileSlow.cpp" />
+    <ClCompile Include="src\states\PauseState.cpp" />
     <ClCompile Include="src\tower\make_tower.cpp" />
     <ClCompile Include="src\Grid.cpp" />
     <ClCompile Include="src\Enemy\EnemyDataContainer.cpp" />
@@ -43,6 +44,7 @@
     <ClInclude Include="src\Pathfinding\Pathfinder.h" />
     <ClInclude Include="src\Pathfinding\PathNode.h" />
     <ClInclude Include="src\Pathfinding\PathNodeList.h" />
+    <ClInclude Include="src\states\PauseState.h" />
     <ClInclude Include="src\tower\make_tower.h" />
     <ClInclude Include="src\tower\Projectile.h" />
     <ClInclude Include="src\tower\Tower.h" />

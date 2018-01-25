@@ -1,15 +1,15 @@
 #include "Enemy.h"
 
 
-Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, EnemyType type) :
+Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, EnemyType type, uint16_t waveNumber) :
 	window(window),
 	path(path),
 	next_target_pos(path[0]),
 	distance(0.0),
 	speed(EnemyDataContainer::get(type).speed),
-	hp(EnemyDataContainer::get(type).hp),
+	hp(EnemyDataContainer::get(type).hp + waveNumber * 2),
 	dmg(EnemyDataContainer::get(type).damage),
-	gold(EnemyDataContainer::get(type).gold),
+	gold(EnemyDataContainer::get(type).gold + waveNumber),
 	slowed(false),
 	original_speed(speed)
 {
