@@ -15,7 +15,8 @@ Tower::Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, std::vecto
 	type(type),
 	range_circle(towerData.radius),
 	upgrade_level(0),
-	upgrade_cost(towerData.cost)
+	upgrade_cost(towerData.cost),
+	acculumated_cost(towerData.cost)
 {
 	turret[0].position = pos;
 	turret[0].color = sf::Color::Black;
@@ -118,6 +119,7 @@ void Tower::update() {
 void Tower::upgrade() {
 	upgrade_level++;
 	towerData.damage *= 1.25;
+	acculumated_cost += upgrade_cost;
 	upgrade_cost *= 2;
 	towerData.radius *= 1.5;
 	range_circle.setRadius(towerData.radius); 

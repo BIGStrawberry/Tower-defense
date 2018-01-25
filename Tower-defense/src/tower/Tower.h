@@ -98,6 +98,8 @@ protected:
 	*/
 	uint32_t upgrade_cost;
 
+	uint32_t acculumated_cost;
+
 
 	/**
 	* @brief returns the distance to the Enemy using pythagoras theorem
@@ -177,10 +179,17 @@ public:
 	void enableRangeRender(bool s);
 
 	/**
-	* @brief getter for tower cost
+	* @brief getter for tower cost, returns accumulated cost which is tower price + upgrade prices.
 	*/
 	int32_t getCost() const {
 		return towerData.cost;
+	}
+
+	/**
+	* @brief getter for tower cost, returns accumulated cost which is tower price + upgrade prices.
+	*/
+	int32_t getAccumulatedCost() const {
+		return acculumated_cost;
 	}
 
 	int32_t getUpgradeCost() const {
