@@ -85,6 +85,22 @@ protected:
 	*/
 	TowerType type;
 
+	/*
+	@brief upgrade level indicates which level the tower is upgraded to. default is 0.
+	*/
+
+	uint8_t upgrade_level;
+
+
+
+	/*
+	@brief amount of gold it costs to upgrade this tower once.
+	*/
+	uint32_t upgrade_cost;
+
+	uint32_t acculumated_cost;
+
+
 	/**
 	* @brief returns the distance to the Enemy using pythagoras theorem
 	*/
@@ -163,10 +179,21 @@ public:
 	void enableRangeRender(bool s);
 
 	/**
-	* @brief getter for tower cost
+	* @brief getter for tower cost, returns accumulated cost which is tower price + upgrade prices.
 	*/
 	int32_t getCost() const {
 		return towerData.cost;
+	}
+
+	/**
+	* @brief getter for tower cost, returns accumulated cost which is tower price + upgrade prices.
+	*/
+	int32_t getAccumulatedCost() const {
+		return acculumated_cost;
+	}
+
+	int32_t getUpgradeCost() const {
+		return upgrade_cost;
 	}
 
 	/**
@@ -187,6 +214,19 @@ public:
 	
 	*/
 	void update();
+
+
+	/*
+	@brief upgrade the tower once.
+	increases stats like damage, range, 
+	//should change texture
+	*/
+	void upgrade();
+
+	/*
+	@brief returns upgrade level
+	*/
+	uint8_t getUpgradeLevel();
 
 };
 

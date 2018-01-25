@@ -179,8 +179,25 @@ void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType, bool saveAction
 		player.removeGold(grid[x + y * COLUMNS]->getCost());
 	} catch (const UnreachableBase&) {
 		grid[x + y * COLUMNS] = nullptr; // This tower was blocking so we remove it
+
 	}
 }
+
+void Grid::upgradeTower(uint8_t x, uint8_t y, bool saveAction) {
+	auto selected = grid[x + y * COLUMNS];
+	if (selected->getUpgradeLevel() < 3) {
+		player.removeGold(selected->getUpgradeCost());
+		if (saveAction) {
+			player.addAction(x, y, selected->getUpgradeCost(), Action::ACTION_TYPE::UPGRADE_TOWER, selected->getType());
+			player.numberOfTowersUpgraded++;
+		}
+		selected->upgrade();
+	}
+	else {
+		std::cout << "Oei, kan deze tower niet meer upgraden.\n";
+	}
+}
+
 
 void Grid::clearGrid() {
 	for (auto & tower : grid) {
@@ -200,13 +217,13 @@ std::shared_ptr<Tower> Grid::intersects(sf::Vector2f cursor_pos) {
 	return nullptr;
 }
 
-void Grid::removeTower(std::shared_ptr<Tower> selected) {
-	for (auto& p : grid) {
-		if (p == selected) {
-			p = nullptr;
-			player.addAction(static_cast<uint8_t>(selected->getPosition().x), static_cast<uint8_t>(selected->getPosition().y), static_cast<uint32_t>(-0.8 * selected->getCost()), Action::ACTION_TYPE::SELL_TOWER, selected->getType());
-			player.addGold(static_cast<uint32_t>(0.8 * selected->getCost()));
-			return;
-		}
+void Grid::removeTower(uint8_t x, uint8_t y, bool saveAction) {
+	auto selected = grid[x + y * COLUMNS];
+	float fullSize = tileSize + lineSize;
+	uint32_t price = static_cast<uint32_t>(selected->getAccumulatedCost()* 0.8);
+	player.addGold(price, false);
+	if (saveAction) {
+		player.addAction(x, y, price, Action::ACTION_TYPE::SELL_TOWER, selected->getType());
 	}
+	grid[x + y * COLUMNS] = nullptr;
 }
