@@ -143,6 +143,8 @@ void Grid::startWave() {
 	// Reverse the vector so we can use it as a queue
 	std::reverse(waveQueue.begin(), waveQueue.end());
 	preWave = false;
+	// Reset the number of actions done by player, so that the player can only undo actions done in the current wave
+	player.resetNumActions();
 }
 
 bool Grid::canBePlaced(uint8_t x, uint8_t y) {
