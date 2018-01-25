@@ -27,7 +27,7 @@ public:
 	*/
 
 #pragma endregion
-	EnemyGround(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, EnemyType type);
+	EnemyGround(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, EnemyType type, uint16_t waveNumber);
 	~EnemyGround();
 #pragma region comment
 	/**

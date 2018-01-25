@@ -1,5 +1,6 @@
 #include <iostream>
 #include <memory>
+#include <random>
 #include <SFML/Graphics.hpp>
 #include "Helpers/GameStateManager.h"
 #include "States/MenuState.h"
@@ -22,6 +23,11 @@ int main() {
 	EnemyDataContainer::load();
 	// The game starts in the MenuState
 	GameStateManager::pushState(std::make_shared<MenuState>(window));
+
+
+	// Seed the random
+	srand('A' + ' ' + 'M' + 'a' + 'z' + 'i' + 'n' + 'g' + ' ' + 'T' + 'o' + 'w' + 'e' + 'r' + ' ' + 'D' + 'e' + 'f' + 'e' + 'n' + 'c' + 'e');
+
 
 	int update_counter = 0;
 	int render_counter = 0;
