@@ -116,16 +116,14 @@ void Tower::update() {
 
 
 void Tower::upgrade() {
-	if (upgrade_level < 3) {
-		upgrade_level++;
-		towerData.damage *= 10;
-		upgrade_cost *= 2;
-		towerData.radius *= 2;
-		tower_shape.setFillColor(sf::Color(80 * upgrade_level, 80 * upgrade_level, 80 * upgrade_level));
-	}
-	else {
-		std::cout << "Oei, kan niet meer upgraden\n";
-	}
+	upgrade_level++;
+	towerData.damage *= 1.25;
+	upgrade_cost *= 2;
+	towerData.radius *= 1.5;
+	range_circle.setRadius(towerData.radius); 
+	range_circle.setOrigin(sf::Vector2f(towerData.radius, towerData.radius));
+	std::cout << "upgraded to level " << static_cast<int>(upgrade_level) << "\n";
+	
 }
 
 uint8_t Tower::getUpgradeLevel() {

@@ -66,7 +66,7 @@ public:
 	/**
 	* @brief Function to add gold to the variable gold
 	*/
-	void addGold(int32_t amount);
+	void addGold(int32_t amount, bool increase_accumulated = true);
 
 	/**
 	* @brief Function to remove gold to the variable gold

@@ -2,7 +2,7 @@
 
 
 
-Projectile::Projectile(sf::RenderWindow & window, int damage, sf::Vector2f position, std::shared_ptr<Enemy> & target):
+Projectile::Projectile(sf::RenderWindow & window, float damage, sf::Vector2f position, std::shared_ptr<Enemy> & target):
 	speed(10.0f),
 	damage(damage),
 	is_dead(false),
@@ -24,7 +24,7 @@ void Projectile::render() const {
 void Projectile::update() {
 	if (target->state == Enemy::States::Walking) {
 		if (body.getGlobalBounds().intersects(target->getBounds())) {
-			target->decreaseHp(damage);
+			target->decreaseHp(static_cast<int> (damage));
 			is_dead = true;
 		}
 

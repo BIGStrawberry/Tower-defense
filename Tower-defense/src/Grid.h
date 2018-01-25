@@ -185,8 +185,9 @@ public:
 	* @brief Upgrades towers on the target grid location
 	* @param x				The x-index of the tower
 	* @param y				The y-index of the tower
+	* @param saveAction		Bool to see if the action needs to be saved
 	*/
-	void upgradeTower(uint8_t x, uint8_t y);
+	void upgradeTower(uint8_t x, uint8_t y, bool saveAction = true);
 
 
 	/**
@@ -203,5 +204,5 @@ public:
 	/**
 	* @brief Removes tower from the grid
 	*/
-	void removeTower(std::shared_ptr<Tower> t);
+	void removeTower(uint8_t x, uint8_t y, bool saveAction = true);
 };
