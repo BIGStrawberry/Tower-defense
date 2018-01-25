@@ -52,4 +52,11 @@ void EnemyGround::update()
 
 	}
 	move();
+
+	if (slowed) {
+		if (slow_timer.getElapsedTime() >= slow_duration) {
+			slowed = false;
+			speed = original_speed;
+		}
+	}
 }

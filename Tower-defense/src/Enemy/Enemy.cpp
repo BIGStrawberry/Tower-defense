@@ -9,7 +9,9 @@ Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, En
 	speed(EnemyDataContainer::get(type).speed),
 	hp(EnemyDataContainer::get(type).hp + waveNumber * 2),
 	dmg(EnemyDataContainer::get(type).damage),
-	gold(EnemyDataContainer::get(type).gold + waveNumber)
+	gold(EnemyDataContainer::get(type).gold + waveNumber),
+	slowed(false),
+	original_speed(speed)
 {
 	body.setRadius(20);
 	body.setOrigin(sf::Vector2f(body.getRadius(), body.getRadius()));
@@ -52,4 +54,12 @@ sf::FloatRect Enemy::getBounds() const
 
 Enemy::~Enemy()
 {
+}
+
+void Enemy::reduce_speed(float factor, sf::Time time) {
+	speed = original_speed;
+	speed *= factor;
+	slow_duration = time;
+	slow_timer.restart();
+	slowed = true;
 }

@@ -113,6 +113,16 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 								dummyEnemies,
 								TowerType::Long // this should be action.towertype or something
 		);
+	} else if (evt.key.code == sf::Keyboard::D) {
+		dummyTower = make_tower(window,
+								static_cast<float>(tileSize),
+								sf::Vector2f{
+			static_cast<float>(sf::Mouse::getPosition(window).x) * tileSize,
+			static_cast<float>(sf::Mouse::getPosition(window).y) * tileSize
+		},
+								dummyEnemies,
+								TowerType::Slow // this should be action.towertype or something
+		);
 	} else if (evt.key.code == sf::Keyboard::W) {
 		grid.startWave();
 	}

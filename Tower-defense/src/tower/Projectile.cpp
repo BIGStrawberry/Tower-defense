@@ -21,11 +21,15 @@ void Projectile::render() const {
 
 }
 
+void Projectile::onImpact() {
+	target->decreaseHp(static_cast<int>(damage));
+	is_dead = true;
+}
+
 void Projectile::update() {
 	if (target->state == Enemy::States::Walking) {
 		if (body.getGlobalBounds().intersects(target->getBounds())) {
-			target->decreaseHp(static_cast<int> (damage));
-			is_dead = true;
+			onImpact();
 		}
 
 		sf::Vector2f mypos = body.getPosition();

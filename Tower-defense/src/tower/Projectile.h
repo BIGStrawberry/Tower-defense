@@ -18,7 +18,7 @@
 */
 
 class Projectile {
-private:
+protected:
 	/**
 	* this is the number of pixels the projectile jumps each update.
 	*/
@@ -43,6 +43,13 @@ private:
 	The enemy it is tracking and will deal damage to.
 	*/
 	std::shared_ptr<Enemy> target;
+
+	/*
+	This function is called when the projectile hits the target, it will decrease health and die.
+	It is virtual because other projectiles may behave differently.
+	*/
+	virtual void onImpact();
+
 public:
 	/**
 	@brief constructs the projectile, sets color, origin and position.

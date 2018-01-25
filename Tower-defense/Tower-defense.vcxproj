@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\tower\ProjectileSlow.cpp" />
     <ClCompile Include="src\spear\SpearContainer.cpp" />
     <ClCompile Include="src\spear\SpearMan.cpp" />
     <ClCompile Include="src\states\PauseState.cpp" />
@@ -41,6 +42,7 @@
     <ClCompile Include="src\Action\Action.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\tower\ProjectileSlow.h" />
     <ClInclude Include="src\Pathfinding\Pathfinder.h" />
     <ClInclude Include="src\Pathfinding\PathNode.h" />
     <ClInclude Include="src\Pathfinding\PathNodeList.h" />

@@ -185,7 +185,7 @@ void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType, bool saveAction
 
 void Grid::upgradeTower(uint8_t x, uint8_t y, bool saveAction) {
 	auto selected = grid[x + y * COLUMNS];
-	if (selected->getUpgradeLevel() < 3) {
+	if (selected->getUpgradeLevel() < 2) {
 		player.removeGold(selected->getUpgradeCost());
 		if (saveAction) {
 			player.addAction(x, y, selected->getUpgradeCost(), Action::ACTION_TYPE::UPGRADE_TOWER, selected->getType());

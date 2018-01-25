@@ -46,7 +46,7 @@ void Tower::render() const {
 	}
 
 	for (const auto& pt : projectiles) {
-		pt.render();
+		pt->render();
 	}
 }
 
@@ -68,8 +68,8 @@ std::shared_ptr<Enemy> Tower::getClosestEnemyInRange() const {
 
 void Tower::update_projectiles() {
 	for (unsigned int i = 0; i < projectiles.size(); ++i) {
-		if (!projectiles[i].isDead()) {
-			projectiles[i].update();
+		if (!projectiles[i]->isDead()) {
+			projectiles[i]->update();
 		} else {
 			projectiles.erase(projectiles.begin() + i);
 			i--;
@@ -94,7 +94,8 @@ void Tower::enableRangeRender(bool s)
 
 
 void Tower::shootProjectile() {
-	projectiles.emplace_back(window, towerData.damage, tower_shape.getPosition(), target);
+
+	projectiles.push_back(std::make_unique<Projectile>(window, towerData.damage, tower_shape.getPosition(), target));
 }
 
 void Tower::update() {

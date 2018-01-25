@@ -7,7 +7,7 @@ std::shared_ptr<Tower> make_tower(sf::RenderWindow & window, float size, sf::Vec
 		return std::make_shared<Tower>(window, size, pos, enemies, type);
 	}
 	else if (type == TowerType::Slow){
-		return std::make_shared<TowerSlow>(window, size, pos, enemies, type);
+		return std::make_shared<TowerSlow>(window, size, pos, enemies, type, sf::milliseconds(1000), 0.5f);
 	}
 	else {
 		return std::shared_ptr<Tower> (nullptr);
