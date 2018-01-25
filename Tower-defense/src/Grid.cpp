@@ -31,7 +31,8 @@ void Grid::update() {
 		if (enemy.state == Enemy::States::Walking) {
 			enemy.update();
 		} else if (enemy.state == Enemy::States::Dead) {
-			player.gold += enemy.getGold();
+			player.numberOfEnemiesKilled++;
+			player.addGold(enemy.getGold());
 			enemies.erase(enemies.begin() + i);
 			i--;
 		} else if (enemy.state == Enemy::States::Reached_Base) {
@@ -158,7 +159,7 @@ bool Grid::canBePlaced(uint8_t x, uint8_t y) {
 	return true;
 }
 
-void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType) {
+void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType, bool saveAction) {
 	sf::Vector2f pos{static_cast<float>(x) * (tileSize + lineSize) + xOffset , static_cast<float>(y) * (tileSize + lineSize) + yOffset};
 	if (canBePlaced(x, y)) {
 		grid[x + y * COLUMNS] = make_tower(window, tileSize, pos, enemies, towerType);
@@ -166,7 +167,13 @@ void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType) {
 
 	try {
 		calculatePath();
-		player.gold -= grid[x + y * COLUMNS]->getCost(); // TODO: Maybe its more efficient ask the cost before we put it in the array
+
+		if (saveAction) {
+			player.addAction(x, y, TowerDataContainer::get(towerType).cost, Action::ACTION_TYPE::PLACE_TOWER, towerType);
+		}
+
+		// TODO: Maybe its more efficient ask the cost before we put it in the array
+		player.removeGold(grid[x + y * COLUMNS]->getCost());
 	} catch (const UnreachableBase&) {
 		grid[x + y * COLUMNS] = nullptr; // This tower was blocking so we remove it
 	}
@@ -195,7 +202,7 @@ void Grid::removeTower(std::shared_ptr<Tower> selected) {
 		if (p == selected) {
 			p = nullptr;
 			player.addAction(static_cast<uint8_t>(selected->getPosition().x), static_cast<uint8_t>(selected->getPosition().y), static_cast<uint32_t>(-0.8 * selected->getCost()), Action::ACTION_TYPE::SELL_TOWER, selected->getType());
-			player.gold += static_cast<uint32_t>(0.8 * selected->getCost());
+			player.addGold(static_cast<uint32_t>(0.8 * selected->getCost()));
 			return;
 		}
 	}
