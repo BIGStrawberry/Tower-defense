@@ -5,8 +5,6 @@
 
 class SpearMan {
 private:
-	static constexpr const float energyBarWidth = 32;
-	static constexpr const float energyBarHeight = 5;
 	enum class STATE {
 		normal,
 		thrusting,
