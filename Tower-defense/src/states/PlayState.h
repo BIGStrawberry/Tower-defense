@@ -16,7 +16,7 @@
 class PlayState: public State {
 private: 
 	sf::Font font;
-	sf::Text text;
+	sf::Text text, gold;
 	float tileSize;
 	/**
 	* @brief lineSize		The width of the lines between the grid
