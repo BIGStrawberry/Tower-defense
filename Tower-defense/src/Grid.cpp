@@ -186,17 +186,18 @@ void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType, bool saveAction
 }
 
 void Grid::upgradeTower(uint8_t x, uint8_t y, bool saveAction) {
-	auto selected = grid[x + y * COLUMNS];
-	if (selected->getUpgradeLevel() < 2) {
-		player.removeGold(selected->getUpgradeCost());
-		if (saveAction) {
-			player.addAction(x, y, selected->getUpgradeCost(), Action::ACTION_TYPE::UPGRADE_TOWER, selected->getType());
-			player.numberOfTowersUpgraded++;
+	if (preWave) {
+		auto selected = grid[x + y * COLUMNS];
+		if (selected->getUpgradeLevel() < 2) {
+			player.removeGold(selected->getUpgradeCost());
+			if (saveAction) {
+				player.addAction(x, y, selected->getUpgradeCost(), Action::ACTION_TYPE::UPGRADE_TOWER, selected->getType());
+				player.numberOfTowersUpgraded++;
+			}
+			selected->upgrade();
+		} else {
+			std::cout << "Oei, kan deze tower niet meer upgraden.\n";
 		}
-		selected->upgrade();
-	}
-	else {
-		std::cout << "Oei, kan deze tower niet meer upgraden.\n";
 	}
 }
 
@@ -220,12 +221,14 @@ std::shared_ptr<Tower> Grid::intersects(sf::Vector2f cursor_pos) {
 }
 
 void Grid::removeTower(uint8_t x, uint8_t y, bool saveAction) {
-	auto selected = grid[x + y * COLUMNS];
-	float fullSize = tileSize + lineSize;
-	uint32_t price = static_cast<uint32_t>(selected->getAccumulatedCost()* 0.8);
-	player.addGold(price, false);
-	if (saveAction) {
-		player.addAction(x, y, price, Action::ACTION_TYPE::SELL_TOWER, selected->getType());
+	if (preWave) {
+		auto selected = grid[x + y * COLUMNS];
+		float fullSize = tileSize + lineSize;
+		uint32_t price = static_cast<uint32_t>(selected->getAccumulatedCost()* 0.8);
+		player.addGold(price, false);
+		if (saveAction) {
+			player.addAction(x, y, price, Action::ACTION_TYPE::SELL_TOWER, selected->getType());
+		}
+		grid[x + y * COLUMNS] = nullptr;
 	}
-	grid[x + y * COLUMNS] = nullptr;
 }

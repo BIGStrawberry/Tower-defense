@@ -155,7 +155,10 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 };
 
 void PlayState::onMouseButtonPressed(sf::Event& evt) {
-	if (dummyTower != nullptr) {
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+		dummyTower = nullptr;
+	}
+	else if (dummyTower != nullptr) {
 		deselect();
 		// TODO: The grid should have a position insted of a x/y offset, so that we can substract the position instead of 3
 		float fullSize = tileSize + lineSize;
