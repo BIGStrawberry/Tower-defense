@@ -6,8 +6,9 @@
 Grid::Grid(sf::RenderWindow & window, float tileSize, Player & player):
 	window(window),
 	tileSize(tileSize),
-	spawn(sf::Vector2f(tileSize, tileSize)),
-	base(sf::Vector2f(tileSize, tileSize)),
+	spawn({tileSize + lineSize, tileSize + lineSize}),
+	base({tileSize + lineSize, tileSize + lineSize}),
+	background({(tileSize + lineSize) * COLUMNS, (tileSize + lineSize) * ROWS}),
 	player(player),
 	pathfinder(grid, COLUMNS, START_INDEX, END_INDEX) {
 	//TODO: cast round the result of the devided numers off, so the spawn will alway's be allinged with the grid
@@ -17,6 +18,10 @@ Grid::Grid(sf::RenderWindow & window, float tileSize, Player & player):
 	base.setPosition(xOffset + COLUMNS * (tileSize + lineSize), static_cast<int>(ROWS / 2) * (tileSize + lineSize) + yOffset);
 	base.setFillColor(sf::Color::Green);
 	base.setOrigin(tileSize / 2, tileSize / 2);
+
+	// Background
+	background.setPosition({xOffset - (tileSize + lineSize) / 2, yOffset - (tileSize + lineSize) / 2});
+	background.setFillColor({200, 144, 55});
 };
 
 void Grid::update() {
@@ -55,12 +60,13 @@ void Grid::update() {
 		preWave = true; // Set state to preWave state
 		++waveNumber;
 		++player.numberOfWavesCompleted; //Keep track of the waves completed for stats
-		waveClock.restart(); // Start countdown till next wave
 	}
 
 	// Starts wave when time is up
 	if (preWave && waveClock.getElapsedTime() > waveDelay) {
 		startWave();
+	} else if (!preWave) {
+		waveClock.restart(); // Start countdown till next wave
 	}
 }
 
@@ -80,6 +86,8 @@ void Grid::calculatePath() {
 }
 
 void Grid::render() const {
+	window.draw(background);
+
 	window.draw(spawn);
 	window.draw(base);
 	for (const auto& tower : grid) {
@@ -167,9 +175,9 @@ void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType, bool saveAction
 	}
 
 	try {
-		calculatePath();
-
 		if (saveAction) {
+			// We do not need to calculate when rebuild grid is called
+			calculatePath();
 			player.addAction(x, y, TowerDataContainer::get(towerType).cost, Action::ACTION_TYPE::PLACE_TOWER, towerType);
 			++player.numberOfTowersPlaced; //Keep track of the number of towers placed for stats
 		}

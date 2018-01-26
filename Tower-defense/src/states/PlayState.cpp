@@ -7,30 +7,61 @@ PlayState::PlayState(sf::RenderWindow& window):
 	tileSize(31),
 	player(window, 20, 375),
 	grid(window, 31, player),
-	dummyTower(nullptr),
-	UILives("Lives: " + std::to_string(player.lives), font, 30),
-	UIGold("Gold: " + std::to_string(player.getGold()), font, 30),
-	UIWaveClock(sf::Vector2f(static_cast<float>(window.getSize().x), 10)),
-	UISellButton(sf::Vector2f{tileSize,tileSize}),
-	UIUpgradeButton(sf::Vector2f{tileSize,tileSize}),
-	UIUndoButton(sf::Vector2f{tileSize,tileSize})
+	placementTower(nullptr),
+	waveNumberText("Wave: 999", font, 30),
+	livesText("Lives: 999", font, 30),
+	goldText("Gold: 999", font, 30),
+	waveTimerRect(sf::Vector2f(static_cast<float>(window.getSize().x), 10)),
+	actionsMenu(window, {{
+			window,
+			std::bind(&PlayState::sell, this),
+			{85, 30},
+			{static_cast<float>(window.getSize().x) / 4, static_cast<float>(window.getSize().y) - 50},
+			{"Sell", font, 20}
+		},{
+			window,
+			std::bind(&PlayState::upgrade, this),
+			{85, 30},
+			{static_cast<float>(window.getSize().x) / 4 + 90, static_cast<float>(window.getSize().y) - 50},
+			{"Upgrade", font, 20}
+		},{
+			window,
+			std::bind(&PlayState::undo, this),
+			{85, 30},
+			{static_cast<float>(window.getSize().x) / 4 + 180, static_cast<float>(window.getSize().y) - 50},
+			{"Undo", font, 20}
+		}
+	})
 {}
 
-void PlayState::select(std::shared_ptr<Tower> t)
-{
+void PlayState::select(std::shared_ptr<Tower> t) {
 	deselect();
 	selected = t;
 	selected->setColor(sf::Color::Blue);
 	selected->enableRangeRender(true);
 }
 
-void PlayState::deselect()
-{
-	if (selected)
-	{
+void PlayState::deselect() {
+	if (selected) {
 		selected->setColor(sf::Color::White);
 		selected->enableRangeRender(false);
 		selected = nullptr;
+	}
+}
+
+void PlayState::sell() {
+
+}
+
+void PlayState::upgrade() {
+
+}
+
+void PlayState::undo() {
+	// Prevent undo during a wave
+	if (grid.isInPreWave()) {
+		player.undoAction();
+		rebuildGrid();
 	}
 }
 
@@ -57,54 +88,73 @@ void PlayState::rebuildGrid() {
 		}
 	}
 }
+void PlayState::setPlaceTower(TowerType towerType) {
+	placementTower = make_tower(window,
+							static_cast<float>(tileSize),
+							sf::Vector2f{
+								static_cast<float>(sf::Mouse::getPosition(window).x),
+								static_cast<float>(sf::Mouse::getPosition(window).y)
+							},
+							dummyEnemies,
+							towerType
+	);
+}
 
 void PlayState::init() {
 	if (!font.loadFromFile("resources/fonts/consola.ttf")) {
 		std::cout << "Could not load consola.ttf" << std::endl;
 	}
-	text.setFont(font);
-	text.setString("Press Esc to go back to menu");
-	// TODO: Better center d;)
-	text.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, static_cast<float>(window.getSize().y) / 2 - 24});
-	UILives.setPosition({static_cast<float>(window.getSize().x) / 16 * 4, static_cast<float>(window.getSize().y / 32)});
-	UIGold.setPosition({static_cast<float>(window.getSize().x) / 16 * 8, static_cast<float>(window.getSize().y / 32)});
-	UIWaveClock.setPosition(0, 0);
-	UIWaveClock.setFillColor(sf::Color::Red);
+	
+	// In game stats
+	sf::FloatRect waveTextRect = waveNumberText.getGlobalBounds();
+	waveNumberText.setOrigin({waveTextRect.left + waveTextRect.width / 2, 0});
+	waveNumberText.setPosition({static_cast<float>(window.getSize().x) * 0.25f, (tileSize + lineSize)});
 
-	UISellButton.setPosition(sf::Vector2f{static_cast<float>(window.getSize().x / 32 * 31), static_cast<float>(window.getSize().y / 32 * 4)});
-	UIUpgradeButton.setPosition(sf::Vector2f{static_cast<float>(window.getSize().x / 32 * 31), static_cast<float>(window.getSize().y / 32 * 4 + tileSize + 1)}
-);
-	UIUndoButton.setPosition(sf::Vector2f{static_cast<float>(window.getSize().x / 32 * 31), static_cast<float>(window.getSize().y / 32 * 4 + 2 * tileSize + 2)});
+	sf::FloatRect livesTextRect = livesText.getGlobalBounds();
+	livesText.setOrigin({livesTextRect.left + livesTextRect.width / 2, 0});
+	livesText.setPosition({static_cast<float>(window.getSize().x) * 0.5f, (tileSize + lineSize)});
 
-	UITowers[0] = make_tower(window, tileSize, sf::Vector2f{static_cast<float>(window.getSize().x) / 16, static_cast<float>(window.getSize().y) / 16 * 15}, dummyEnemies, TowerType::Normal);
-	UITowers[1] = make_tower(window, tileSize, sf::Vector2f{static_cast<float>(window.getSize().x) / 16 + tileSize + 1 , static_cast<float>(window.getSize().y) / 16 * 15}, dummyEnemies, TowerType::Long);
-	UITowers[2] = make_tower(window, tileSize, sf::Vector2f{static_cast<float>(window.getSize().x) / 16 + (tileSize + 1) * 2, static_cast<float>(window.getSize().y) / 16 * 15}, dummyEnemies, TowerType::Slow);
+	sf::FloatRect goldTextRect = goldText.getGlobalBounds();
+	goldText.setOrigin({goldTextRect.left + goldTextRect.width / 2, 0});
+	goldText.setPosition({static_cast<float>(window.getSize().x) * 0.75f, (tileSize + lineSize)});
+	
+	// Wave timer
+	waveTimerRect.setPosition(0, 0);
+	waveTimerRect.setFillColor(sf::Color::Red);
+
+	// Placeable towers
+	const float xOffset = (tileSize + lineSize) + 10;
+	const float xPos = static_cast<float>(window.getSize().x) / 10;
+	const float yOffset = 35;
+	const float yPos = static_cast<float>(window.getSize().y);
+	placeableTowers[0] = make_tower(window, tileSize, {xPos, yPos - yOffset}, dummyEnemies, TowerType::Normal);
+	placeableTowers[1] = make_tower(window, tileSize, {xPos + xOffset, yPos - yOffset}, dummyEnemies, TowerType::Long);
+	placeableTowers[2] = make_tower(window, tileSize, {xPos + xOffset * 2, yPos - yOffset}, dummyEnemies, TowerType::Slow);
 }
 
 void PlayState::update() {
 	grid.update();
-	if (dummyTower != nullptr) {
-		dummyTower->setPosition(placePosition);
+	if (placementTower != nullptr) {
+		placementTower->setPosition(placePosition);
 	}
-	UILives.setString("Lives: " + std::to_string(player.lives));
-	UIGold.setString("Gold: " + std::to_string(player.getGold()));
-	UIWaveClock.setSize(sf::Vector2f(static_cast<float>(window.getSize().x) - static_cast<float>(window.getSize().x) / grid.getWaveDelay().asSeconds() * grid.getWaveClock().asSeconds(), 10));
+	waveNumberText.setString("Wave: " + std::to_string(grid.getWaveNumber()));
+	livesText.setString("Lives: " + std::to_string(player.lives));
+	goldText.setString("Gold: " + std::to_string(player.getGold()));
+	waveTimerRect.setSize({static_cast<float>(window.getSize().x) - static_cast<float>(window.getSize().x) / grid.getWaveDelay().asSeconds() * grid.getWaveClock().asSeconds(), 15});
 }
 
 void PlayState::render() const {
 	grid.render();
-	window.draw(text);
-	if (dummyTower != nullptr) {
-		dummyTower->render();
-	}
-	window.draw(UILives);
-	window.draw(UIGold);
-	window.draw(UIWaveClock);
-	window.draw(UISellButton);
-	window.draw(UIUpgradeButton);
-	window.draw(UIUndoButton);
-	for (const auto& tower : UITowers) {
+	window.draw(waveNumberText);
+	window.draw(livesText);
+	window.draw(goldText);
+	window.draw(waveTimerRect);
+	actionsMenu.render();
+	for (const auto& tower : placeableTowers) {
 		tower->render();
+	}
+	if (placementTower != nullptr) {
+		placementTower->render();
 	}
 }
 
@@ -115,47 +165,25 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 		GameStateManager::pushState(std::make_unique<PauseState>(window, player));
 	} else if (evt.key.code == sf::Keyboard::A) {
 		deselect();
-		dummyTower = make_tower(window,
-								static_cast<float>(tileSize),
-								sf::Vector2f{
-									static_cast<float>(sf::Mouse::getPosition(window).x) * tileSize,
-									static_cast<float>(sf::Mouse::getPosition(window).y) * tileSize
-		                        },
-								dummyEnemies,
-								TowerType::Normal // this should be action.towertype or something
-		);
+		setPlaceTower(TowerType::Normal);
 	} else if (evt.key.code == sf::Keyboard::U) {
-		// Prevent undo during a wave
-		if (grid.isInPreWave()) {
-			player.undoAction();
-			rebuildGrid();
-		}
+		undo();
 	} else if (evt.key.code == sf::Keyboard::S) {
-		dummyTower = make_tower(window,
-								static_cast<float>(tileSize),
-								sf::Vector2f{
-			static_cast<float>(sf::Mouse::getPosition(window).x) * tileSize,
-			static_cast<float>(sf::Mouse::getPosition(window).y) * tileSize
-		},
-								dummyEnemies,
-								TowerType::Long // this should be action.towertype or something
-		);
+		setPlaceTower(TowerType::Long);
 	} else if (evt.key.code == sf::Keyboard::W) {
 		grid.startWave();
-	}
-	else if (evt.key.code == sf::Keyboard::Q)
-	{
-		if (selected)
-		{
+	} else if (evt.key.code == sf::Keyboard::Q) {
+		if (selected) {
 			grid.removeTower(selected);
 			deselect();
 		}
-		
 	}
 };
 
 void PlayState::onMouseButtonPressed(sf::Event& evt) {
-	if (dummyTower != nullptr) {
+	actionsMenu.onPress();
+
+	if (placementTower != nullptr) {
 		deselect();
 		// TODO: The grid should have a position insted of a x/y offset, so that we can substract the position instead of 3
 		float fullSize = tileSize + lineSize;
@@ -165,47 +193,37 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 		if (grid.canBePlaced(x, y)) {
 			std::cout << "Success!" << std::endl;
 			// TODO: Replace dummyCost with actual tower cost, Move tower cost to grid class
-			if (player.getGold() >= dummyTower->getCost()) {
-				grid.placeTower(x, y, dummyTower->getType(), true);
-				dummyTower = nullptr;
-			}
-			else
-			{
-				dummyTower = nullptr;
+			if (player.getGold() >= placementTower->getCost()) {
+				grid.placeTower(x, y, placementTower->getType(), true);
+				placementTower = nullptr;
+			} else {
+				placementTower = nullptr;
 			}
 		} else {
 			std::cout << "Oei" << std::endl;
 		}
-	}
-	else
-	{
+	} else if (waveTimerRect.getGlobalBounds().contains(static_cast<float>(evt.mouseButton.x), static_cast<float>(evt.mouseButton.y))) {
+		grid.startWave();
+	} else {
 		std::shared_ptr<Tower> tmp_tower = grid.intersects(sf::Vector2f(static_cast<float>(evt.mouseButton.x), static_cast<float>(evt.mouseButton.y)));
-		if (tmp_tower)
-		{
+		if (tmp_tower) {
 			select(tmp_tower);
-		}
-		else
-		{
+		} else {
 			deselect();
 		}
 	}
-	for (const auto& UITower : UITowers) {
+
+	for (const auto& UITower : placeableTowers) {
 		if (UITower->getBounds().contains(sf::Vector2f(static_cast<float>(evt.mouseButton.x), static_cast<float>(evt.mouseButton.y)))) {
-			dummyTower = make_tower(window,
-									static_cast<float>(tileSize),
-									sf::Vector2f{
-										static_cast<float>(sf::Mouse::getPosition(window).x),
-										static_cast<float>(sf::Mouse::getPosition(window).y)
-									},
-									dummyEnemies,
-									UITower->getType() // this should be action.towertype or something
-			);
+			setPlaceTower(UITower->getType());
 		}
 	}
 }
 
 void PlayState::onMouseMoved(sf::Event& evt) {
-	if (dummyTower != nullptr) {
+	actionsMenu.onMouseMoved(evt);
+
+	if (placementTower != nullptr) {
 		float fullSize = tileSize + lineSize;
 		auto indexes = sf::Vector2f(
 			ceil(static_cast<float>(evt.mouseMove.x) / fullSize) - 3,
@@ -215,11 +233,11 @@ void PlayState::onMouseMoved(sf::Event& evt) {
 		placePosition = sf::Vector2f(indexes.x * fullSize + 80, indexes.y * fullSize + 88);
 
 		if (!grid.canBePlaced(static_cast<uint8_t>(indexes.x), static_cast<uint8_t>(indexes.y))) {
-			dummyTower->setColor(sf::Color::Red);
-		} else if (player.getGold() < dummyTower->getCost()) { // TODO: replace this with tower cost
-			dummyTower->setColor(sf::Color::Yellow);
+			placementTower->setColor(sf::Color::Red);
+		} else if (player.getGold() < placementTower->getCost()) { // TODO: replace this with tower cost
+			placementTower->setColor(sf::Color::Yellow);
 		} else {
-			dummyTower->setColor(sf::Color::Green);
+			placementTower->setColor(sf::Color::Green);
 		}
 	}
 }

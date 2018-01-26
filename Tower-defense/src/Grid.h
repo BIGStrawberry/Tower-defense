@@ -93,6 +93,8 @@ private:
 	*/
 	sf::RectangleShape base;
 
+	sf::RectangleShape background;
+
 	/**
 	* @brief window			The window where everything will be drawn to
 	*/
@@ -141,6 +143,10 @@ public:
 	*/
 	bool isInPreWave() const {
 		return preWave;
+	}
+
+	uint16_t getWaveNumber() const {
+		return waveNumber;
 	}
 
 	/**

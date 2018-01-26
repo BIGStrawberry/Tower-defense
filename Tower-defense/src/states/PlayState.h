@@ -12,11 +12,12 @@
 #include "../tower/Tower.h"
 #include "../tower/make_tower.h"
 #include "../Action/Action.h"
+#include "../helpers/Menu.h"
+#include "../helpers/MenuItem.h"
 
 class PlayState: public State {
 private: 
 	sf::Font font;
-	sf::Text text;
 	float tileSize;
 	/**
 	* @brief lineSize		The width of the lines between the grid
@@ -25,17 +26,14 @@ private:
 	float yOffset = 8;
 	Player player;
 	Grid grid;
-	std::shared_ptr<Tower> dummyTower;
+	std::shared_ptr<Tower> placementTower;
 	std::shared_ptr<Tower> selected;
 	std::vector<std::shared_ptr<Enemy>> dummyEnemies;
 	sf::Vector2f placePosition;
-	sf::Text UILives;
-	sf::Text UIGold;
-	sf::RectangleShape UIWaveClock;
-	std::array<std::shared_ptr<Tower>, 3> UITowers;
-	sf::RectangleShape UISellButton;
-	sf::RectangleShape UIUpgradeButton;
-	sf::RectangleShape UIUndoButton;
+	sf::Text waveNumberText, livesText, goldText;
+	sf::RectangleShape waveTimerRect;
+	std::array<std::shared_ptr<Tower>, 3> placeableTowers;
+	Menu actionsMenu;
 
 	/**
 	* @brief Sets given tower as selected, changes rendering settings.
@@ -47,6 +45,19 @@ private:
 	* selected to nullptr.
 	*/
 	void deselect();
+
+	/**
+	* @brief Sells the selected tower
+	*/
+	void sell();
+	/**
+	* @brief Upgrades the selected tower
+	*/
+	void upgrade();
+	/**
+	* @brief Undos latest player action
+	*/
+	void undo();
 public:
 	PlayState(sf::RenderWindow& window);
 
@@ -54,6 +65,11 @@ public:
 	* @brief rebuilds the grid based on the actions which the user has performed
 	*/
 	void rebuildGrid();
+
+	/**
+	* @brief sets the tower that will be placed
+	*/
+	void setPlaceTower(TowerType towerType);
 
 	void init() override;
 	void update() override;
