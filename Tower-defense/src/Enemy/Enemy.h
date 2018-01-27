@@ -4,6 +4,7 @@
 #include "EnemyType.h"
 #include "EnemyDataContainer.h"
 
+
 #pragma region comment
 /**
 * @class Enemy
@@ -23,9 +24,15 @@ protected:
 	sf::Vector2f next_target_pos;
 	sf::Vector2f vector;
 	float speed;
+	float original_speed;
 	int hp;
 	int dmg;
 	int gold;
+
+	sf::Clock slow_timer;
+	bool slowed;
+	sf::Time slow_duration;
+
 public:
 	#pragma region comment
 	/**
@@ -46,10 +53,11 @@ public:
 	* @param std::vector<sf::Vector2f>&	path: Vector reference, which contains (at least 1) coordinate point(s).
 	*									The enemy will follow the given path, until it reaches the base (last coordinate).
 	* @param EnemyType					Type of the Enemy.
+	* @param waveNumber					The current wave to calculate the Enemy hp
 	*/
 
 #pragma endregion
-	Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, EnemyType type);
+	Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, EnemyType type, uint16_t waveNumber);
 	~Enemy();
 
 #pragma region comment
@@ -117,4 +125,15 @@ public:
 
 #pragma endregion
 	sf::FloatRect getBounds() const;
+
+	#pragma region comment
+	/**
+	* @brief slows target by half for given time.
+	* @details This function reduces the speed by multiplying it with factor, it resets the slow_timer and sets the boolean slowed on true.
+	*
+	*/
+
+	void reduce_speed(float factor, sf::Time time);
+	#pragma endregion
+
 };

@@ -47,21 +47,33 @@ public:
 	/**
 	* @brief SFML KeyPressed event
 	*/
-	virtual void onKeyPressed(sf::Event& evt) = 0;
+	virtual void onKeyPressed(sf::Event& evt) {};
 	/**
 	* @brief SFML KeyReleased event
 	*/
-	virtual void onKeyReleased(sf::Event& evt) = 0;
+	virtual void onKeyReleased(sf::Event& evt) {};
 	/**
 	* @brief SFML MouseButoonPressed event
 	*/
-	virtual void onMouseButtonPressed(sf::Event& evt) = 0;
+	virtual void onMouseButtonPressed(sf::Event& evt) {};
 	/**
 	* @brief SFML MouseButoonReleased event
 	*/
-	virtual void onMouseButtonReleased(sf::Event& evt) = 0;
+	virtual void onMouseButtonReleased(sf::Event& evt) {};
 	/**
 	* @brief SFML MouseMoved event
 	*/
-	virtual void onMouseMoved(sf::Event& evt) = 0;
+	virtual void onMouseMoved(sf::Event& evt) {};
+	/**
+	* @brief SFML JoystickMoved event
+	*/
+	virtual void onJoystickMoved(sf::Event& evt) {};
+	/**
+	* @brief SFML JoystickConnected event
+	*/
+	virtual void onJoystickConnected(sf::Event& evt) {};
+	/**
+	* @brief SFML JoystickDisconnected event
+	*/
+	virtual void onJoystickDisconnected(sf::Event& evt) {};
 };
