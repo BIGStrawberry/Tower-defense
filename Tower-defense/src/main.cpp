@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include "Helpers/GameStateManager.h"
 #include "States/MenuState.h"
+#include "Textures\TextureContainer.h"
+#include "tower\TowerDataContainer.h"
 
 /*
 Gameloop
@@ -20,10 +22,11 @@ int main() {
 	sf::Event evt;
 	//window.setVerticalSyncEnabled(true);
 	//window.setFramerateLimit(10);
+	TextureContainer::load();
 	EnemyDataContainer::load();
 	// The game starts in the MenuState
 	GameStateManager::pushState(std::make_shared<MenuState>(window));
-
+	TowerDataContainer::load();
 
 	// Seed the random
 	srand('A' + ' ' + 'M' + 'a' + 'z' + 'i' + 'n' + 'g' + ' ' + 'T' + 'o' + 'w' + 'e' + 'r' + ' ' + 'D' + 'e' + 'f' + 'e' + 'n' + 'c' + 'e');

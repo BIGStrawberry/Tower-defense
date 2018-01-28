@@ -10,6 +10,8 @@
 #include "TowerDataContainer.h"
 #include "TowerData.h"
 
+#include "../Textures/TextureContainer.h"
+
 /**
 * @class Tower
 * @file Tower.cpp
@@ -30,6 +32,7 @@
 class Tower
 {
 protected:
+
 	/**
 	* @brief tower data
 	*/
@@ -75,11 +78,14 @@ protected:
 	/**
 	* body of the tower
 	*/
-	sf::RectangleShape tower_shape;
+	sf::Sprite tower_shape;
 	/**
 	* VertexArray Linestrip used to draw the turret.
 	*/
-	sf::VertexArray turret;
+	/*sf::VertexArray turret;*/
+
+	sf::Sprite turret;
+
 	/**
 	* @brief type of tower
 	*/
@@ -149,6 +155,7 @@ public:
 	* 
 	*/
 	void setPosition(const sf::Vector2f& pos) {
+		turret.setPosition(pos);
 		tower_shape.setPosition(pos);
 		range_circle.setPosition(tower_shape.getPosition());
 	}
@@ -158,7 +165,7 @@ public:
 	*
 	*/
 	void setColor(const sf::Color& color) {
-		tower_shape.setFillColor(color);
+		tower_shape.setColor(color);
 	}
 
 	/**

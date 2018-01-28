@@ -7,7 +7,6 @@ EnemyGround::EnemyGround(sf::RenderWindow& window, const std::vector<sf::Vector2
 	Enemy(window, path, type, waveNumber),
 	target_counter(0)
 {
-	body.setFillColor(sf::Color::Red);
 }
 
 

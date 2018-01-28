@@ -8,7 +8,6 @@ EnemyAir::EnemyAir(sf::RenderWindow& window, const std::vector<sf::Vector2f>& pa
 	next_target_pos = *(path.end() - 1);
 	distance = sqrt(pow(body.getPosition().x - next_target_pos.x, 2) + pow(body.getPosition().y - next_target_pos.y, 2));
 	vector = (next_target_pos - body.getPosition()) / distance;
-	body.setFillColor(sf::Color::Green);
 }
 
 

@@ -2,6 +2,7 @@
 #include <map>
 #include "TowerType.h"
 #include "TowerData.h"
+#include "../Textures/TextureContainer.h"
 
 #pragma region comment
 /**
@@ -25,5 +26,8 @@ public:
 	@brief returns a TowerData reference for the given TowerType.
 	*/
 	static TowerData& get(TowerType type);
+
+
+	static void load();
 };
 

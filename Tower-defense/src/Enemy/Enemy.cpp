@@ -10,12 +10,15 @@ Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, En
 	hp(EnemyDataContainer::get(type).hp + waveNumber * 2),
 	dmg(EnemyDataContainer::get(type).damage),
 	gold(EnemyDataContainer::get(type).gold + waveNumber),
+	body(EnemyDataContainer::get(type).body),
 	slowed(false),
 	original_speed(speed)
 {
-	body.setRadius(20);
-	body.setOrigin(sf::Vector2f(body.getRadius(), body.getRadius()));
+	//body.setTexture(TextureContainer::get(type))
+	//body.setRadius(20);
+	//body.setOrigin(sf::Vector2f(body.getRadius(), body.getRadius()));
 	body.setPosition(path[0]);
+	body.setRotation(-90.f);
 }
 
 void Enemy::render() const
