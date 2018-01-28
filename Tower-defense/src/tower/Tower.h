@@ -75,15 +75,8 @@ protected:
 	* circle shape used to display the range of the tower
 	*/
 	sf::CircleShape range_circle;
-	/**
-	* body of the tower
-	*/
-	sf::Sprite tower_shape;
-	/**
-	* VertexArray Linestrip used to draw the turret.
-	*/
-	/*sf::VertexArray turret;*/
 
+	sf::Sprite tower_shape;
 	sf::Sprite turret;
 
 	/**
