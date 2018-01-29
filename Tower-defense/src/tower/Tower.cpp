@@ -119,14 +119,23 @@ void Tower::update() {
 
 void Tower::upgrade() {
 	upgrade_level++;
-	towerData.damage *= 1.25;
+
+	// Give tower damage a multiplier based on the upgrade level
+	towerData.damage *= static_cast<float>(upgrade_level * 1.1);
+
+	// Add the cost of this upgrade to the total amount of gold the tower has cost
 	acculumated_cost += upgrade_cost;
-	upgrade_cost *= 2;
-	towerData.radius *= 1.5;
+
+	// The upgrade cost becomes more based on the level of upgrades you have
+	upgrade_cost = static_cast<uint32_t>(towerData.cost * (upgrade_level * 1.1));
+
+	// Give the tower radius a multiplier
+	towerData.radius *= static_cast<float>(1.2);
+
 	range_circle.setRadius(towerData.radius); 
 	range_circle.setOrigin(sf::Vector2f(towerData.radius, towerData.radius));
+
 	std::cout << "upgraded to level " << static_cast<int>(upgrade_level) << "\n";
-	
 }
 
 uint8_t Tower::getUpgradeLevel() {
