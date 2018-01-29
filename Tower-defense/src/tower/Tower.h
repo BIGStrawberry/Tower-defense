@@ -213,7 +213,7 @@ public:
 	Creates a projectile after the reload_time if the tower has a target.
 	
 	*/
-	void update();
+	virtual void update();
 
 
 	/*

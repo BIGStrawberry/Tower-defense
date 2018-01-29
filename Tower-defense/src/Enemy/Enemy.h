@@ -127,14 +127,15 @@ public:
 #pragma endregion
 	sf::FloatRect getBounds() const;
 
-	#pragma region comment
-	/**
-	* @brief slows target by half for given time.
-	* @details This function reduces the speed by multiplying it with factor, it resets the slow_timer and sets the boolean slowed on true.
-	*
-	*/
-
+#pragma region comment
+/**
+* @brief slows target by half for given time.
+* @details This function reduces the speed by multiplying it with factor, it resets the slow_timer and sets the boolean slowed on true.
+*
+*/
+#pragma endregion
 	void reduce_speed(float factor, sf::Time time);
-	#pragma endregion
+
+	bool is_slowed();
 
 };

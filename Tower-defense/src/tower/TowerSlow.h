@@ -30,8 +30,12 @@ private:
 	overriden method that adds a projectileSlow to the projectiles vector.
 	*/
 	void shootProjectile() override;
+
+	std::shared_ptr<Enemy> findNotSlowed();
 public:
 	TowerSlow(sf::RenderWindow & window, float size, sf::Vector2f pos, std::vector<std::shared_ptr<Enemy>>& enemies, TowerType type, sf::Time slow_time, float slow_factor);
+
+	void update() override;
 	
 };
 

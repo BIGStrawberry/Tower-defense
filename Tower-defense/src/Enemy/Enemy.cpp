@@ -63,3 +63,9 @@ void Enemy::reduce_speed(float factor, sf::Time time) {
 	slow_timer.restart();
 	slowed = true;
 }
+
+
+bool Enemy::is_slowed()
+{
+	return slowed;
+}
