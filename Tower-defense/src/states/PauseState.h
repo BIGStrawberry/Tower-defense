@@ -15,7 +15,7 @@ private:
 	Menu menu;
 	const Player & player;
 public:
-	PauseState(sf::RenderWindow& window, const Player & player);
+	PauseState(sf::RenderWindow& window, Player & player);
 
 	void init() override;
 	void update() override;
