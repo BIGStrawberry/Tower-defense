@@ -68,7 +68,7 @@ void Enemy::reduce_speed(float factor, sf::Time time) {
 }
 
 
-bool Enemy::is_slowed()
+bool Enemy::isSlowed()
 {
 	return slowed;
 }

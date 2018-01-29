@@ -138,7 +138,11 @@ public:
 */
 #pragma endregion
 	void reduce_speed(float factor, sf::Time time);
-
-	bool is_slowed();
+#pragma region comment
+	/**
+	* @brief returns if enemy is slowed.
+	*/
+#pragma endregion
+	bool isSlowed();
 
 };

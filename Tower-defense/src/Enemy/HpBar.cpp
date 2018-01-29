@@ -21,6 +21,7 @@ void HpBar::setHp(float hp)
 {
 	green.setSize(sf::Vector2f(multiplier * hp, thickness));
 	to_render = true;
+	clock.restart();
 }
 
 
@@ -28,6 +29,11 @@ void HpBar::setPosition(sf::Vector2f pos)
 {
 	red.setPosition(sf::Vector2f(pos.x, pos.y - height));
 	green.setPosition(sf::Vector2f(pos.x, pos.y - height));
+
+	if (clock.getElapsedTime().asMilliseconds() > 500)
+	{
+		to_render = false;
+	}
 }
 
 

@@ -17,7 +17,7 @@ void TowerSlow::shootProjectile() {
 std::shared_ptr<Enemy> TowerSlow::findNotSlowed()
 {
 	for (const auto& enemy : enemies) {
-		if (getDistanceToEnemy(*enemy.get()) < towerData.radius && !enemy->is_slowed()) {
+		if (getDistanceToEnemy(*enemy.get()) < towerData.radius && !enemy->isSlowed()) {
 			return enemy;
 		}
 	}
