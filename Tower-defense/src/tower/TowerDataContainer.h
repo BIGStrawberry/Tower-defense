@@ -2,7 +2,8 @@
 #include <map>
 #include "TowerType.h"
 #include "TowerData.h"
-#include "../Textures/TextureContainer.h"
+#include "../Assets/TextureContainer.h"
+#include "../Assets/SoundContainer.h"
 
 #pragma region comment
 /**

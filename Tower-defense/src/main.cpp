@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "Helpers/GameStateManager.h"
 #include "States/MenuState.h"
-#include "Textures\TextureContainer.h"
+#include "Assets\TextureContainer.h"
 #include "tower\TowerDataContainer.h"
 
 /*
@@ -23,6 +23,7 @@ int main() {
 	//window.setVerticalSyncEnabled(true);
 	//window.setFramerateLimit(10);
 	TextureContainer::load();
+	SoundContainer::load();
 	EnemyDataContainer::load();
 	// The game starts in the MenuState
 	GameStateManager::pushState(std::make_shared<MenuState>(window));

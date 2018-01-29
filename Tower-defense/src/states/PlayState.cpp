@@ -7,7 +7,8 @@ PlayState::PlayState(sf::RenderWindow& window):
 	tileSize(31),
 	player(window, 20, 375000),
 	grid(window, 31, player),
-	dummyTower(nullptr)
+	dummyTower(nullptr),
+	tower_click_sound(SoundContainer::get("menu_click.wav"))
 {}
 
 void PlayState::select(std::shared_ptr<Tower> t)
@@ -194,6 +195,7 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 		if (tmp_tower)
 		{
 			select(tmp_tower);
+			tower_click_sound.play();//towerclick sound
 		}
 		else
 		{

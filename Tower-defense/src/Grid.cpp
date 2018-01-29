@@ -9,7 +9,12 @@ Grid::Grid(sf::RenderWindow & window, float tileSize, Player & player):
 	spawn(sf::Vector2f(tileSize, tileSize)),
 	base(sf::Vector2f(tileSize, tileSize)),
 	player(player),
-	pathfinder(grid, COLUMNS, START_INDEX, END_INDEX) {
+	pathfinder(grid, COLUMNS, START_INDEX, END_INDEX),
+	tower_construction_sound(SoundContainer::get("construction_tower.wav")),
+	start_wave_sound(SoundContainer::get("wave_start.wav")),
+	enemy_dying_sound(SoundContainer::get("enemy_dying.wav")),
+	end_wave_sound(SoundContainer::get("wave_victory.wav"))
+{
 	//TODO: cast round the result of the devided numers off, so the spawn will alway's be allinged with the grid
 	spawn.setPosition(xOffset - (tileSize + lineSize), static_cast<int>(ROWS / 2) * (tileSize + lineSize) + yOffset);
 	spawn.setOrigin(tileSize / 2, tileSize / 2);
@@ -31,6 +36,7 @@ void Grid::update() {
 		if (enemy.state == Enemy::States::Walking) {
 			enemy.update();
 		} else if (enemy.state == Enemy::States::Dead) {
+			enemy_dying_sound.play();
 			player.numberOfEnemiesKilled++;
 			player.addGold(enemy.getGold());
 			enemies.erase(enemies.begin() + i);
@@ -56,6 +62,8 @@ void Grid::update() {
 		++waveNumber;
 		++player.numberOfWavesCompleted; //Keep track of the waves completed for stats
 		waveClock.restart(); // Start countdown till next wave
+		end_wave_sound.play();
+		
 	}
 
 	// Starts wave when time is up
@@ -104,7 +112,7 @@ void Grid::startWave() {
 
 	// Wave already started
 	if (!preWave) return;
-
+	start_wave_sound.play();
 	// Spawn a extra group every 10 waves
 	uint16_t numberOfGroups = waveNumber / 10 + 1;
 	for (uint16_t i = 0; i < numberOfGroups; ++i) {
@@ -166,6 +174,7 @@ void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType, bool saveAction
 	sf::Vector2f pos{static_cast<float>(x) * (tileSize + lineSize) + xOffset , static_cast<float>(y) * (tileSize + lineSize) + yOffset};
 	if (canBePlaced(x, y)) {
 		grid[x + y * COLUMNS] = make_tower(window, tileSize, pos, enemies, towerType);
+		tower_construction_sound.play();
 	}
 
 	try {
