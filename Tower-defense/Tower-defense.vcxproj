@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\helpers\Settings.cpp" />
     <ClCompile Include="src\helpers\ToggleFullscreen.cpp" />
+    <ClCompile Include="src\Enemy\HpBar.cpp" />
     <ClCompile Include="src\tower\ProjectileSlow.cpp" />
     <ClCompile Include="src\spear\SpearContainer.cpp" />
     <ClCompile Include="src\spear\SpearMan.cpp" />
@@ -47,6 +48,7 @@
   <ItemGroup>
     <ClInclude Include="src\helpers\Settings.h" />
     <ClInclude Include="src\helpers\ToggleFullscreen.h" />
+    <ClInclude Include="src\Enemy\HpBar.h" />
     <ClInclude Include="src\tower\ProjectileSlow.h" />
     <ClInclude Include="src\Pathfinding\Pathfinder.h" />
     <ClInclude Include="src\Pathfinding\PathNode.h" />
