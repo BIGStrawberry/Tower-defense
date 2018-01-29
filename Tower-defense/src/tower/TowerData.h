@@ -1,5 +1,6 @@
 #pragma once
 #include "SFML\Graphics.hpp"
+#include <string>
 
 #pragma region comment
 /**
@@ -12,4 +13,5 @@ struct TowerData {
 	sf::Time reload_time;
 	float damage;
 	int32_t cost;
+	const sf::Sprite turret;
 };

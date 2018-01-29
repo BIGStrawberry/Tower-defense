@@ -3,6 +3,8 @@
 #include <vector>
 #include "EnemyType.h"
 #include "EnemyDataContainer.h"
+#include "../Textures/TextureContainer.h"
+#include "HpBar.h"
 
 
 #pragma region comment
@@ -20,7 +22,7 @@ protected:
 	sf::RenderWindow& window;
 	const std::vector<sf::Vector2f>& path;
 	float distance;
-	sf::CircleShape body;
+	sf::Sprite body;
 	sf::Vector2f next_target_pos;
 	sf::Vector2f vector;
 	float speed;
@@ -28,6 +30,8 @@ protected:
 	int hp;
 	int dmg;
 	int gold;
+
+	HpBar bar;
 
 	sf::Clock slow_timer;
 	bool slowed;
@@ -126,14 +130,19 @@ public:
 #pragma endregion
 	sf::FloatRect getBounds() const;
 
-	#pragma region comment
-	/**
-	* @brief slows target by half for given time.
-	* @details This function reduces the speed by multiplying it with factor, it resets the slow_timer and sets the boolean slowed on true.
-	*
-	*/
-
+#pragma region comment
+/**
+* @brief slows target by half for given time.
+* @details This function reduces the speed by multiplying it with factor, it resets the slow_timer and sets the boolean slowed on true.
+*
+*/
+#pragma endregion
 	void reduce_speed(float factor, sf::Time time);
-	#pragma endregion
+#pragma region comment
+	/**
+	* @brief returns if enemy is slowed.
+	*/
+#pragma endregion
+	bool isSlowed();
 
 };

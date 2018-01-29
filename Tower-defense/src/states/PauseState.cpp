@@ -23,16 +23,19 @@ PauseState::PauseState(sf::RenderWindow& window, Player & player):
 			{"Forfeit Game", font, 20}
 		}
 	}),
-	player(player){}
+	player(player),
+	text("Game Paused..", font)
+{}
 
 void PauseState::init() {
 	if (!font.loadFromFile("resources/fonts/consola.ttf")) {
 		std::cout << "Could not load consola.ttf" << std::endl;
 	}
-	text.setFont(font);
-	text.setString("Game Paused..");
-	// TODO: Better center d;)
-	text.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 24.0f});
+
+	// Center text
+	sf::FloatRect textRect = text.getGlobalBounds();
+	text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	text.setPosition({static_cast<float>(window.getSize().x) / 2, 24.0f});
 }
 
 void PauseState::update() {}

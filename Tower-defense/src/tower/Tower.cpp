@@ -10,19 +10,17 @@ Tower::Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, std::vecto
 	enemies(enemies),
 	render_range(false),
 	window(window),
-	tower_shape(sf::Vector2f(size, size)),
-	turret(sf::VertexArray(sf::LinesStrip, 2)),
+	turret(towerData.turret),
 	type(type),
 	range_circle(towerData.radius),
 	upgrade_level(0),
 	upgrade_cost(towerData.cost),
 	acculumated_cost(towerData.cost)
 {
-	turret[0].position = pos;
-	turret[0].color = sf::Color::Black;
-	turret[1].color = sf::Color::Black;
-	turret[1].position = pos;
-	tower_shape.setOrigin(sf::Vector2f(size/2, size/2));
+	tower_shape.setTexture(TextureContainer::get("base.png"));
+	turret.setPosition(pos);
+	tower_shape.setScale(0.3f, 0.3f);
+	tower_shape.setOrigin(64.f, 64.f);
 	range_circle.setOrigin(sf::Vector2f(towerData.radius, towerData.radius));
 	range_circle.setFillColor(sf::Color::Transparent);
 	range_circle.setOutlineColor(sf::Color::Black);
@@ -40,7 +38,6 @@ float Tower::getDistanceToEnemy(Enemy & rhs) const {
 
 void Tower::render() const {
 	window.draw(tower_shape);
-	window.draw(turret);
 	if (render_range) {
 		window.draw(range_circle);
 	}
@@ -48,13 +45,16 @@ void Tower::render() const {
 	for (const auto& pt : projectiles) {
 		pt->render();
 	}
+	window.draw(turret);
 }
 
 
 void Tower::rotateTurret() {
-	sf::Vector2f diff = tower_shape.getPosition() - target->getPosition();
-	float scale = getDistanceToEnemy(*target.get()) / turret_length;
-	turret[1].position = tower_shape.getPosition() - sf::Vector2f(diff.x / scale, diff.y / scale);
+	sf::Vector2f diff = target->getPosition() - tower_shape.getPosition();
+	float angle_rads = std::atan2(diff.y, diff.x);
+	float degrees = angle_rads * (180 / 3.141592f);
+	turret.setRotation(degrees+90);
+
 }
 
 std::shared_ptr<Enemy> Tower::getClosestEnemyInRange() const {

@@ -5,7 +5,7 @@
 PlayState::PlayState(sf::RenderWindow& window):
 	State(window),
 	tileSize(31),
-	player(window, 20, 375),
+	player(window, 20, 375000),
 	grid(window, 31, player),
 	dummyTower(nullptr)
 {}
@@ -105,6 +105,7 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 								dummyEnemies,
 								TowerType::Normal // this should be action.towertype or something
 		);
+		dummyTower->enableRangeRender(true);
 	} else if (evt.key.code == sf::Keyboard::U) {
 		// Prevent undo during a wave
 		if (grid.isInPreWave()) {
@@ -125,6 +126,7 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 								dummyEnemies,
 								TowerType::Long // this should be action.towertype or something
 		);
+		dummyTower->enableRangeRender(true);
 	} else if (evt.key.code == sf::Keyboard::D) {
 		dummyTower = make_tower(window,
 								static_cast<float>(tileSize),
@@ -135,6 +137,7 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 								dummyEnemies,
 								TowerType::Slow // this should be action.towertype or something
 		);
+		dummyTower->enableRangeRender(true);
 	} else if (evt.key.code == sf::Keyboard::W) {
 		grid.startWave();
 	}

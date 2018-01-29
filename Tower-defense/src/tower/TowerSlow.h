@@ -30,8 +30,26 @@ private:
 	overriden method that adds a projectileSlow to the projectiles vector.
 	*/
 	void shootProjectile() override;
+
+	/**
+	* @brief This function returns a pointer to the closest enemy,
+	that is not currently being slowed. If there is no such enemy,
+	the function will return nullptr.
+	*/
+	std::shared_ptr<Enemy> findNotSlowed();
+
+
 public:
 	TowerSlow(sf::RenderWindow & window, float size, sf::Vector2f pos, std::vector<std::shared_ptr<Enemy>>& enemies, TowerType type, sf::Time slow_time, float slow_factor);
+
+	/**
+	* @brief rotates the turret, updates projectiles and updates the target pointer.
+	Removes dead projectiles.
+	Checks if enemy is out of range and searches for a new one.
+	Creates a projectile after the reload_time if the tower has a target.
+
+	*/
+	void update() override;
 	
 };
 
