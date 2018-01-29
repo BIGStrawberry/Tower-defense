@@ -56,10 +56,17 @@ void PlayState::init() {
 	text.setString("Press Esc to go back to menu");
 	// TODO: Better center d;)
 	text.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, static_cast<float>(window.getSize().y) / 2 - 24});
+
+	gold.setFont(font);
+	gold.setString(std::to_string(player.getGold()));
+	// TODO: Better center d;)
+	gold.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 24.0f});
 }
 
 void PlayState::update() {
 	grid.update();
+	gold.setString(std::to_string(player.getGold()));
+	window.draw(gold);
 	if (dummyTower != nullptr) {
 		dummyTower->setPosition(placePosition);
 	}
@@ -67,6 +74,7 @@ void PlayState::update() {
 
 void PlayState::render() const {
 	grid.render();
+	window.draw(gold);
 	window.draw(text);
 	if (dummyTower != nullptr) {
 		dummyTower->render();

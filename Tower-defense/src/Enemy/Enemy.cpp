@@ -7,7 +7,7 @@ Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, En
 	next_target_pos(path[0]),
 	distance(0.0),
 	speed(EnemyDataContainer::get(type).speed),
-	hp(EnemyDataContainer::get(type).hp + waveNumber * 2),
+	hp(EnemyDataContainer::get(type).hp + waveNumber * 3),
 	dmg(EnemyDataContainer::get(type).damage),
 	gold(EnemyDataContainer::get(type).gold + waveNumber),
 	slowed(false),
