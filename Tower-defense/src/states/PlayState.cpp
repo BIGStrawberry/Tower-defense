@@ -61,6 +61,9 @@ void PlayState::init() {
 	gold.setString(std::to_string(player.getGold()));
 	// TODO: Better center d;)
 	gold.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 24.0f});
+
+	//  Reset time played d:)
+	player.gameClock.restart();
 }
 
 void PlayState::update() {
@@ -86,6 +89,7 @@ void PlayState::cleanUp() {}
 void PlayState::onKeyPressed(sf::Event& evt) {
 	if (evt.key.code ==  sf::Keyboard::Escape) {
 		GameStateManager::pushState(std::make_unique<PauseState>(window, player));
+		player.timePlayed += player.gameClock.getElapsedTime();
 	} else if (evt.key.code == sf::Keyboard::A) {
 		deselect();
 		float fullSize = tileSize + lineSize;

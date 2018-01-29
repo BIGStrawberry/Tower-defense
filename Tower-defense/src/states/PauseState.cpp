@@ -1,12 +1,13 @@
 #include "MenuState.h"
 #include "../helpers/GameStateManager.h"
 
-PauseState::PauseState(sf::RenderWindow& window, const Player & player):
+PauseState::PauseState(sf::RenderWindow& window, Player & player):
 	State(window),
 	menu(window, {{
 			window,
-			std::function<void()>([&window]() {
+			std::function<void()>([&window, &player]() {
 				GameStateManager::popState(); //Pops the pause state to return to playstate
+				player.gameClock.restart(); // Restart the game clock to not count time in pause state
 			}),
 			{250, 75},
 			{static_cast<float>(window.getSize().x) / 2 - 250 / 2, 150},

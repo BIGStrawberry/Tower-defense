@@ -62,6 +62,15 @@ public:
 	*/
 	uint32_t numberOfWavesCompleted = 0;
 
+	/**
+	* @details Clock for game time
+	*/
+	sf::Clock gameClock;
+
+	/**
+	* @details SFML Time object to keep track of time played
+	*/
+	sf::Time timePlayed;
 
 	/**
 	* @brief Function to add gold to the variable gold
