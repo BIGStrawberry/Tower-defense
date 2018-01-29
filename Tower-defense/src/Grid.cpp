@@ -198,6 +198,7 @@ void Grid::upgradeTower(uint8_t x, uint8_t y, bool saveAction) {
 	if (preWave) {
 		auto selected = grid[x + y * COLUMNS];
 		if (selected->getUpgradeLevel() < 2) {
+			tower_construction_sound.play();
 			player.removeGold(selected->getUpgradeCost());
 			if (saveAction) {
 				player.addAction(x, y, selected->getUpgradeCost(), Action::ACTION_TYPE::UPGRADE_TOWER, selected->getType());
