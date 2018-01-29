@@ -2,6 +2,8 @@
 #include <map>
 #include "EnemyType.h"
 #include "EnemyData.h"
+#include <SFML/Graphics.hpp>
+#include "../Textures/TextureContainer.h"
 
 #pragma region comment
 /**
@@ -22,6 +24,7 @@ public:
 	/**
 	* @brief loads the data to the container
 	* @details This function loads all the data to the container.
+	* It also constructs the body sprite for each enemyType's datastruct.
 	* Needs to be called before the construction of the first Enemy,
 	* otherwise it may causes undefined behavior.
 	*/

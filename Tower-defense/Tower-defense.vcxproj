@@ -40,6 +40,7 @@
     <ClCompile Include="src\tower\TowerDataContainer.cpp" />
     <ClCompile Include="src\tower\TowerSlow.cpp" />
     <ClCompile Include="src\Action\Action.cpp" />
+    <ClCompile Include="src\Textures\TextureContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\tower\ProjectileSlow.h" />
@@ -58,6 +59,7 @@
     <ClInclude Include="src\tower\TowerDataContainer.h" />
     <ClInclude Include="src\tower\TowerSlow.h" />
     <ClInclude Include="src\Action\Action.h" />
+    <ClInclude Include="src\Textures\TextureContainer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player.h" />

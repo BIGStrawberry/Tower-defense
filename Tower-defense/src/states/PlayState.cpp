@@ -5,7 +5,7 @@
 PlayState::PlayState(sf::RenderWindow& window):
 	State(window),
 	tileSize(31),
-	player(window, 20, 375),
+	player(window, 20, 375000),
 	grid(window, 31, player),
 	dummyTower(nullptr)
 {}

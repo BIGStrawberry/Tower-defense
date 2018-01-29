@@ -3,6 +3,7 @@
 #include <vector>
 #include "EnemyType.h"
 #include "EnemyDataContainer.h"
+#include "../Textures/TextureContainer.h"
 
 
 #pragma region comment
@@ -20,7 +21,7 @@ protected:
 	sf::RenderWindow& window;
 	const std::vector<sf::Vector2f>& path;
 	float distance;
-	sf::CircleShape body;
+	sf::Sprite body;
 	sf::Vector2f next_target_pos;
 	sf::Vector2f vector;
 	float speed;
