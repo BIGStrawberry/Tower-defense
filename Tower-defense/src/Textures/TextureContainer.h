@@ -18,6 +18,9 @@
 class TextureContainer {
 private:
 	static std::map<std::string, std::shared_ptr<sf::Texture>> container;
+	// Disallow creating an instance of this object
+	TextureContainer() {};
+
 public:
 	/**
 	* @brief returns a texture reference of the filename in parameters.
