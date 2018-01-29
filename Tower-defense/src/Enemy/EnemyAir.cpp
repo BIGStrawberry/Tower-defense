@@ -36,5 +36,6 @@ void EnemyAir::update()
 			speed = original_speed;
 		}
 	}
+	bar.setPosition(body.getPosition());
 	
 }

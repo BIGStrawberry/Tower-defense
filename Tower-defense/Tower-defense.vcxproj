@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Enemy\HpBar.cpp" />
     <ClCompile Include="src\tower\ProjectileSlow.cpp" />
     <ClCompile Include="src\spear\SpearContainer.cpp" />
     <ClCompile Include="src\spear\SpearMan.cpp" />
@@ -43,6 +44,7 @@
     <ClCompile Include="src\Textures\TextureContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Enemy\HpBar.h" />
     <ClInclude Include="src\tower\ProjectileSlow.h" />
     <ClInclude Include="src\Pathfinding\Pathfinder.h" />
     <ClInclude Include="src\Pathfinding\PathNode.h" />

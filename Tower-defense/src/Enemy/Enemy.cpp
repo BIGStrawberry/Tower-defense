@@ -12,7 +12,8 @@ Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, En
 	gold(EnemyDataContainer::get(type).gold + waveNumber),
 	body(EnemyDataContainer::get(type).body),
 	slowed(false),
-	original_speed(speed)
+	original_speed(speed),
+	bar((float)hp)
 {
 	body.setPosition(path[0]);
 	body.setRotation(-90.f);
@@ -21,6 +22,7 @@ Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, En
 void Enemy::render() const
 {
 	window.draw(body);
+	bar.render(window);
 }
 
 const sf::Vector2f Enemy::getPosition() const
@@ -35,6 +37,7 @@ void Enemy::decreaseHp(int dmg)
 	{
 		state = States::Dead;
 	}
+	bar.setHp((float)hp);
 }
 
 const int Enemy::getDmg() const

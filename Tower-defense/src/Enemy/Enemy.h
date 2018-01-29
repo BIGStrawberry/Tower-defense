@@ -4,6 +4,7 @@
 #include "EnemyType.h"
 #include "EnemyDataContainer.h"
 #include "../Textures/TextureContainer.h"
+#include "HpBar.h"
 
 
 #pragma region comment
@@ -29,6 +30,8 @@ protected:
 	int hp;
 	int dmg;
 	int gold;
+
+	HpBar bar;
 
 	sf::Clock slow_timer;
 	bool slowed;
