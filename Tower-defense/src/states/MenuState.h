@@ -7,6 +7,7 @@
 #include "PlayState.h"
 #include "../helpers/Menu.h"
 #include "../helpers/MenuItem.h"
+#include "../helpers/ToggleFullscreen.h"
 #include "../spear/SpearContainer.h"
 
 class MenuState: public State {

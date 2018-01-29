@@ -9,11 +9,17 @@ MenuState::MenuState(sf::RenderWindow& window):
 			{250, 75},
 			{static_cast<float>(window.getSize().x) / 2 - 250 / 2, 150},
 			{"Play game", font, 20}
-		}, {
+		},{
+			window,
+			std::function<void()>([&window]() { toggleFullscreen(window); }),
+			{250, 75},
+			{static_cast<float>(window.getSize().x) / 2 - 250 / 2, 350},
+			{"Toggle fullscreen", font, 20}
+		},{
 			window,
 			std::function<void()>([&window]() { window.close(); }),
 			{250, 75},
-			{static_cast<float>(window.getSize().x) / 2 - 250 / 2, 350},
+			{static_cast<float>(window.getSize().x) / 2 - 250 / 2, 550},
 			{"Exit game", font, 20}
 		}
 	})
@@ -56,10 +62,10 @@ void MenuState::onKeyPressed(sf::Event& evt) {
 		menu.onPress();
 		break;
 	case sf::Keyboard::Up:
-		menu.selectNext();
+		menu.selectPrevious();
 		break;
 	case sf::Keyboard::Down:
-		menu.selectPrevious();
+		menu.selectNext();
 		break;
 	}
 }
