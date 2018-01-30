@@ -29,7 +29,6 @@ const sf::Vector2f Enemy::getPosition() const
 void Enemy::decreaseHp(float dmg)
 {
 	data.hp -= dmg;
-	std::cout << data.hp << std::endl;
 	if (data.hp <= 0)
 	{
 		state = States::Dead;

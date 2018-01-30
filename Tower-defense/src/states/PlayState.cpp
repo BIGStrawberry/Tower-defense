@@ -7,7 +7,8 @@ PlayState::PlayState(sf::RenderWindow& window):
 	tileSize(31),
 	player(window, 20, 375000),
 	grid(window, 31, player),
-	dummyTower(nullptr)
+	dummyTower(nullptr),
+	tower_click_sound(SoundContainer::get("menu_click.ogg"))
 {}
 
 void PlayState::select(std::shared_ptr<Tower> t)
@@ -61,6 +62,9 @@ void PlayState::init() {
 	gold.setString(std::to_string(player.getGold()));
 	// TODO: Better center d;)
 	gold.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 24.0f});
+
+	//  Reset time played d:)
+	player.gameClock.restart();
 }
 
 void PlayState::update() {
@@ -86,6 +90,7 @@ void PlayState::cleanUp() {}
 void PlayState::onKeyPressed(sf::Event& evt) {
 	if (evt.key.code ==  sf::Keyboard::Escape) {
 		GameStateManager::pushState(std::make_unique<PauseState>(window, player));
+		player.timePlayed += player.gameClock.getElapsedTime();
 	} else if (evt.key.code == sf::Keyboard::A) {
 		deselect();
 		float fullSize = tileSize + lineSize;
@@ -197,6 +202,7 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 		if (tmp_tower)
 		{
 			select(tmp_tower);
+			tower_click_sound.play();//towerclick sound
 		}
 		else
 		{
