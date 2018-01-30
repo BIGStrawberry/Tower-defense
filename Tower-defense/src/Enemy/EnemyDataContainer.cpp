@@ -19,6 +19,10 @@ void EnemyDataContainer::load()
 	body.setTexture(TextureContainer::get("tails.png"));
 	container.insert(std::pair<EnemyType, EnemyData>(EnemyType::Flying, EnemyData{6, 3, 1, 20, body}));
 
+	body.setScale(sf::Vector2f(1.5f, 1.5f));
+	body.setTexture(TextureContainer::get("knuckle.png"));
+	container.insert(std::pair<EnemyType, EnemyData>(EnemyType::Boss, EnemyData{500, 1, 3, 500, body}));
+
 }
 
 EnemyData& EnemyDataContainer::get(EnemyType type)

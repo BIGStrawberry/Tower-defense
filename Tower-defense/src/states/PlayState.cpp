@@ -5,7 +5,7 @@
 PlayState::PlayState(sf::RenderWindow& window):
 	State(window),
 	tileSize(31),
-	player(window, 20, 375000),
+	player(window, 20, 375),
 	grid(window, 31, player),
 	dummyTower(nullptr),
 	tower_click_sound(SoundContainer::get("menu_click.ogg"))
@@ -89,8 +89,8 @@ void PlayState::cleanUp() {}
 
 void PlayState::onKeyPressed(sf::Event& evt) {
 	if (evt.key.code ==  sf::Keyboard::Escape) {
-		GameStateManager::pushState(std::make_unique<PauseState>(window, player));
 		player.timePlayed += player.gameClock.getElapsedTime();
+		GameStateManager::pushState(std::make_unique<PauseState>(window, player));
 	} else if (evt.key.code == sf::Keyboard::A) {
 		deselect();
 		float fullSize = tileSize + lineSize;

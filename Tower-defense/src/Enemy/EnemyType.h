@@ -12,5 +12,6 @@ enum class EnemyType
 	Normal,
 	Fast,
 	Tank,
-	Flying
+	Flying,
+	Boss
 };

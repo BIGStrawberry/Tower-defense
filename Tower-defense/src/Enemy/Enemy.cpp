@@ -9,8 +9,10 @@ Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, En
 	data(EnemyDataContainer::get(type)),
 	slowed(false),
 	original_speed(data.speed),
-	bar(data.hp)
+	bar(data.hp + (waveNumber * 2.5f))
 {
+	data.hp += waveNumber * 2.5f;
+	data.gold += waveNumber;
 	data.body.setPosition(path[0]);
 	data.body.setRotation(-90.f);
 }

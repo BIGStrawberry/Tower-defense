@@ -49,6 +49,7 @@ void Grid::update() {
 			enemy_reached_base_sound.play();
 			player.lives -= enemy.getDmg();
 			if (player.lives <= 0) {
+				player.timePlayed += player.gameClock.getElapsedTime();
 				GameStateManager::pushState(std::make_unique<ScoreState>(window, player));
 			}
 			enemies.erase(enemies.begin() + i);
@@ -124,6 +125,11 @@ void Grid::startWave() {
 	for (uint16_t i = 0; i < numberOfGroups; ++i) {
 		// Tank
 		uint32_t randInt = rand() % 100;
+
+		if (waveNumber % 5 == 0 && waveNumber >= 15) {
+			waveQueue.push_back(make_enemy(EnemyType::Boss, window, path, waveNumber));
+		}
+
 		if (waveNumber == TANK_START_WAVE || (waveNumber >= TANK_START_WAVE && randInt <= TANK_SPAWN_RATE)) {
 			for (uint8_t i = 0; i < TANK_PER_GROUP; ++i) {
 				waveQueue.push_back(make_enemy(EnemyType::Tank, window, path, waveNumber));
