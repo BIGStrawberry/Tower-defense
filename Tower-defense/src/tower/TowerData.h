@@ -2,6 +2,7 @@
 #include "SFML\Graphics.hpp"
 #include "SFML\Audio.hpp"
 #include <string>
+#include <array>
 
 #pragma region comment
 /**
@@ -14,5 +15,5 @@ struct TowerData {
 	sf::Time reload_time;
 	float damage;
 	int32_t cost;
-	const sf::Sprite turret;
+	const std::array<sf::Sprite, 3> turrets;
 };

@@ -10,7 +10,7 @@ Tower::Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, std::vecto
 	enemies(enemies),
 	render_range(false),
 	window(window),
-	turret(towerData.turret),
+	turret(towerData.turrets[0]),
 	type(type),
 	range_circle(towerData.radius),
 	upgrade_level(0),
@@ -53,7 +53,7 @@ void Tower::rotateTurret() {
 	sf::Vector2f diff = target->getPosition() - tower_shape.getPosition();
 	float angle_rads = std::atan2(diff.y, diff.x);
 	float degrees = angle_rads * (180 / 3.141592f);
-	turret.setRotation(degrees+90);
+	turret.setRotation(degrees+180);
 
 }
 
@@ -119,7 +119,9 @@ void Tower::update() {
 
 void Tower::upgrade() {
 	upgrade_level++;
-
+	auto pos = turret.getPosition();
+	turret = towerData.turrets[upgrade_level];
+	turret.setPosition(pos);
 	// Give tower damage a multiplier based on the upgrade level
 	towerData.damage *= static_cast<float>(upgrade_level * 1.1);
 

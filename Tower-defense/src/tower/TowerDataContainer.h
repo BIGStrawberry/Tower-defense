@@ -4,6 +4,7 @@
 #include "TowerData.h"
 #include "../Assets/TextureContainer.h"
 #include "../Assets/SoundContainer.h"
+#include <array>
 
 #pragma region comment
 /**
