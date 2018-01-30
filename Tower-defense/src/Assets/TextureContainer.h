@@ -11,7 +11,7 @@
 * @file TextureContainer.cpp
 * @details This is a static class, that contains all the textures.
 * Textures can be retrieved here with a string as key.
-* Load has to be called at the start of the game, before all other containers.
+* Load has to be called at the start of the game, before every container that uses Textures.
 */
 #pragma endregion
 

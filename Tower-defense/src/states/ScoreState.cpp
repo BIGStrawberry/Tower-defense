@@ -31,17 +31,37 @@ ScoreState::ScoreState(sf::RenderWindow& window, const Player & player):
 	scoreTowersPlaced("Towers placed:     " + std::to_string(player.numberOfTowersPlaced), font),
 	scoreTowersUpgraded("Towers upgraded:   " + std::to_string(player.numberOfTowersUpgraded), font),
 	scoreEnemiesKilled("Enemies killed:    " + std::to_string(player.numberOfEnemiesKilled), font),
-	scoreAccumulatedGold("Total gold earned: " + std::to_string(player.getAccumulatedGold()), font)
+	scoreAccumulatedGold("Total gold earned: " + std::to_string(player.getAccumulatedGold()), font),
+	scoreTimePlayed("Time played:       " + formatTime(player.timePlayed), font)
 {}
+
 
 uint32_t ScoreState::calculateScore(const Player & player) {
 	return static_cast<int>((player.getAccumulatedGold() * (player.numberOfWavesCompleted * 0.5)));
+}
+
+std::string ScoreState::formatTime(sf::Time timePlayed) {
+	uint32_t seconds, minutes, hours;
+
+	seconds = static_cast<uint32_t>(timePlayed.asSeconds());
+	minutes = seconds / 60;
+	hours = minutes / 60;
+
+	std::string formattedTime;
+	formattedTime.append(std::to_string(hours));
+	formattedTime.append(":");
+	formattedTime.append(std::to_string(minutes % 60));
+	formattedTime.append(":");
+	formattedTime.append(std::to_string(seconds % 60));
+
+	return formattedTime;
 }
 
 void ScoreState::init() {
 	if (!font.loadFromFile("resources/fonts/consola.ttf")) {
 		std::cout << "Could not load consola.ttf" << std::endl;
 	}
+
 
 	// Center text
 	sf::FloatRect textRect = scoreText.getGlobalBounds();
@@ -62,6 +82,9 @@ void ScoreState::init() {
 
 	scoreAccumulatedGold.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
 	scoreAccumulatedGold.setPosition({static_cast<float>(window.getSize().x) / 2, 550.0f});
+
+	scoreTimePlayed.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	scoreTimePlayed.setPosition({static_cast<float>(window.getSize().x) / 2, 575.0f});
 }
 
 void ScoreState::update() {
@@ -74,6 +97,7 @@ void ScoreState::render() const {
 	window.draw(scoreTowersUpgraded);
 	window.draw(scoreWavesCompleted);
 	window.draw(scoreAccumulatedGold);
+	window.draw(scoreTimePlayed);
 	menu.render();
 }
 

@@ -3,7 +3,7 @@
 #include <vector>
 #include "EnemyType.h"
 #include "EnemyDataContainer.h"
-#include "../Textures/TextureContainer.h"
+#include "../Assets/TextureContainer.h"
 #include "HpBar.h"
 
 
@@ -16,20 +16,15 @@
 * Enemies can be updated and rendered.
 */
 #pragma endregion
-class Enemy
-{
+class Enemy {
 protected:
 	sf::RenderWindow& window;
 	const std::vector<sf::Vector2f>& path;
 	float distance;
-	sf::Sprite body;
 	sf::Vector2f next_target_pos;
 	sf::Vector2f vector;
-	float speed;
+	EnemyData data;
 	float original_speed;
-	int hp;
-	int dmg;
-	int gold;
 
 	HpBar bar;
 
@@ -76,7 +71,7 @@ public:
 	*/
 
 #pragma endregion
-	void decreaseHp(int dmg);
+	void decreaseHp(float dmg);
 #pragma region comment
 	/**
 	* @brief returns Enemy's position

@@ -16,6 +16,7 @@ private:
 	sf::Text text;
 	Menu menu;
 	std::unique_ptr<SpearContainer> easterEgg;
+	sf::Music background_music;
 public:
 	MenuState(sf::RenderWindow& window);
 

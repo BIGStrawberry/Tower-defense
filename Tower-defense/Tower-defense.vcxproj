@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Assets\SoundContainer.cpp" />
     <ClCompile Include="src\helpers\Settings.cpp" />
     <ClCompile Include="src\helpers\ToggleFullscreen.cpp" />
     <ClCompile Include="src\Enemy\HpBar.cpp" />
@@ -43,9 +44,10 @@
     <ClCompile Include="src\tower\TowerDataContainer.cpp" />
     <ClCompile Include="src\tower\TowerSlow.cpp" />
     <ClCompile Include="src\Action\Action.cpp" />
-    <ClCompile Include="src\Textures\TextureContainer.cpp" />
+    <ClCompile Include="src\Assets\TextureContainer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Assets\SoundContainer.h" />
     <ClInclude Include="src\helpers\Settings.h" />
     <ClInclude Include="src\helpers\ToggleFullscreen.h" />
     <ClInclude Include="src\Enemy\HpBar.h" />
@@ -65,7 +67,7 @@
     <ClInclude Include="src\tower\TowerDataContainer.h" />
     <ClInclude Include="src\tower\TowerSlow.h" />
     <ClInclude Include="src\Action\Action.h" />
-    <ClInclude Include="src\Textures\TextureContainer.h" />
+    <ClInclude Include="src\Assets\TextureContainer.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player.h" />

@@ -1,5 +1,6 @@
 #pragma once
 #include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
 #include <iostream>
 #include <math.h>
 #include <memory>
@@ -9,8 +10,7 @@
 #include "TowerType.h"
 #include "TowerDataContainer.h"
 #include "TowerData.h"
-
-#include "../Textures/TextureContainer.h"
+#include "../Assets/TextureContainer.h"
 
 /**
 * @class Tower
