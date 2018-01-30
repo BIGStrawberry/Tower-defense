@@ -9,32 +9,53 @@ MenuState::MenuState(sf::RenderWindow& window):
 			{250, 75},
 			{static_cast<float>(window.getSize().x) / 2 - 250 / 2, 150},
 			{"Play game", font, 20}
-		}, {
+		},{
+			window,
+			std::function<void()>([&window]() { toggleFullscreen(window); }),
+			{250, 75},
+			{static_cast<float>(window.getSize().x) / 2 - 250 / 2, 350},
+			{"Toggle fullscreen", font, 20}
+		},{
 			window,
 			std::function<void()>([&window]() { window.close(); }),
 			{250, 75},
-			{static_cast<float>(window.getSize().x) / 2 - 250 / 2, 350},
+			{static_cast<float>(window.getSize().x) / 2 - 250 / 2, 550},
 			{"Exit game", font, 20}
 		}
-	})
+	}),
+	text("A Mazing Tower Defence", font)
 {}
 
 void MenuState::init() {
+	background_music.openFromFile("resources/sounds/background_music.ogg");
+	background_music.setLoop(true);
+	background_music.play();
+
 	if (!font.loadFromFile("resources/fonts/consola.ttf")) {
 		std::cout << "Could not load consola.ttf" << std::endl;
 	}
-	text.setFont(font);
-	text.setString("A Mazing Tower Defence");
-	// TODO: Better center d;)
-	text.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 24.0f});
+
+	// Center text
+	sf::FloatRect textRect = text.getGlobalBounds();
+	text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	text.setPosition({static_cast<float>(window.getSize().x) / 2, 24.0f});
+
+	for (uint8_t i = 0; i < 4; ++i) {
+		if (sf::Joystick::isConnected(i)) {
+			easterEgg = std::move(std::make_unique<SpearContainer>(window));
+			break;
+		}
+	}
 }
 
 void MenuState::update() {
+	if (easterEgg != nullptr) easterEgg->update();
 }
 
 void MenuState::render() const {
 	window.draw(text);
 
+	if (easterEgg != nullptr) easterEgg->render();
 	menu.render();
 }
 
@@ -47,10 +68,10 @@ void MenuState::onKeyPressed(sf::Event& evt) {
 		menu.onPress();
 		break;
 	case sf::Keyboard::Up:
-		menu.selectNext();
+		menu.selectPrevious();
 		break;
 	case sf::Keyboard::Down:
-		menu.selectPrevious();
+		menu.selectNext();
 		break;
 	}
 }
@@ -61,4 +82,17 @@ void MenuState::onMouseButtonPressed(sf::Event& evt) {
 
 void MenuState::onMouseMoved(sf::Event& evt) {
 	menu.onMouseMoved(evt);
+}
+
+void MenuState::onJoystickMoved(sf::Event& evt) {
+	if (easterEgg != nullptr) easterEgg->onJoystickMoved(evt);
+}
+
+void MenuState::onJoystickConnected(sf::Event& evt) {
+	if (easterEgg != nullptr) easterEgg->connectController(evt.joystickConnect.joystickId);
+	else easterEgg = std::move(std::make_unique<SpearContainer>(window));
+}
+
+void MenuState::onJoystickDisconnected(sf::Event& evt) {
+	if (easterEgg != nullptr) easterEgg->disconnectController(evt.joystickConnect.joystickId);
 }

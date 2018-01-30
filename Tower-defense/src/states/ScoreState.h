@@ -12,7 +12,7 @@
 class ScoreState: public State {
 private:
 	sf::Font font;
-	sf::Text scoreText, scoreEnemiesKilled, scoreTowersPlaced, scoreWavesCompleted,  scoreTowersUpgraded, scoreAccumulatedGold;
+	sf::Text scoreText, scoreEnemiesKilled, scoreTowersPlaced, scoreWavesCompleted,  scoreTowersUpgraded, scoreAccumulatedGold, scoreTimePlayed;
 	Menu menu;
 	const Player & player;
 public:
@@ -26,14 +26,18 @@ public:
 	*/
 	uint32_t calculateScore(const Player & player);
 
+	/**
+	* @brief Formats the gametime from seconds to HH:MM:SS
+	* @param sf::Time timePlayed
+	*/
+	std::string formatTime(sf::Time timePlayed);
+
 	void init() override;
 	void update() override;
 	void render() const override;
 	void cleanUp() override;
 
 	void onKeyPressed(sf::Event& evt) override;
-	void onKeyReleased(sf::Event& evt) override {};
 	void onMouseButtonPressed(sf::Event& evt) override;
-	void onMouseButtonReleased(sf::Event& evt) override {};
 	void onMouseMoved(sf::Event& evt) override;
 };

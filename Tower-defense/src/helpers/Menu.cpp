@@ -4,7 +4,8 @@
 
 Menu::Menu(sf::RenderWindow& window, std::vector<MenuItem> menuItems):
 	window(window),
-	menuItems(menuItems)
+	menuItems(menuItems),
+	item_click(SoundContainer::get("menu_click.ogg"))
 {}
 
 void Menu::selectNext() {
@@ -17,6 +18,8 @@ void Menu::selectPrevious() {
 
 void Menu::onPress() {
 	if (selectedIndex >= 0) {
+		item_click.play();
+		sf::sleep(item_click.getBuffer()->getDuration());
 		menuItems[selectedIndex].onPress();
 	}
 }

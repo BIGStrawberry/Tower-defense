@@ -8,9 +8,11 @@ Player::Player(sf::RenderWindow & window, uint8_t lives, uint32_t startingGold):
 {}
 
 
-void Player::addGold(int32_t amount) {
+void Player::addGold(int32_t amount, bool increase_accumulated) {
 	gold += amount;
-	accumulatedGold += amount;
+	if (increase_accumulated) {
+		accumulatedGold += amount;
+	}
 }
 
 void Player::resetGold() {

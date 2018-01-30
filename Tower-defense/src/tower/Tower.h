@@ -1,5 +1,6 @@
 #pragma once
 #include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
 #include <iostream>
 #include <math.h>
 #include <memory>
@@ -9,6 +10,8 @@
 #include "TowerType.h"
 #include "TowerDataContainer.h"
 #include "TowerData.h"
+
+#include "../Assets/TextureContainer.h"
 
 /**
 * @class Tower
@@ -30,6 +33,7 @@
 class Tower
 {
 protected:
+
 	/**
 	* @brief tower data
 	*/
@@ -61,7 +65,7 @@ protected:
 	/**
 	* projectile vector used to store the projectiles, and to update and render them.
 	*/
-	std::vector<Projectile> projectiles;
+	std::vector<std::unique_ptr<Projectile>> projectiles;
 
 	/**
 	* SFML window to draw on
@@ -72,18 +76,30 @@ protected:
 	* circle shape used to display the range of the tower
 	*/
 	sf::CircleShape range_circle;
-	/**
-	* body of the tower
-	*/
-	sf::RectangleShape tower_shape;
-	/**
-	* VertexArray Linestrip used to draw the turret.
-	*/
-	sf::VertexArray turret;
+
+	sf::Sprite tower_shape;
+	sf::Sprite turret;
+
 	/**
 	* @brief type of tower
 	*/
 	TowerType type;
+
+	/*
+	@brief upgrade level indicates which level the tower is upgraded to. default is 0.
+	*/
+
+	uint8_t upgrade_level;
+
+
+
+	/*
+	@brief amount of gold it costs to upgrade this tower once.
+	*/
+	uint32_t upgrade_cost;
+
+	uint32_t acculumated_cost;
+
 
 	/**
 	* @brief returns the distance to the Enemy using pythagoras theorem
@@ -133,6 +149,7 @@ public:
 	* 
 	*/
 	void setPosition(const sf::Vector2f& pos) {
+		turret.setPosition(pos);
 		tower_shape.setPosition(pos);
 		range_circle.setPosition(tower_shape.getPosition());
 	}
@@ -142,7 +159,7 @@ public:
 	*
 	*/
 	void setColor(const sf::Color& color) {
-		tower_shape.setFillColor(color);
+		tower_shape.setColor(color);
 	}
 
 	/**
@@ -155,7 +172,7 @@ public:
 	/**
 	* @brief getter for the tower it's damage
 	*/
-	int32_t getDamage() {
+	float getDamage() {
 		return towerData.damage;
 	}
 
@@ -178,10 +195,21 @@ public:
 	void enableRangeRender(bool s);
 
 	/**
-	* @brief getter for tower cost
+	* @brief getter for tower cost, returns accumulated cost which is tower price + upgrade prices.
 	*/
 	int32_t getCost() const {
 		return towerData.cost;
+	}
+
+	/**
+	* @brief getter for tower cost, returns accumulated cost which is tower price + upgrade prices.
+	*/
+	int32_t getAccumulatedCost() const {
+		return acculumated_cost;
+	}
+
+	int32_t getUpgradeCost() const {
+		return upgrade_cost;
 	}
 
 	/**
@@ -201,7 +229,20 @@ public:
 	Creates a projectile after the reload_time if the tower has a target.
 	
 	*/
-	void update();
+	virtual void update();
+
+
+	/*
+	@brief upgrade the tower once.
+	increases stats like damage, range, 
+	//should change texture
+	*/
+	void upgrade();
+
+	/*
+	@brief returns upgrade level
+	*/
+	uint8_t getUpgradeLevel();
 
 };
 

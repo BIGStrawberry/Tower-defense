@@ -14,6 +14,7 @@
 #include "../Action/Action.h"
 #include "../helpers/Menu.h"
 #include "../helpers/MenuItem.h"
+#include "../Assets/SoundContainer.h"
 
 class PlayState: public State {
 private: 
@@ -34,6 +35,8 @@ private:
 	sf::RectangleShape waveTimerRect;
 	std::array<std::shared_ptr<Tower>, 3> placeableTowers;
 	Menu actionsMenu;
+
+	sf::Sound tower_click_sound;
 
 	/**
 	* @brief Sets given tower as selected, changes rendering settings.
@@ -77,8 +80,6 @@ public:
 	void cleanUp() override;
 
 	void onKeyPressed(sf::Event& evt) override;
-	void onKeyReleased(sf::Event& evt) override {};
 	void onMouseButtonPressed(sf::Event& evt) override;
-	void onMouseButtonReleased(sf::Event& evt) override {};
 	void onMouseMoved(sf::Event& evt) override;
 };

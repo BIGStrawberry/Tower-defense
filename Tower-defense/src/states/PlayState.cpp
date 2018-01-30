@@ -5,7 +5,7 @@
 PlayState::PlayState(sf::RenderWindow& window):
 	State(window),
 	tileSize(31),
-	player(window, 20, 375),
+	player(window, 20, 375000),
 	grid(window, 31, player),
 	placementTower(nullptr),
 	waveNumberText("Wave: 999", font, 30),
@@ -34,7 +34,8 @@ PlayState::PlayState(sf::RenderWindow& window):
 			{static_cast<float>(window.getSize().x) / 4 + 180, static_cast<float>(window.getSize().y) - 50},
 			{"Undo", font, 20}
 		}
-	})
+	}),
+	tower_click_sound(SoundContainer::get("menu_click.ogg"))
 {}
 
 void PlayState::select(std::shared_ptr<Tower> t) {
@@ -79,14 +80,10 @@ void PlayState::rebuildGrid() {
 			grid.placeTower(action.x, action.y, action.tower_type, false);
 			break;
 		case Action::ACTION_TYPE::SELL_TOWER:
-			//TODO: REMOVE
-			//TODO: RETURN GOLD OF TOWER
-			//TODO: Call grid.sellTower(), or something like that
+			grid.removeTower(action.x, action.y, false);
 			break;
 		case Action::ACTION_TYPE::UPGRADE_TOWER:
-			//TODO: UPGRADE TOWERS
-			//TODO: TAKE GOLD FOR UPGRADING THE TOWER
-			//TODO: Call grid.upgradeTower(), or something like that
+			grid.upgradeTower(action.x, action.y, false);
 			break;
 		}
 	}
@@ -107,7 +104,7 @@ void PlayState::init() {
 	if (!font.loadFromFile("resources/fonts/consola.ttf")) {
 		std::cout << "Could not load consola.ttf" << std::endl;
 	}
-	
+
 	// In game stats
 	sf::FloatRect waveTextRect = waveNumberText.getGlobalBounds();
 	waveNumberText.setOrigin({waveTextRect.left + waveTextRect.width / 2, 0});
@@ -146,6 +143,9 @@ void PlayState::init() {
 	placeableTowers[0] = make_tower(window, tileSize, {xPos, yPos - yOffset}, dummyEnemies, TowerType::Normal);
 	placeableTowers[1] = make_tower(window, tileSize, {xPos + xOffset, yPos - yOffset}, dummyEnemies, TowerType::Long);
 	placeableTowers[2] = make_tower(window, tileSize, {xPos + xOffset * 2, yPos - yOffset}, dummyEnemies, TowerType::Slow);
+
+	//  Reset time played d:)
+	player.gameClock.restart();
 }
 
 void PlayState::update() {
@@ -166,9 +166,6 @@ void PlayState::update() {
 	else if (placementTower != nullptr) {
 		attackDamageText.setString("Ad: " + std::to_string(placementTower->getDamage()));
 	}
-
-
-
 	waveTimerRect.setSize({static_cast<float>(window.getSize().x) - static_cast<float>(window.getSize().x) / grid.getWaveDelay().asSeconds() * grid.getWaveClock().asSeconds(), 15});
 }
 
@@ -195,27 +192,55 @@ void PlayState::cleanUp() {}
 void PlayState::onKeyPressed(sf::Event& evt) {
 	if (evt.key.code ==  sf::Keyboard::Escape) {
 		GameStateManager::pushState(std::make_unique<PauseState>(window, player));
+		player.timePlayed += player.gameClock.getElapsedTime();
 	} else if (evt.key.code == sf::Keyboard::A) {
 		deselect();
 		setPlaceTower(TowerType::Normal);
+		placementTower->enableRangeRender(true);
 	} else if (evt.key.code == sf::Keyboard::U) {
 		undo();
 	} else if (evt.key.code == sf::Keyboard::S) {
+	    deselect();
 		setPlaceTower(TowerType::Long);
+		placementTower->enableRangeRender(true);
 	} else if (evt.key.code == sf::Keyboard::W) {
 		grid.startWave();
 	} else if (evt.key.code == sf::Keyboard::Q) {
 		if (selected) {
-			grid.removeTower(selected);
+			float fullSize = tileSize + lineSize;
+			uint8_t x = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().x) / fullSize)) - 3;
+			uint8_t y = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().y) / fullSize)) - 3;
+			grid.removeTower(x, y);
 			deselect();
 		}
+	} else if (evt.key.code == sf::Keyboard::D) {
+		deselect();
+		setPlaceTower(TowerType::Slow);
+		placementTower->enableRangeRender(true);
+	} 
+	else if (evt.key.code == sf::Keyboard::Y) {
+
+		if (selected) {
+			if (player.getGold() >= selected->getUpgradeCost()) {
+
+				float fullSize = tileSize + lineSize;
+				uint8_t x = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().x) / fullSize)) - 3;
+				uint8_t y = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().y) / fullSize)) - 3;
+
+				grid.upgradeTower(x, y);
+			}
+		}
+
 	}
 };
 
 void PlayState::onMouseButtonPressed(sf::Event& evt) {
 	actionsMenu.onPress();
 
-	if (placementTower != nullptr) {
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) {
+		placementTower = nullptr;
+	}
+	else if (placementTower != nullptr) {
 		deselect();
 		// TODO: The grid should have a position insted of a x/y offset, so that we can substract the position instead of 3
 		float fullSize = tileSize + lineSize;
@@ -240,6 +265,7 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 		std::shared_ptr<Tower> tmp_tower = grid.intersects(sf::Vector2f(static_cast<float>(evt.mouseButton.x), static_cast<float>(evt.mouseButton.y)));
 		if (tmp_tower) {
 			select(tmp_tower);
+			tower_click_sound.play();//towerclick sound
 		} else {
 			deselect();
 		}

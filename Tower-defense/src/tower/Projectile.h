@@ -18,7 +18,7 @@
 */
 
 class Projectile {
-private:
+protected:
 	/**
 	* this is the number of pixels the projectile jumps each update.
 	*/
@@ -26,7 +26,7 @@ private:
 	/**
 	* Amount that will be substracted from the enemy when it overlaps
 	*/
-	int damage;
+	float damage;
 	/**
 	* bool to notify parent it should be removed.
 	*/
@@ -43,11 +43,18 @@ private:
 	The enemy it is tracking and will deal damage to.
 	*/
 	std::shared_ptr<Enemy> target;
+
+	/*
+	This function is called when the projectile hits the target, it will decrease health and die.
+	It is virtual because other projectiles may behave differently.
+	*/
+	virtual void onImpact();
+
 public:
 	/**
 	@brief constructs the projectile, sets color, origin and position.
 	*/
-	Projectile(sf::RenderWindow & window, int damage, sf::Vector2f position, std::shared_ptr<Enemy> & target);
+	Projectile(sf::RenderWindow & window, float damage, sf::Vector2f position, std::shared_ptr<Enemy> & target);
 	/**
 	* @brief renders the body
 	*/

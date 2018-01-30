@@ -7,18 +7,22 @@ Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, En
 	next_target_pos(path[0]),
 	distance(0.0),
 	speed(EnemyDataContainer::get(type).speed),
-	hp(EnemyDataContainer::get(type).hp + waveNumber * 2),
+	hp(EnemyDataContainer::get(type).hp + waveNumber * 3),
 	dmg(EnemyDataContainer::get(type).damage),
-	gold(EnemyDataContainer::get(type).gold + waveNumber)
+	gold(EnemyDataContainer::get(type).gold + waveNumber),
+	body(EnemyDataContainer::get(type).body),
+	slowed(false),
+	original_speed(speed),
+	bar((float)hp)
 {
-	body.setRadius(20);
-	body.setOrigin(sf::Vector2f(body.getRadius(), body.getRadius()));
 	body.setPosition(path[0]);
+	body.setRotation(-90.f);
 }
 
 void Enemy::render() const
 {
 	window.draw(body);
+	bar.render(window);
 }
 
 const sf::Vector2f Enemy::getPosition() const
@@ -33,6 +37,7 @@ void Enemy::decreaseHp(int dmg)
 	{
 		state = States::Dead;
 	}
+	bar.setHp((float)hp);
 }
 
 const int Enemy::getDmg() const
@@ -52,4 +57,18 @@ sf::FloatRect Enemy::getBounds() const
 
 Enemy::~Enemy()
 {
+}
+
+void Enemy::reduce_speed(float factor, sf::Time time) {
+	speed = original_speed;
+	speed *= factor;
+	slow_duration = time;
+	slow_timer.restart();
+	slowed = true;
+}
+
+
+bool Enemy::isSlowed()
+{
+	return slowed;
 }

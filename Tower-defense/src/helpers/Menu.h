@@ -3,6 +3,7 @@
 #include <vector>
 #include <SFML\Graphics.hpp>
 #include "MenuItem.h"
+#include "../Assets/SoundContainer.h"
 
 /**
 * @class Menu
@@ -28,6 +29,11 @@ private:
 	* @brief Index of currently selected menu item
 	*/
 	int8_t selectedIndex = -1;
+
+	/*
+	@brief clicking sound
+	*/
+	sf::Sound item_click;
 public:
 	/**
 	* @brief Constructor

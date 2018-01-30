@@ -2,7 +2,6 @@
 
 #include <functional>
 #include <SFML\Graphics.hpp>
-
 /**
 * @class MenuItem
 * @file MenuItem.h
@@ -35,6 +34,7 @@ private:
 	* @brief Button label
 	*/
 	sf::Text text;
+
 public:
 	/**
 	* @brief constructor
