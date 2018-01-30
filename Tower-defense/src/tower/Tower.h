@@ -10,7 +10,6 @@
 #include "TowerType.h"
 #include "TowerDataContainer.h"
 #include "TowerData.h"
-
 #include "../Assets/TextureContainer.h"
 
 /**
