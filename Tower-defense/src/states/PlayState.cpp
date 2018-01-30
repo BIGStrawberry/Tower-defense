@@ -181,14 +181,9 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 			// TODO: Replace dummyCost with actual tower cost, Move tower cost to grid class
 			if (player.getGold() >= dummyTower->getCost()) {
 				grid.placeTower(x, y, dummyTower->getType(), true);
-				dummyTower = nullptr;
-			}
-			else
-			{
-				dummyTower = nullptr;
 			}
 		} else {
-			std::cout << "Oei" << std::endl;
+			dummyTower = nullptr;
 		}
 	}
 	else
