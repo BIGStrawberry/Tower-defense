@@ -12,5 +12,9 @@ enum class EnemyType
 	Normal,
 	Fast,
 	Tank,
-	Flying
+	Flying,
+	Ubeah_Knucklez,
+	Boss_Fast,
+	Boss_Tank,
+	Boss_Flying
 };
