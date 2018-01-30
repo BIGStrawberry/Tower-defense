@@ -10,7 +10,7 @@ Tower::Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, std::vecto
 	enemies(enemies),
 	render_range(false),
 	window(window),
-	turret(towerData.turrets[0]),
+	turret(towerData.turret_sprites[0]),
 	type(type),
 	range_circle(towerData.radius),
 	upgrade_level(0),
@@ -120,7 +120,7 @@ void Tower::update() {
 void Tower::upgrade() {
 	upgrade_level++;
 	auto pos = turret.getPosition();
-	turret = towerData.turrets[upgrade_level];
+	turret = towerData.turret_sprites[upgrade_level];
 	turret.setPosition(pos);
 	// Give tower damage a multiplier based on the upgrade level
 	towerData.damage *= static_cast<float>(upgrade_level * 1.1);
