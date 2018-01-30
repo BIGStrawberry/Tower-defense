@@ -27,7 +27,7 @@ private:
 	* @brief Spawning rate (0 - 100%), First wave the enemy can appear and the number of enemies that span per groep (there can be multiple groups per wave)
 	*/
 	static constexpr const uint8_t FLYING_SPAWN_RATE = 25, FAST_SPAWN_RATE = 85, NORMAL_SPAWN_RATE = 100, TANK_SPAWN_RATE = 100;
-	static constexpr const uint8_t FLYING_START_WAVE = 15, FAST_START_WAVE = 10, NORMAL_START_WAVE = 1,   TANK_START_WAVE = 5;
+	static constexpr const uint8_t FLYING_START_WAVE = 15, FAST_START_WAVE = 11, NORMAL_START_WAVE = 1,   TANK_START_WAVE = 5;
 	static constexpr const uint8_t FLYING_PER_GROUP  = 3,  FAST_PER_GROUP  = 5,  NORMAL_PER_GROUP  = 6,   TANK_PER_GROUP  = 4;
 	/**
 	* @details Clock for pre-wave build time
