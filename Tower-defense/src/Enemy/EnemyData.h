@@ -8,9 +8,9 @@
 
 struct EnemyData
 {
-	int hp;
+	float hp;
 	float speed;
-	int damage;
-	int gold;
-	const sf::Sprite body;
+	int32_t damage;
+	int32_t gold;
+	sf::Sprite body;
 };
