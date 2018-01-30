@@ -178,7 +178,6 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 
 		if (grid.canBePlaced(x, y)) {
 			std::cout << "Success!" << std::endl;
-			// TODO: Replace dummyCost with actual tower cost, Move tower cost to grid class
 			if (player.getGold() >= dummyTower->getCost()) {
 				grid.placeTower(x, y, dummyTower->getType(), true);
 			}
