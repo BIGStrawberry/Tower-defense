@@ -11,17 +11,6 @@ sf::Texture& TextureContainer::get(std::string name) {
 
 void TextureContainer::load() {
 	auto temp = std::make_shared<sf::Texture> ();
-	temp->loadFromFile("resources/textures/normal_turret.png");
-	container.insert(std::pair<std::string, std::shared_ptr<sf::Texture>>("normal_turret.png", temp));
-
-	temp = std::make_shared<sf::Texture>();
-	temp->loadFromFile("resources/textures/slow_turret.png");
-	container.insert(std::pair<std::string, std::shared_ptr<sf::Texture>>("slow_turret.png", temp));
-
-	temp = std::make_shared<sf::Texture>();
-	temp->loadFromFile("resources/textures/long_turret.png");
-	container.insert(std::pair<std::string, std::shared_ptr<sf::Texture>>("long_turret.png", temp));
-
 	temp = std::make_shared<sf::Texture>();
 	temp->loadFromFile("resources/textures/base.png");
 	container.insert(std::pair<std::string, std::shared_ptr<sf::Texture>>("base.png", temp));
@@ -41,4 +30,42 @@ void TextureContainer::load() {
 	temp = std::make_shared<sf::Texture>();
 	temp->loadFromFile("resources/textures/tank.png");
 	container.insert(std::pair<std::string, std::shared_ptr<sf::Texture>>("tank.png", temp));
+
+	temp = std::make_shared<sf::Texture>();
+	temp->loadFromFile("resources/textures/normal_level1.png");
+	container.insert(std::pair<std::string, std::shared_ptr<sf::Texture>>("normal_level1.png", temp));
+
+	temp = std::make_shared<sf::Texture>();
+	temp->loadFromFile("resources/textures/normal_level2.png");
+	container.insert(std::pair<std::string, std::shared_ptr<sf::Texture>>("normal_level2.png", temp));
+
+	temp = std::make_shared<sf::Texture>();
+	temp->loadFromFile("resources/textures/normal_level3.png");
+	container.insert(std::pair<std::string, std::shared_ptr<sf::Texture>>("normal_level3.png", temp));
+
+	temp = std::make_shared<sf::Texture>();
+	temp->loadFromFile("resources/textures/slow_level1.png");
+	container.insert(std::pair<std::string, std::shared_ptr<sf::Texture>>("slow_level1.png", temp));
+
+	temp = std::make_shared<sf::Texture>();
+	temp->loadFromFile("resources/textures/slow_level2.png");
+	container.insert(std::pair<std::string, std::shared_ptr<sf::Texture>>("slow_level2.png", temp));
+
+	temp = std::make_shared<sf::Texture>();
+	temp->loadFromFile("resources/textures/slow_level3.png");
+	container.insert(std::pair<std::string, std::shared_ptr<sf::Texture>>("slow_level3.png", temp));
+
+	temp = std::make_shared<sf::Texture>();
+	temp->loadFromFile("resources/textures/long_level1.png");
+	container.insert(std::pair<std::string, std::shared_ptr<sf::Texture>>("long_level1.png", temp));
+
+	temp = std::make_shared<sf::Texture>();
+	temp->loadFromFile("resources/textures/long_level2.png");
+	container.insert(std::pair<std::string, std::shared_ptr<sf::Texture>>("long_level2.png", temp));
+
+	temp = std::make_shared<sf::Texture>();
+	temp->loadFromFile("resources/textures/long_level3.png");
+	container.insert(std::pair<std::string, std::shared_ptr<sf::Texture>>("long_level3.png", temp));
+
+
 }
