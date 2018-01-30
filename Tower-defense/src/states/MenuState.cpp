@@ -39,6 +39,7 @@ void MenuState::init() {
 	sf::FloatRect textRect = text.getGlobalBounds();
 	text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
 	text.setPosition({static_cast<float>(window.getSize().x) / 2, 24.0f});
+	text.setFillColor(sf::Color::Black);
 
 	for (uint8_t i = 0; i < 4; ++i) {
 		if (sf::Joystick::isConnected(i)) {

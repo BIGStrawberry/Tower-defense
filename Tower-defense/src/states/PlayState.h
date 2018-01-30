@@ -31,7 +31,7 @@ private:
 	std::shared_ptr<Tower> selected;
 	std::vector<std::shared_ptr<Enemy>> dummyEnemies;
 	sf::Vector2f placePosition;
-	sf::Text waveNumberText, livesText, goldText,/* sellsForText, upgradesForText,*/ attackDamageText;
+	sf::Text waveNumberText, livesText, goldText, sellsForText, placementCostText, upgradeCostText, attackDamageText;
 	sf::RectangleShape waveTimerRect;
 	std::array<std::shared_ptr<Tower>, 3> placeableTowers;
 	Menu actionsMenu;
@@ -48,6 +48,13 @@ private:
 	* selected to nullptr.
 	*/
 	void deselect();
+	
+	/**
+	* @brief function that takes a float number and returns a string with the n decimals
+	* @param f			the float that needs to be converted
+	* @param n			how many decimals the returned string needs to have
+	*/
+	std::string floatToDecimalstring(float f, int n);
 
 	/**
 	* @brief Sells the selected tower
@@ -61,6 +68,12 @@ private:
 	* @brief Undos latest player action
 	*/
 	void undo();
+
+	/**
+	* @brief Switches player to pause state
+	*/
+	void pause();
+
 public:
 	PlayState(sf::RenderWindow& window);
 
