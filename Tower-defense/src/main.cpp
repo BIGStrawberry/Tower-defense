@@ -2,10 +2,10 @@
 #include <memory>
 #include <random>
 #include <SFML/Graphics.hpp>
+#include "Assets\TextureContainer.h"
 #include "helpers\ToggleFullscreen.h"
 #include "helpers\GameStateManager.h"
 #include "states\MenuState.h"
-#include "Textures\TextureContainer.h"
 #include "tower\TowerDataContainer.h"
 
 /*
@@ -28,6 +28,7 @@ int main() {
 	//window.setVerticalSyncEnabled(true);
 	//window.setFramerateLimit(10);
 	TextureContainer::load();
+	SoundContainer::load();
 	EnemyDataContainer::load();
 	// The game starts in the MenuState
 	GameStateManager::pushState(std::make_shared<MenuState>(window));
@@ -45,6 +46,7 @@ int main() {
 	sf::Clock stats_clock;
 
 	sf::Time delta_time; // time between last update and current update call
+
 	while (window.isOpen()) {
 		while (window.pollEvent(evt)) {
 			switch (evt.type) {

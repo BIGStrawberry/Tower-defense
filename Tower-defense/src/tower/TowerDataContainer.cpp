@@ -11,6 +11,7 @@ TowerData& TowerDataContainer::get(TowerType type) {
 
 
 void TowerDataContainer::load() {
+
 	sf::Sprite turret;
 	turret.setOrigin(64.f, 64.f);
 	turret.setTexture(TextureContainer::get("normal_turret.png"));

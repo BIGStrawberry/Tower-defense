@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/graphics.hpp>
+#include <SFML/audio.hpp>
 #include <memory>
 #include <random>
 #include <array>
@@ -127,6 +128,12 @@ private:
 	* @brief The path that enemies follow
 	*/
 	std::vector<sf::Vector2f> path;
+
+	sf::Sound tower_construction_sound;
+	sf::Sound start_wave_sound;
+	sf::Sound enemy_dying_sound;
+	sf::Sound end_wave_sound;
+	sf::Sound enemy_reached_base_sound;
 
 public:
 	/**

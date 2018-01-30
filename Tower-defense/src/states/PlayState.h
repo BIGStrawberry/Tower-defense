@@ -12,6 +12,7 @@
 #include "../tower/Tower.h"
 #include "../tower/make_tower.h"
 #include "../Action/Action.h"
+#include "../Assets/SoundContainer.h"
 
 class PlayState: public State {
 private: 
@@ -29,6 +30,8 @@ private:
 	std::shared_ptr<Tower> selected;
 	std::vector<std::shared_ptr<Enemy>> dummyEnemies;
 	sf::Vector2f placePosition;
+
+	sf::Sound tower_click_sound;
 
 	/**
 	* @brief Sets given tower as selected, changes rendering settings.
