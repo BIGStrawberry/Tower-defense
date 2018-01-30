@@ -146,11 +146,26 @@ public:
 	}
 
 	/**
-	* @brief getter for towertype
+	* @brief getter for towerType
 	*/
 	TowerType getType() {
 		return type;
 	}
+
+	/**
+	* @brief getter for the tower it's damage
+	*/
+	int32_t getDamage() {
+		return towerData.damage;
+	}
+
+	/**
+	* @Brief getter for the price the tower sells for
+	*/
+	int8_t getSellPrice() {
+
+	}
+
 
 	/**
 	* @brief Returns bounds of tower

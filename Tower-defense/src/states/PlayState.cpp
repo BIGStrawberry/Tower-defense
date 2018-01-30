@@ -11,6 +11,9 @@ PlayState::PlayState(sf::RenderWindow& window):
 	waveNumberText("Wave: 999", font, 30),
 	livesText("Lives: 999", font, 30),
 	goldText("Gold: 999", font, 30),
+	//sellsForText("Sells for: 999", font, 30),
+	//upgradesForText("Upgrades for: 999", font, 30),
+	attackDamageText("Ad: 999", font, 30),
 	waveTimerRect(sf::Vector2f(static_cast<float>(window.getSize().x), 10)),
 	actionsMenu(window, {{
 			window,
@@ -118,6 +121,19 @@ void PlayState::init() {
 	goldText.setOrigin({goldTextRect.left + goldTextRect.width / 2, 0});
 	goldText.setPosition({static_cast<float>(window.getSize().x) * 0.75f, (tileSize + lineSize)});
 	
+	/*
+	sf::FloatRect sellsForTextRect = sellsForText.getGlobalBounds();
+	sellsForText.setOrigin({sellsForTextRect.left + sellsForTextRect.width / 2, 0});
+	sellsForText.setPosition({static_cast<float>(window.getSize().x)*0.25f, (tileSize + lineSize)});
+
+	sf::FloatRect upgradesForTextRect = upgradesForText.getGlobalBounds();
+	upgradesForText.setOrigin({upgradesForTextRect.left + upgradesForTextRect.width / 2, 0});
+	upgradesForText.setPosition({static_cast<float>(window.getSize().x)*0.25f, (tileSize + lineSize)});
+	*/
+	sf::FloatRect attackDamageTextRect = attackDamageText.getGlobalBounds();
+	attackDamageText.setOrigin({attackDamageTextRect.left + attackDamageTextRect.width / 2, attackDamageTextRect.top + attackDamageTextRect.height / 2 });
+	attackDamageText.setPosition({static_cast<float>(window.getSize().x)*0.55f, static_cast<float>(window.getSize().y) - 35});
+
 	// Wave timer
 	waveTimerRect.setPosition(0, 0);
 	waveTimerRect.setFillColor(sf::Color::Red);
@@ -140,11 +156,27 @@ void PlayState::update() {
 	waveNumberText.setString("Wave: " + std::to_string(grid.getWaveNumber()));
 	livesText.setString("Lives: " + std::to_string(player.lives));
 	goldText.setString("Gold: " + std::to_string(player.getGold()));
+
+	//TODO: make getters / use getters for sellsFor() and upgradesFor()
+	//sellsForText.setString("Sells for: " + std::to_string());
+	//upgradesForText.setString("Upgrades for: " + std::to_string());
+	if (selected != nullptr) {
+		attackDamageText.setString("Ad: " + std::to_string(selected->getDamage()));
+	}
+	else if (placementTower != nullptr) {
+		attackDamageText.setString("Ad: " + std::to_string(placementTower->getDamage()));
+	}
+
+
+
 	waveTimerRect.setSize({static_cast<float>(window.getSize().x) - static_cast<float>(window.getSize().x) / grid.getWaveDelay().asSeconds() * grid.getWaveClock().asSeconds(), 15});
 }
 
 void PlayState::render() const {
 	grid.render();
+	if (selected != nullptr || placementTower != nullptr) {
+		window.draw(attackDamageText);
+	}
 	window.draw(waveNumberText);
 	window.draw(livesText);
 	window.draw(goldText);
