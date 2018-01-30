@@ -2,9 +2,10 @@
 #include <memory>
 #include <random>
 #include <SFML/Graphics.hpp>
-#include "Helpers/GameStateManager.h"
-#include "States/MenuState.h"
 #include "Assets\TextureContainer.h"
+#include "helpers\ToggleFullscreen.h"
+#include "helpers\GameStateManager.h"
+#include "states\MenuState.h"
 #include "tower\TowerDataContainer.h"
 
 /*
@@ -18,8 +19,11 @@ Every second the update and render counter will be set in the title as updates p
 */
 
 int main() {
+	sf::VideoMode resolution(1280, 720);
+	std::string title = "A mazing tower defence";
+	sf::RenderWindow window(resolution, title, sf::Style::Titlebar | sf::Style::Close);
+	bool keyPressed = false;
 
-	sf::RenderWindow window(sf::VideoMode(1280, 720), "Game State Manager");
 	sf::Event evt;
 	//window.setVerticalSyncEnabled(true);
 	//window.setFramerateLimit(10);
@@ -50,10 +54,19 @@ int main() {
 				window.close();
 				break;
 			case sf::Event::KeyPressed:
-				GameStateManager::getCurrentState()->onKeyPressed(evt);
+				if (!keyPressed && evt.key.code == sf::Keyboard::F11) {
+					toggleFullscreen(window);
+					keyPressed = true; // Prevent spawming resize by holding the button (rests on key release)
+				} else {
+					GameStateManager::getCurrentState()->onKeyPressed(evt);
+				}
 				break;
 			case sf::Event::KeyReleased:
-				GameStateManager::getCurrentState()->onKeyReleased(evt);
+				if (keyPressed && evt.key.code == sf::Keyboard::F11) {
+					keyPressed = false;
+				} else {
+					GameStateManager::getCurrentState()->onKeyReleased(evt);
+				}
 				break;
 			case sf::Event::MouseButtonPressed:
 				GameStateManager::getCurrentState()->onMouseButtonPressed(evt);
@@ -101,7 +114,7 @@ int main() {
 		//update fps and ups 
 		if (stats_clock.getElapsedTime() > sf::seconds(1)) {
 			stats_clock.restart();
-			std::string temp = "ups = " + std::to_string(update_counter) + " fps = " + std::to_string(render_counter);
+			std::string temp = title + " || ups = " + std::to_string(update_counter) + " fps = " + std::to_string(render_counter);
 			window.setTitle(temp);
 			update_counter = render_counter = 0;
 		}

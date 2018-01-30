@@ -9,14 +9,21 @@ MenuState::MenuState(sf::RenderWindow& window):
 			{250, 75},
 			{static_cast<float>(window.getSize().x) / 2 - 250 / 2, 150},
 			{"Play game", font, 20}
-		}, {
+		},{
+			window,
+			std::function<void()>([&window]() { toggleFullscreen(window); }),
+			{250, 75},
+			{static_cast<float>(window.getSize().x) / 2 - 250 / 2, 350},
+			{"Toggle fullscreen", font, 20}
+		},{
 			window,
 			std::function<void()>([&window]() { window.close(); }),
 			{250, 75},
-			{static_cast<float>(window.getSize().x) / 2 - 250 / 2, 350},
+			{static_cast<float>(window.getSize().x) / 2 - 250 / 2, 550},
 			{"Exit game", font, 20}
 		}
-	})
+	}),
+	text("A Mazing Tower Defence", font)
 {}
 
 void MenuState::init() {
@@ -27,10 +34,11 @@ void MenuState::init() {
 	if (!font.loadFromFile("resources/fonts/consola.ttf")) {
 		std::cout << "Could not load consola.ttf" << std::endl;
 	}
-	text.setFont(font);
-	text.setString("A Mazing Tower Defence");
-	// TODO: Better center d;)
-	text.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 24.0f});
+
+	// Center text
+	sf::FloatRect textRect = text.getGlobalBounds();
+	text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	text.setPosition({static_cast<float>(window.getSize().x) / 2, 24.0f});
 
 	for (uint8_t i = 0; i < 4; ++i) {
 		if (sf::Joystick::isConnected(i)) {
@@ -60,10 +68,10 @@ void MenuState::onKeyPressed(sf::Event& evt) {
 		menu.onPress();
 		break;
 	case sf::Keyboard::Up:
-		menu.selectNext();
+		menu.selectPrevious();
 		break;
 	case sf::Keyboard::Down:
-		menu.selectPrevious();
+		menu.selectNext();
 		break;
 	}
 }

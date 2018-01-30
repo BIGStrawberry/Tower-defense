@@ -62,6 +62,9 @@ void PlayState::init() {
 	gold.setString(std::to_string(player.getGold()));
 	// TODO: Better center d;)
 	gold.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 24.0f});
+
+	//  Reset time played d:)
+	player.gameClock.restart();
 }
 
 void PlayState::update() {
@@ -87,6 +90,7 @@ void PlayState::cleanUp() {}
 void PlayState::onKeyPressed(sf::Event& evt) {
 	if (evt.key.code ==  sf::Keyboard::Escape) {
 		GameStateManager::pushState(std::make_unique<PauseState>(window, player));
+		player.timePlayed += player.gameClock.getElapsedTime();
 	} else if (evt.key.code == sf::Keyboard::A) {
 		deselect();
 		float fullSize = tileSize + lineSize;
@@ -102,6 +106,7 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 								dummyEnemies,
 								TowerType::Normal // this should be action.towertype or something
 		);
+		dummyTower->enableRangeRender(true);
 	} else if (evt.key.code == sf::Keyboard::U) {
 		// Prevent undo during a wave
 		if (grid.isInPreWave()) {
@@ -122,6 +127,7 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 								dummyEnemies,
 								TowerType::Long // this should be action.towertype or something
 		);
+		dummyTower->enableRangeRender(true);
 	} else if (evt.key.code == sf::Keyboard::D) {
 		dummyTower = make_tower(window,
 								static_cast<float>(tileSize),
@@ -132,6 +138,7 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 								dummyEnemies,
 								TowerType::Slow // this should be action.towertype or something
 		);
+		dummyTower->enableRangeRender(true);
 	} else if (evt.key.code == sf::Keyboard::W) {
 		grid.startWave();
 	}
