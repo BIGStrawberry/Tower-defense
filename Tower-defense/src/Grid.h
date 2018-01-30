@@ -133,6 +133,7 @@ private:
 	sf::Sound start_wave_sound;
 	sf::Sound enemy_dying_sound;
 	sf::Sound end_wave_sound;
+	sf::Sound enemy_reached_base_sound;
 
 public:
 	/**

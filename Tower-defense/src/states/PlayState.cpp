@@ -8,7 +8,7 @@ PlayState::PlayState(sf::RenderWindow& window):
 	player(window, 20, 375000),
 	grid(window, 31, player),
 	dummyTower(nullptr),
-	tower_click_sound(SoundContainer::get("menu_click.wav"))
+	tower_click_sound(SoundContainer::get("menu_click.ogg"))
 {}
 
 void PlayState::select(std::shared_ptr<Tower> t)

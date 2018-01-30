@@ -18,6 +18,7 @@ Every second the update and render counter will be set in the title as updates p
 */
 
 int main() {
+
 	sf::RenderWindow window(sf::VideoMode(1280, 720), "Game State Manager");
 	sf::Event evt;
 	//window.setVerticalSyncEnabled(true);
@@ -41,6 +42,7 @@ int main() {
 	sf::Clock stats_clock;
 
 	sf::Time delta_time; // time between last update and current update call
+
 	while (window.isOpen()) {
 		while (window.pollEvent(evt)) {
 			switch (evt.type) {

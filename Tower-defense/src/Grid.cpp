@@ -10,11 +10,15 @@ Grid::Grid(sf::RenderWindow & window, float tileSize, Player & player):
 	base(sf::Vector2f(tileSize, tileSize)),
 	player(player),
 	pathfinder(grid, COLUMNS, START_INDEX, END_INDEX),
-	tower_construction_sound(SoundContainer::get("construction_tower.wav")),
-	start_wave_sound(SoundContainer::get("wave_start.wav")),
-	enemy_dying_sound(SoundContainer::get("enemy_dying.wav")),
-	end_wave_sound(SoundContainer::get("wave_victory.wav"))
+	tower_construction_sound(SoundContainer::get("construction_tower.ogg")),
+	start_wave_sound(SoundContainer::get("wave_start.ogg")),
+	enemy_dying_sound(SoundContainer::get("enemy_dying.ogg")),
+	end_wave_sound(SoundContainer::get("wave_victory.ogg")),
+	enemy_reached_base_sound(SoundContainer::get("enemy_reached_base.ogg"))
 {
+	enemy_reached_base_sound.setVolume(20);
+	enemy_dying_sound.setVolume(20);
+	end_wave_sound.setVolume(20);
 	//TODO: cast round the result of the devided numers off, so the spawn will alway's be allinged with the grid
 	spawn.setPosition(xOffset - (tileSize + lineSize), static_cast<int>(ROWS / 2) * (tileSize + lineSize) + yOffset);
 	spawn.setOrigin(tileSize / 2, tileSize / 2);
@@ -42,6 +46,7 @@ void Grid::update() {
 			enemies.erase(enemies.begin() + i);
 			i--;
 		} else if (enemy.state == Enemy::States::Reached_Base) {
+			enemy_reached_base_sound.play();
 			player.lives -= enemy.getDmg();
 			if (player.lives <= 0) {
 				GameStateManager::pushState(std::make_unique<ScoreState>(window, player));
@@ -114,6 +119,7 @@ void Grid::startWave() {
 	if (!preWave) return;
 	start_wave_sound.play();
 	// Spawn a extra group every 10 waves
+
 	uint16_t numberOfGroups = waveNumber / 10 + 1;
 	for (uint16_t i = 0; i < numberOfGroups; ++i) {
 		// Tank
@@ -174,13 +180,13 @@ void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType, bool saveAction
 	sf::Vector2f pos{static_cast<float>(x) * (tileSize + lineSize) + xOffset , static_cast<float>(y) * (tileSize + lineSize) + yOffset};
 	if (canBePlaced(x, y)) {
 		grid[x + y * COLUMNS] = make_tower(window, tileSize, pos, enemies, towerType);
-		tower_construction_sound.play();
 	}
 
 	try {
 		calculatePath();
 
 		if (saveAction) {
+			tower_construction_sound.play();
 			player.addAction(x, y, TowerDataContainer::get(towerType).cost, Action::ACTION_TYPE::PLACE_TOWER, towerType);
 			++player.numberOfTowersPlaced; //Keep track of the number of towers placed for stats
 		}
@@ -198,9 +204,9 @@ void Grid::upgradeTower(uint8_t x, uint8_t y, bool saveAction) {
 	if (preWave) {
 		auto selected = grid[x + y * COLUMNS];
 		if (selected->getUpgradeLevel() < 2) {
-			tower_construction_sound.play();
 			player.removeGold(selected->getUpgradeCost());
 			if (saveAction) {
+				tower_construction_sound.play();
 				player.addAction(x, y, selected->getUpgradeCost(), Action::ACTION_TYPE::UPGRADE_TOWER, selected->getType());
 				player.numberOfTowersUpgraded++;
 			}

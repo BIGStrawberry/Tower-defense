@@ -20,6 +20,10 @@ MenuState::MenuState(sf::RenderWindow& window):
 {}
 
 void MenuState::init() {
+	background_music.openFromFile("resources/sounds/background_music.ogg");
+	background_music.setLoop(true);
+	background_music.play();
+
 	if (!font.loadFromFile("resources/fonts/consola.ttf")) {
 		std::cout << "Could not load consola.ttf" << std::endl;
 	}

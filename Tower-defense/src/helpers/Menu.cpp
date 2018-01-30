@@ -5,7 +5,7 @@
 Menu::Menu(sf::RenderWindow& window, std::vector<MenuItem> menuItems):
 	window(window),
 	menuItems(menuItems),
-	item_click(SoundContainer::get("menu_click.wav"))
+	item_click(SoundContainer::get("menu_click.ogg"))
 {}
 
 void Menu::selectNext() {
