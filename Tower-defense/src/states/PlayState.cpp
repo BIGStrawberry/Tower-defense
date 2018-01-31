@@ -214,8 +214,10 @@ void PlayState::render() const {
 	grid.render();
 	if (selected != nullptr) {
 		window.draw(sellsForText);
-		window.draw(upgradeCostText);
 		window.draw(attackDamageText);
+		if (selected->getUpgradeLevel() < 2) {
+			window.draw(upgradeCostText);
+		}
 	} else if (placementTower != nullptr) {
 		window.draw(sellsForText);
 		window.draw(placementCostText);
