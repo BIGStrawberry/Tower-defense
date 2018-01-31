@@ -75,11 +75,9 @@ void PlayState::sell() {
 void PlayState::upgrade() {
 	if (selected) {
 		if (player.getGold() >= selected->getUpgradeCost()) {
-
 			float fullSize = tileSize + lineSize;
 			uint8_t x = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().x) / fullSize)) - 3;
 			uint8_t y = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().y) / fullSize)) - 3;
-
 			grid.upgradeTower(x, y);
 		}
 	}
@@ -130,9 +128,9 @@ void PlayState::setPlaceTower(TowerType towerType) {
 	);
 }
 
-std::string PlayState::floatToDecimalstring(float f, int n) {
+std::string PlayState::floatToDecimalstring(float value, int precision) {
 	std::stringstream stream;
-	stream << std::fixed << std::setprecision(n) << f;
+	stream << std::fixed << std::setprecision(precision) << value;
 	return stream.str();
 }
 
@@ -201,8 +199,7 @@ void PlayState::update() {
 		sellsForText.setString("Sells for:    " + std::to_string(placementTower->getSellPrice()));
 		placementCostText.setString("Cost:         " + std::to_string(placementTower->getUpgradeCost()));
 		attackDamageText.setString("Attack damage: " + floatToDecimalstring(placementTower->getDamage(), 2));
-	}
-	if (selected != nullptr) {
+	} else if (selected != nullptr) {
 		sellsForText.setString("Sells for:    " + std::to_string(selected->getSellPrice()));
 		upgradeCostText.setString("Upgrade cost: " + std::to_string(selected->getUpgradeCost()));
 		attackDamageText.setString("Attack damage: " + floatToDecimalstring(selected->getDamage(), 2));
@@ -219,8 +216,7 @@ void PlayState::render() const {
 		window.draw(sellsForText);
 		window.draw(upgradeCostText);
 		window.draw(attackDamageText);
-	}
-	if (placementTower != nullptr) {
+	} else if (placementTower != nullptr) {
 		window.draw(sellsForText);
 		window.draw(placementCostText);
 		window.draw(attackDamageText);
@@ -256,29 +252,14 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 	} else if (evt.key.code == sf::Keyboard::W) {
 		grid.startWave();
 	} else if (evt.key.code == sf::Keyboard::Q) {
-		if (selected) {
-			float fullSize = tileSize + lineSize;
-			uint8_t x = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().x) / fullSize)) - 3;
-			uint8_t y = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().y) / fullSize)) - 3;
-			grid.removeTower(x, y);
-			deselect();
-		}
+		sell();
 	} else if (evt.key.code == sf::Keyboard::D) {
 		deselect();
 		setPlaceTower(TowerType::Slow);
 		placementTower->enableRangeRender(true);
 	} 
 	else if (evt.key.code == sf::Keyboard::Y) {
-		if (selected) {
-			if (player.getGold() >= selected->getUpgradeCost()) {
-
-				float fullSize = tileSize + lineSize;
-				uint8_t x = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().x) / fullSize)) - 3;
-				uint8_t y = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().y) / fullSize)) - 3;
-
-				grid.upgradeTower(x, y);
-			}
-		}
+		upgrade();
 	}
 };
 
