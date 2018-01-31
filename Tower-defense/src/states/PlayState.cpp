@@ -63,11 +63,26 @@ void PlayState::deselect() {
 }
 
 void PlayState::sell() {
-
+	if (selected) {
+		float fullSize = tileSize + lineSize;
+		uint8_t x = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().x) / fullSize)) - 3;
+		uint8_t y = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().y) / fullSize)) - 3;
+		grid.removeTower(x, y);
+		deselect();
+	}
 }
 
 void PlayState::upgrade() {
+	if (selected) {
+		if (player.getGold() >= selected->getUpgradeCost()) {
 
+			float fullSize = tileSize + lineSize;
+			uint8_t x = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().x) / fullSize)) - 3;
+			uint8_t y = static_cast<uint8_t>(ceil(static_cast<float>(selected->getPosition().y) / fullSize)) - 3;
+
+			grid.upgradeTower(x, y);
+		}
+	}
 }
 
 void PlayState::undo() {
@@ -254,7 +269,6 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 		placementTower->enableRangeRender(true);
 	} 
 	else if (evt.key.code == sf::Keyboard::Y) {
-
 		if (selected) {
 			if (player.getGold() >= selected->getUpgradeCost()) {
 
@@ -265,7 +279,6 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 				grid.upgradeTower(x, y);
 			}
 		}
-
 	}
 };
 
