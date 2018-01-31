@@ -5,6 +5,7 @@
 #include "EnemyDataContainer.h"
 #include "../Assets/TextureContainer.h"
 #include "HpBar.h"
+#include <math.h>
 
 
 #pragma region comment

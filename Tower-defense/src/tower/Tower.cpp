@@ -14,7 +14,7 @@ Tower::Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, std::vecto
 	type(type),
 	range_circle(towerData.radius),
 	upgrade_level(0),
-	upgrade_cost(towerData.cost),
+	upgrade_cost(towerData.cost*2),
 	acculumated_cost(towerData.cost)
 {
 	tower_shape.setTexture(TextureContainer::get("base.png"));
@@ -126,13 +126,13 @@ void Tower::upgrade() {
 	towerData.damage *= 2.1f;
 
 	// The upgrade cost becomes more based on the level of upgrades you have
-	upgrade_cost = static_cast<uint32_t>(towerData.cost * upgrade_level);
+	upgrade_cost = static_cast<uint32_t>(towerData.cost * (upgrade_level+1));
 
 	// Give the tower radius a multiplier
-	towerData.radius *= 1.2f;
+	//towerData.radius *= 1.2f;
 
-	range_circle.setRadius(towerData.radius); 
-	range_circle.setOrigin(sf::Vector2f(towerData.radius, towerData.radius));
+	//range_circle.setRadius(towerData.radius); 
+	//range_circle.setOrigin(sf::Vector2f(towerData.radius, towerData.radius));
 
 	// Add the cost of this upgrade to the total amount of gold the tower has cost
 	acculumated_cost += upgrade_cost;

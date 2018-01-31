@@ -24,7 +24,7 @@ void TowerDataContainer::load() {
 	turret_sprites[2].setTexture(TextureContainer::get("normal_level3.png"));
 
 	
-	container.insert(std::pair<TowerType, TowerData>(TowerType::Normal, TowerData{75.0f, sf::milliseconds(500), 2, 75, turret_sprites}));
+	container.insert(std::pair<TowerType, TowerData>(TowerType::Normal, TowerData{75.0f, sf::milliseconds(500), 2, static_cast<int32_t>(75*0.6), turret_sprites}));
 
 	turret_sprites[0].setOrigin(22.5f, 13.f);
 	turret_sprites[0].setTexture(TextureContainer::get("slow_level1.png"));
@@ -37,7 +37,7 @@ void TowerDataContainer::load() {
 
 
 
-	container.insert(std::pair<TowerType, TowerData>(TowerType::Slow, TowerData{50.0f, sf::milliseconds(500), 1, 175, turret_sprites}));
+	container.insert(std::pair<TowerType, TowerData>(TowerType::Slow, TowerData{50.0f, sf::milliseconds(500), 1, static_cast<int32_t>(175*0.6), turret_sprites}));
 
 	turret_sprites[0].setOrigin(22.5f, 13.f);
 	turret_sprites[0].setTexture(TextureContainer::get("long_level1.png"));
@@ -51,7 +51,7 @@ void TowerDataContainer::load() {
 	turret_sprites[2].setTexture(TextureContainer::get("long_level3.png"));
 
 
-	container.insert(std::pair<TowerType, TowerData>(TowerType::Long, TowerData{125.0f, sf::milliseconds(1000), 8, 325, turret_sprites}));
+	container.insert(std::pair<TowerType, TowerData>(TowerType::Long, TowerData{125.0f, sf::milliseconds(1000), 8, static_cast<int32_t>(325*0.6), turret_sprites}));
 
 
 

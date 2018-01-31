@@ -30,7 +30,7 @@ Grid::Grid(sf::RenderWindow & window, float tileSize, Player & player):
 
 	// Background
 	background.setPosition({xOffset - (tileSize + lineSize) / 2, yOffset - (tileSize + lineSize) / 2});
-	background.setFillColor({200, 144, 55});
+	background.setFillColor({53, 183, 88});
 };
 
 void Grid::update() {
@@ -123,33 +123,39 @@ void Grid::startWave() {
 		return;
 	}
 
+	bool Ubeah_Knucklez = false;
+
 	// Wave already started
 	if (!preWave) return;
 	start_wave_sound.play();
 	// Spawn a extra group every 10 waves
 
-	if (waveNumber % (TANK_START_WAVE * 2) == 0) {
-		waveQueue.push_back(make_enemy(EnemyType::Boss_Tank, window, path, waveNumber));
-	}
-	if (waveNumber % (FAST_START_WAVE * 2) == 0) {
-		waveQueue.push_back(make_enemy(EnemyType::Boss_Fast, window, path, waveNumber));
-	}
-	if (waveNumber % (FLYING_START_WAVE * 2) == 0) {
-		waveQueue.push_back(make_enemy(EnemyType::Boss_Flying, window, path, waveNumber));
-	}
 
 	uint16_t numberOfGroups = waveNumber / 10 + 1;
-	for (uint16_t i = 0; i < numberOfGroups; ++i) {
-		// Tank
-		uint32_t randInt = rand() % 100;
+	// Tank
+	uint32_t randInt = rand() % 100;
 
-		if (waveNumber % 50 == 0) {
-			waveQueue.push_back(make_enemy(EnemyType::Ubeah_Knucklez, window, path, waveNumber));
-			break; // Prevents spawning of other NPCs
+	if (waveNumber % 50 == 0) {
+		waveQueue.push_back(make_enemy(EnemyType::Ubeah_Knucklez, window, path, waveNumber));
+		Ubeah_Knucklez = true; // Prevents spawning of other NPCs
+	}
+
+
+
+	if (!Ubeah_Knucklez) {
+
+		if (waveNumber % (TANK_START_WAVE * 2) == 0) {
+			waveQueue.push_back(make_enemy(EnemyType::Boss_Tank, window, path, waveNumber));
 		}
-		
+		if (waveNumber % (FAST_START_WAVE * 2) == 0) {
+			waveQueue.push_back(make_enemy(EnemyType::Boss_Fast, window, path, waveNumber));
+		}
+		if (waveNumber % (FLYING_START_WAVE * 2) == 0) {
+			waveQueue.push_back(make_enemy(EnemyType::Boss_Flying, window, path, waveNumber));
+		}
+
 		if (waveNumber == TANK_START_WAVE || (waveNumber >= TANK_START_WAVE && randInt <= TANK_SPAWN_RATE)) {
-			for (uint8_t i = 0; i < TANK_PER_GROUP; ++i) {
+			for (uint8_t i = 0; i < TANK_PER_GROUP*numberOfGroups; ++i) {
 				waveQueue.push_back(make_enemy(EnemyType::Tank, window, path, waveNumber));
 			}
 		}
@@ -157,7 +163,7 @@ void Grid::startWave() {
 		// Normal
 		randInt = rand() % 100;
 		if (waveNumber == NORMAL_START_WAVE || (waveNumber >= NORMAL_START_WAVE && randInt <= NORMAL_SPAWN_RATE)) {
-			for (uint8_t i = 0; i < NORMAL_PER_GROUP; ++i) {
+			for (uint8_t i = 0; i < NORMAL_PER_GROUP*numberOfGroups; ++i) {
 				waveQueue.push_back(make_enemy(EnemyType::Normal, window, path, waveNumber));
 			}
 		}
@@ -165,7 +171,7 @@ void Grid::startWave() {
 		// Speed
 		randInt = rand() % 100;
 		if (waveNumber == FAST_START_WAVE || (waveNumber >= FAST_START_WAVE && randInt <= FAST_SPAWN_RATE)) {
-			for (uint8_t i = 0; i < FAST_PER_GROUP; ++i) {
+			for (uint8_t i = 0; i < FAST_PER_GROUP*numberOfGroups; ++i) {
 				waveQueue.push_back(make_enemy(EnemyType::Fast, window, path, waveNumber));
 			}
 		}
@@ -173,7 +179,7 @@ void Grid::startWave() {
 		// Flying
 		randInt = rand() % 100;
 		if (waveNumber == FLYING_START_WAVE || (waveNumber >= FLYING_START_WAVE && randInt <= FLYING_SPAWN_RATE)) {
-			for (uint8_t i = 0; i < FLYING_PER_GROUP; ++i) {
+			for (uint8_t i = 0; i < FLYING_PER_GROUP*numberOfGroups; ++i) {
 				waveQueue.push_back(make_enemy(EnemyType::Flying, window, path, waveNumber));
 			}
 		}
