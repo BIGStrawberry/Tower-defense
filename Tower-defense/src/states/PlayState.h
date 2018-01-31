@@ -30,7 +30,7 @@ private:
 	std::shared_ptr<Tower> placementTower;
 	std::shared_ptr<Tower> selected;
 	std::vector<std::shared_ptr<Enemy>> dummyEnemies;
-	sf::Vector2f placePosition;
+	sf::Vector2f placePosition, placeIndex;
 	sf::Text waveNumberText, livesText, goldText, sellsForText, placementCostText, upgradeCostText, attackDamageText;
 	sf::RectangleShape waveTimerRect;
 	std::array<std::shared_ptr<Tower>, 3> placeableTowers;
