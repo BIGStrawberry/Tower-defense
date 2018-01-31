@@ -94,6 +94,8 @@ private:
 	*/
 	sf::RectangleShape base;
 
+	sf::RectangleShape background;
+
 	/**
 	* @brief window			The window where everything will be drawn to
 	*/
@@ -148,6 +150,10 @@ public:
 	*/
 	bool isInPreWave() const {
 		return preWave;
+	}
+
+	uint16_t getWaveNumber() const {
+		return waveNumber;
 	}
 
 	/**
@@ -212,4 +218,14 @@ public:
 	* @brief Removes tower from the grid
 	*/
 	void removeTower(uint8_t x, uint8_t y, bool saveAction = true);
+
+	/**
+	* @brief returns the remaining time before the next wave starts
+	*/
+	sf::Time getWaveClock();
+
+	/**
+	* @brief returns the maximum duration of the time between waves
+	*/
+	sf::Time getWaveDelay();
 };

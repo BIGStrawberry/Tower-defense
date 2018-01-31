@@ -93,10 +93,13 @@ protected:
 
 
 	/*
-	@brief amount of gold it costs to upgrade this tower once.
+	* @brief amount of gold it costs to upgrade this tower once.
 	*/
 	uint32_t upgrade_cost;
 
+	/**
+	* @brief the total amount of gold invested in the tower.
+	*/
 	uint32_t acculumated_cost;
 
 
@@ -162,10 +165,24 @@ public:
 	}
 
 	/**
-	* @brief getter for towertype
+	* @brief getter for towerType
 	*/
 	TowerType getType() {
 		return type;
+	}
+
+	/**
+	* @brief getter for the tower it's damage
+	*/
+	float getDamage() {
+		return towerData.damage;
+	}
+
+	/**
+	* @Brief getter for the price the tower sells for
+	*/
+	int32_t getSellPrice() {
+		return static_cast<int32_t>(getAccumulatedCost() * 0.75f);
 	}
 
 	/**

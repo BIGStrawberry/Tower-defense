@@ -36,6 +36,7 @@ void PauseState::init() {
 	sf::FloatRect textRect = text.getGlobalBounds();
 	text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
 	text.setPosition({static_cast<float>(window.getSize().x) / 2, 24.0f});
+	text.setFillColor(sf::Color::Black);
 }
 
 void PauseState::update() {}
