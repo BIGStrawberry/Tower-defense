@@ -10,7 +10,7 @@ Tower::Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, std::vecto
 	enemies(enemies),
 	render_range(false),
 	window(window),
-	turret(towerData.turret),
+	turret(towerData.turret_sprites[0]),
 	type(type),
 	range_circle(towerData.radius),
 	upgrade_level(0),
@@ -53,7 +53,7 @@ void Tower::rotateTurret() {
 	sf::Vector2f diff = target->getPosition() - tower_shape.getPosition();
 	float angle_rads = std::atan2(diff.y, diff.x);
 	float degrees = angle_rads * (180 / 3.141592f);
-	turret.setRotation(degrees+90);
+	turret.setRotation(degrees+180);
 
 }
 
@@ -119,23 +119,23 @@ void Tower::update() {
 
 void Tower::upgrade() {
 	upgrade_level++;
-
+	auto pos = turret.getPosition();
+	turret = towerData.turret_sprites[upgrade_level];
+	turret.setPosition(pos);
 	// Give tower damage a multiplier based on the upgrade level
-	towerData.damage *= static_cast<float>(upgrade_level * 1.1);
-
-	// Add the cost of this upgrade to the total amount of gold the tower has cost
-	acculumated_cost += upgrade_cost;
+	towerData.damage *= 2.1f;
 
 	// The upgrade cost becomes more based on the level of upgrades you have
-	upgrade_cost = static_cast<uint32_t>(towerData.cost * (upgrade_level * 1.1));
+	upgrade_cost = static_cast<uint32_t>(towerData.cost * upgrade_level);
 
 	// Give the tower radius a multiplier
-	towerData.radius *= static_cast<float>(1.2);
+	towerData.radius *= 1.2f;
 
 	range_circle.setRadius(towerData.radius); 
 	range_circle.setOrigin(sf::Vector2f(towerData.radius, towerData.radius));
 
-	std::cout << "upgraded to level " << static_cast<int>(upgrade_level) << "\n";
+	// Add the cost of this upgrade to the total amount of gold the tower has cost
+	acculumated_cost += upgrade_cost;
 }
 
 uint8_t Tower::getUpgradeLevel() {

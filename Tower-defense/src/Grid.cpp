@@ -54,6 +54,7 @@ void Grid::update() {
 			enemy_reached_base_sound.play();
 			player.lives -= enemy.getDmg();
 			if (player.lives <= 0) {
+				player.timePlayed += player.gameClock.getElapsedTime();
 				GameStateManager::pushState(std::make_unique<ScoreState>(window, player));
 			}
 			enemies.erase(enemies.begin() + i);
@@ -127,10 +128,26 @@ void Grid::startWave() {
 	start_wave_sound.play();
 	// Spawn a extra group every 10 waves
 
+	if (waveNumber % (TANK_START_WAVE * 2) == 0) {
+		waveQueue.push_back(make_enemy(EnemyType::Boss_Tank, window, path, waveNumber));
+	}
+	if (waveNumber % (FAST_START_WAVE * 2) == 0) {
+		waveQueue.push_back(make_enemy(EnemyType::Boss_Fast, window, path, waveNumber));
+	}
+	if (waveNumber % (FLYING_START_WAVE * 2) == 0) {
+		waveQueue.push_back(make_enemy(EnemyType::Boss_Flying, window, path, waveNumber));
+	}
+
 	uint16_t numberOfGroups = waveNumber / 10 + 1;
 	for (uint16_t i = 0; i < numberOfGroups; ++i) {
 		// Tank
 		uint32_t randInt = rand() % 100;
+
+		if (waveNumber % 50 == 0) {
+			waveQueue.push_back(make_enemy(EnemyType::Ubeah_Knucklez, window, path, waveNumber));
+			break; // Prevents spawning of other NPCs
+		}
+		
 		if (waveNumber == TANK_START_WAVE || (waveNumber >= TANK_START_WAVE && randInt <= TANK_SPAWN_RATE)) {
 			for (uint8_t i = 0; i < TANK_PER_GROUP; ++i) {
 				waveQueue.push_back(make_enemy(EnemyType::Tank, window, path, waveNumber));

@@ -10,6 +10,6 @@ ProjectileSlow::ProjectileSlow(sf::RenderWindow & window, float damage, sf::Vect
 
 void ProjectileSlow::onImpact() {
 	target->reduce_speed(slow_factor, slow_time);
-	target->decreaseHp(static_cast<int>(damage));
+	target->decreaseHp(damage);
 	is_dead = true;
 }

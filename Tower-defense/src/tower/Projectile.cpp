@@ -22,7 +22,7 @@ void Projectile::render() const {
 }
 
 void Projectile::onImpact() {
-	target->decreaseHp(static_cast<int>(damage));
+	target->decreaseHp(damage);
 	is_dead = true;
 }
 

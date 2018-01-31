@@ -7,7 +7,7 @@
 PlayState::PlayState(sf::RenderWindow& window):
 	State(window),
 	tileSize(31),
-	player(window, 20, 375000),
+	player(window, 20, 375),
 	grid(window, 31, player),
 	placementTower(nullptr),
 	waveNumberText("Wave: 999", font, 30),
@@ -93,8 +93,8 @@ void PlayState::undo() {
 }
 
 void PlayState::pause() {
-	GameStateManager::pushState(std::make_unique<PauseState>(window, player));
 	player.timePlayed += player.gameClock.getElapsedTime();
+	GameStateManager::pushState(std::make_unique<PauseState>(window, player));
 }
 
 void PlayState::rebuildGrid() {
@@ -278,15 +278,11 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 
 		if (grid.canBePlaced(x, y)) {
 			std::cout << "Success!" << std::endl;
-			// TODO: Replace dummyCost with actual tower cost, Move tower cost to grid class
 			if (player.getGold() >= placementTower->getCost()) {
 				grid.placeTower(x, y, placementTower->getType(), true);
-				placementTower = nullptr;
-			} else {
-				placementTower = nullptr;
 			}
 		} else {
-			std::cout << "Oei" << std::endl;
+			placementTower = nullptr;
 		}
 	} else if (waveTimerRect.getGlobalBounds().contains(static_cast<float>(evt.mouseButton.x), static_cast<float>(evt.mouseButton.y))) {
 		grid.startWave();
