@@ -126,7 +126,7 @@ void Tower::upgrade() {
 	towerData.damage *= 2.1f;
 
 	// The upgrade cost becomes more based on the level of upgrades you have
-	upgrade_cost = static_cast<uint32_t>(towerData.cost * (upgrade_level+1));
+	upgrade_cost += static_cast<uint32_t>(towerData.cost * (upgrade_level+1));
 
 	// Give the tower radius a multiplier
 	//towerData.radius *= 1.2f;

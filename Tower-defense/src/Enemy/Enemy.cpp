@@ -11,7 +11,9 @@ Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, En
 	original_speed(data.speed),
 	bar((std::pow(static_cast<float>(waveNumber) + data.hp, 1.4f)))
 {
-	data.hp = (std::pow(static_cast<float>(waveNumber) + data.hp, 1.5f));
+	int waveSpike = 21;
+	data.hp = (std::pow(static_cast<float>(waveNumber) + data.hp, 1.5f) * ((waveNumber / waveSpike) * 0.5f + 1));
+	std::cout << "Wave spike: " << ((waveNumber / waveSpike) * 0.5f + 1) << std::endl;
 	std::cout << data.hp << std::endl;
 	data.gold += waveNumber;
 	data.body.setPosition(path[0]);
