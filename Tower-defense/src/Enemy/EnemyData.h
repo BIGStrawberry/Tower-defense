@@ -1,5 +1,5 @@
 #pragma once
-
+#include <SFML/Graphics.hpp>
 #pragma region comment
 /**
 * @struct Encapsulates all the (modifiable) data that is needed by Enemy.
@@ -8,8 +8,9 @@
 
 struct EnemyData
 {
-	int hp;
+	float hp;
 	float speed;
-	int damage;
-	int gold;
+	int32_t damage;
+	int32_t gold;
+	sf::Sprite body;
 };

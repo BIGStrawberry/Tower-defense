@@ -1,55 +1,59 @@
 #include "Enemy.h"
-
+#include <iostream>
 
 Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, EnemyType type, uint16_t waveNumber) :
 	window(window),
 	path(path),
 	next_target_pos(path[0]),
 	distance(0.0),
-	speed(EnemyDataContainer::get(type).speed),
-	hp(EnemyDataContainer::get(type).hp + waveNumber * 2),
-	dmg(EnemyDataContainer::get(type).damage),
-	gold(EnemyDataContainer::get(type).gold + waveNumber),
+	data(EnemyDataContainer::get(type)),
 	slowed(false),
-	original_speed(speed)
+	original_speed(data.speed),
+	bar((std::pow(static_cast<float>(waveNumber) + data.hp, 1.4f)))
 {
-	body.setRadius(20);
-	body.setOrigin(sf::Vector2f(body.getRadius(), body.getRadius()));
-	body.setPosition(path[0]);
+	int waveSpike = 21;
+	data.hp = (std::pow(static_cast<float>(waveNumber) + data.hp, 1.5f) * ((waveNumber / waveSpike) * 0.5f + 1));
+	std::cout << "Wave spike: " << ((waveNumber / waveSpike) * 0.5f + 1) << std::endl;
+	std::cout << data.hp << std::endl;
+	data.gold += waveNumber;
+	data.body.setPosition(path[0]);
+	data.body.setRotation(-90.f);
 }
 
 void Enemy::render() const
 {
-	window.draw(body);
+	window.draw(data.body);
+	bar.render(window);
 }
 
 const sf::Vector2f Enemy::getPosition() const
 {
-	return body.getPosition();
+	return data.body.getPosition();
 }
 
-void Enemy::decreaseHp(int dmg)
+void Enemy::decreaseHp(float dmg)
 {
-	hp -= dmg;
-	if (hp <= 0)
+	data.hp -= dmg;
+	if (data.hp <= 0)
 	{
 		state = States::Dead;
 	}
+	bar.setHp(data.hp);
 }
 
 const int Enemy::getDmg() const
 {
-	return dmg;
+	return data.damage;
 }
 
 const int Enemy::getGold() const
 {
-	return gold;
+	return data.gold;
 }
 
 sf::FloatRect Enemy::getBounds() const
 {
-	return body.getGlobalBounds();
+	return data.body.getGlobalBounds();
 }
 
 Enemy::~Enemy()
@@ -57,9 +61,15 @@ Enemy::~Enemy()
 }
 
 void Enemy::reduce_speed(float factor, sf::Time time) {
-	speed = original_speed;
-	speed *= factor;
+	data.speed = original_speed;
+	data.speed *= factor;
 	slow_duration = time;
 	slow_timer.restart();
 	slowed = true;
+}
+
+
+bool Enemy::isSlowed()
+{
+	return slowed;
 }

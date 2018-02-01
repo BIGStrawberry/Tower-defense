@@ -1,12 +1,13 @@
 #include "MenuState.h"
 #include "../helpers/GameStateManager.h"
 
-PauseState::PauseState(sf::RenderWindow& window, const Player & player):
+PauseState::PauseState(sf::RenderWindow& window, Player & player):
 	State(window),
 	menu(window, {{
 			window,
-			std::function<void()>([&window]() {
+			std::function<void()>([&window, &player]() {
 				GameStateManager::popState(); //Pops the pause state to return to playstate
+				player.gameClock.restart(); // Restart the game clock to not count time in pause state
 			}),
 			{250, 75},
 			{static_cast<float>(window.getSize().x) / 2 - 250 / 2, 150},
@@ -22,16 +23,20 @@ PauseState::PauseState(sf::RenderWindow& window, const Player & player):
 			{"Forfeit Game", font, 20}
 		}
 	}),
-	player(player){}
+	player(player),
+	text("Game Paused..", font)
+{}
 
 void PauseState::init() {
 	if (!font.loadFromFile("resources/fonts/consola.ttf")) {
 		std::cout << "Could not load consola.ttf" << std::endl;
 	}
-	text.setFont(font);
-	text.setString("Game Paused..");
-	// TODO: Better center d;)
-	text.setPosition({static_cast<float>(window.getSize().x) / 2 - 7 * 24, 24.0f});
+
+	// Center text
+	sf::FloatRect textRect = text.getGlobalBounds();
+	text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 2.0f);
+	text.setPosition({static_cast<float>(window.getSize().x) / 2, 24.0f});
+	text.setFillColor(sf::Color::Black);
 }
 
 void PauseState::update() {}

@@ -3,6 +3,9 @@
 #include <vector>
 #include "EnemyType.h"
 #include "EnemyDataContainer.h"
+#include "../Assets/TextureContainer.h"
+#include "HpBar.h"
+#include <math.h>
 
 
 #pragma region comment
@@ -14,20 +17,17 @@
 * Enemies can be updated and rendered.
 */
 #pragma endregion
-class Enemy
-{
+class Enemy {
 protected:
 	sf::RenderWindow& window;
 	const std::vector<sf::Vector2f>& path;
 	float distance;
-	sf::CircleShape body;
 	sf::Vector2f next_target_pos;
 	sf::Vector2f vector;
-	float speed;
+	EnemyData data;
 	float original_speed;
-	int hp;
-	int dmg;
-	int gold;
+
+	HpBar bar;
 
 	sf::Clock slow_timer;
 	bool slowed;
@@ -72,7 +72,7 @@ public:
 	*/
 
 #pragma endregion
-	void decreaseHp(int dmg);
+	void decreaseHp(float dmg);
 #pragma region comment
 	/**
 	* @brief returns Enemy's position
@@ -126,14 +126,19 @@ public:
 #pragma endregion
 	sf::FloatRect getBounds() const;
 
-	#pragma region comment
-	/**
-	* @brief slows target by half for given time.
-	* @details This function reduces the speed by multiplying it with factor, it resets the slow_timer and sets the boolean slowed on true.
-	*
-	*/
-
+#pragma region comment
+/**
+* @brief slows target by half for given time.
+* @details This function reduces the speed by multiplying it with factor, it resets the slow_timer and sets the boolean slowed on true.
+*
+*/
+#pragma endregion
 	void reduce_speed(float factor, sf::Time time);
-	#pragma endregion
+#pragma region comment
+	/**
+	* @brief returns if enemy is slowed.
+	*/
+#pragma endregion
+	bool isSlowed();
 
 };

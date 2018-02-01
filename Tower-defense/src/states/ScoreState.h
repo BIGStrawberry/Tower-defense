@@ -12,7 +12,7 @@
 class ScoreState: public State {
 private:
 	sf::Font font;
-	sf::Text scoreText, scoreEnemiesKilled, scoreTowersPlaced, scoreWavesCompleted,  scoreTowersUpgraded, scoreAccumulatedGold;
+	sf::Text scoreText, scoreEnemiesKilled, scoreTowersPlaced, scoreWavesCompleted,  scoreUpgradesDone, scoreAccumulatedGold, scoreTimePlayed;
 	Menu menu;
 	const Player & player;
 public:
@@ -25,6 +25,12 @@ public:
 		because we use this function in the initialize list
 	*/
 	uint32_t calculateScore(const Player & player);
+
+	/**
+	* @brief Formats the gametime from seconds to HH:MM:SS
+	* @param sf::Time timePlayed
+	*/
+	std::string formatTime(sf::Time timePlayed);
 
 	void init() override;
 	void update() override;

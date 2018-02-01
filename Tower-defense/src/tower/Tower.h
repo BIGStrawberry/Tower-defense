@@ -1,5 +1,6 @@
 #pragma once
 #include "SFML/Graphics.hpp"
+#include "SFML/Audio.hpp"
 #include <iostream>
 #include <math.h>
 #include <memory>
@@ -9,6 +10,7 @@
 #include "TowerType.h"
 #include "TowerDataContainer.h"
 #include "TowerData.h"
+#include "../Assets/TextureContainer.h"
 
 /**
 * @class Tower
@@ -30,6 +32,7 @@
 class Tower
 {
 protected:
+
 	/**
 	* @brief tower data
 	*/
@@ -72,14 +75,10 @@ protected:
 	* circle shape used to display the range of the tower
 	*/
 	sf::CircleShape range_circle;
-	/**
-	* body of the tower
-	*/
-	sf::RectangleShape tower_shape;
-	/**
-	* VertexArray Linestrip used to draw the turret.
-	*/
-	sf::VertexArray turret;
+
+	sf::Sprite tower_shape;
+	sf::Sprite turret;
+
 	/**
 	* @brief type of tower
 	*/
@@ -94,10 +93,13 @@ protected:
 
 
 	/*
-	@brief amount of gold it costs to upgrade this tower once.
+	* @brief amount of gold it costs to upgrade this tower once.
 	*/
 	uint32_t upgrade_cost;
 
+	/**
+	* @brief the total amount of gold invested in the tower.
+	*/
 	uint32_t acculumated_cost;
 
 
@@ -149,6 +151,7 @@ public:
 	* 
 	*/
 	void setPosition(const sf::Vector2f& pos) {
+		turret.setPosition(pos);
 		tower_shape.setPosition(pos);
 		range_circle.setPosition(tower_shape.getPosition());
 	}
@@ -158,14 +161,28 @@ public:
 	*
 	*/
 	void setColor(const sf::Color& color) {
-		tower_shape.setFillColor(color);
+		tower_shape.setColor(color);
 	}
 
 	/**
-	* @brief getter for towertype
+	* @brief getter for towerType
 	*/
 	TowerType getType() {
 		return type;
+	}
+
+	/**
+	* @brief getter for the tower it's damage
+	*/
+	float getDamage() {
+		return towerData.damage;
+	}
+
+	/**
+	* @Brief getter for the price the tower sells for
+	*/
+	int32_t getSellPrice() {
+		return static_cast<int32_t>(getAccumulatedCost() * 0.75f);
 	}
 
 	/**
@@ -213,7 +230,7 @@ public:
 	Creates a projectile after the reload_time if the tower has a target.
 	
 	*/
-	void update();
+	virtual void update();
 
 
 	/*

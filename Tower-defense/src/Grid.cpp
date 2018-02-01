@@ -6,10 +6,20 @@
 Grid::Grid(sf::RenderWindow & window, float tileSize, Player & player):
 	window(window),
 	tileSize(tileSize),
-	spawn(sf::Vector2f(tileSize, tileSize)),
-	base(sf::Vector2f(tileSize, tileSize)),
+	spawn({tileSize + lineSize, tileSize + lineSize}),
+	base({tileSize + lineSize, tileSize + lineSize}),
+	background({(tileSize + lineSize) * COLUMNS, (tileSize + lineSize) * ROWS}),
 	player(player),
-	pathfinder(grid, COLUMNS, START_INDEX, END_INDEX) {
+	pathfinder(grid, COLUMNS, START_INDEX, END_INDEX),
+	tower_construction_sound(SoundContainer::get("construction_tower.ogg")),
+	start_wave_sound(SoundContainer::get("wave_start.ogg")),
+	enemy_dying_sound(SoundContainer::get("enemy_dying.ogg")),
+	end_wave_sound(SoundContainer::get("wave_victory.ogg")),
+	enemy_reached_base_sound(SoundContainer::get("enemy_reached_base.ogg"))
+{
+	enemy_reached_base_sound.setVolume(20);
+	enemy_dying_sound.setVolume(20);
+	end_wave_sound.setVolume(20);
 	//TODO: cast round the result of the devided numers off, so the spawn will alway's be allinged with the grid
 	spawn.setPosition(xOffset - (tileSize + lineSize), static_cast<int>(ROWS / 2) * (tileSize + lineSize) + yOffset);
 	spawn.setOrigin(tileSize / 2, tileSize / 2);
@@ -17,6 +27,10 @@ Grid::Grid(sf::RenderWindow & window, float tileSize, Player & player):
 	base.setPosition(xOffset + COLUMNS * (tileSize + lineSize), static_cast<int>(ROWS / 2) * (tileSize + lineSize) + yOffset);
 	base.setFillColor(sf::Color::Green);
 	base.setOrigin(tileSize / 2, tileSize / 2);
+
+	// Background
+	background.setPosition({xOffset - (tileSize + lineSize) / 2, yOffset - (tileSize + lineSize) / 2});
+	background.setFillColor({53, 183, 88});
 };
 
 void Grid::update() {
@@ -31,13 +45,16 @@ void Grid::update() {
 		if (enemy.state == Enemy::States::Walking) {
 			enemy.update();
 		} else if (enemy.state == Enemy::States::Dead) {
+			enemy_dying_sound.play();
 			player.numberOfEnemiesKilled++;
 			player.addGold(enemy.getGold());
 			enemies.erase(enemies.begin() + i);
 			i--;
 		} else if (enemy.state == Enemy::States::Reached_Base) {
+			enemy_reached_base_sound.play();
 			player.lives -= enemy.getDmg();
 			if (player.lives <= 0) {
+				player.timePlayed += player.gameClock.getElapsedTime();
 				GameStateManager::pushState(std::make_unique<ScoreState>(window, player));
 			}
 			enemies.erase(enemies.begin() + i);
@@ -55,12 +72,14 @@ void Grid::update() {
 		preWave = true; // Set state to preWave state
 		++waveNumber;
 		++player.numberOfWavesCompleted; //Keep track of the waves completed for stats
-		waveClock.restart(); // Start countdown till next wave
+		end_wave_sound.play();
 	}
 
 	// Starts wave when time is up
 	if (preWave && waveClock.getElapsedTime() > waveDelay) {
 		startWave();
+	} else if (!preWave) {
+		waveClock.restart(); // Start countdown till next wave
 	}
 }
 
@@ -80,6 +99,8 @@ void Grid::calculatePath() {
 }
 
 void Grid::render() const {
+	window.draw(background);
+
 	window.draw(spawn);
 	window.draw(base);
 	for (const auto& tower : grid) {
@@ -102,16 +123,39 @@ void Grid::startWave() {
 		return;
 	}
 
+	bool Ubeah_Knucklez = false;
+
 	// Wave already started
 	if (!preWave) return;
-
+	start_wave_sound.play();
 	// Spawn a extra group every 10 waves
+
+
 	uint16_t numberOfGroups = waveNumber / 10 + 1;
-	for (uint16_t i = 0; i < numberOfGroups; ++i) {
-		// Tank
-		uint32_t randInt = rand() % 100;
+	// Tank
+	uint32_t randInt = rand() % 100;
+
+	if (waveNumber % 50 == 0) {
+		waveQueue.push_back(make_enemy(EnemyType::Ubeah_Knucklez, window, path, waveNumber));
+		Ubeah_Knucklez = true; // Prevents spawning of other NPCs
+	}
+
+
+
+	if (!Ubeah_Knucklez) {
+
+		if (waveNumber % (TANK_START_WAVE * 2) == 0) {
+			waveQueue.push_back(make_enemy(EnemyType::Boss_Tank, window, path, waveNumber));
+		}
+		if (waveNumber % (FAST_START_WAVE * 2) == 0) {
+			waveQueue.push_back(make_enemy(EnemyType::Boss_Fast, window, path, waveNumber));
+		}
+		if (waveNumber % (FLYING_START_WAVE * 2) == 0) {
+			waveQueue.push_back(make_enemy(EnemyType::Boss_Flying, window, path, waveNumber));
+		}
+
 		if (waveNumber == TANK_START_WAVE || (waveNumber >= TANK_START_WAVE && randInt <= TANK_SPAWN_RATE)) {
-			for (uint8_t i = 0; i < TANK_PER_GROUP; ++i) {
+			for (uint8_t i = 0; i < TANK_PER_GROUP*numberOfGroups; ++i) {
 				waveQueue.push_back(make_enemy(EnemyType::Tank, window, path, waveNumber));
 			}
 		}
@@ -119,7 +163,7 @@ void Grid::startWave() {
 		// Normal
 		randInt = rand() % 100;
 		if (waveNumber == NORMAL_START_WAVE || (waveNumber >= NORMAL_START_WAVE && randInt <= NORMAL_SPAWN_RATE)) {
-			for (uint8_t i = 0; i < NORMAL_PER_GROUP; ++i) {
+			for (uint8_t i = 0; i < NORMAL_PER_GROUP*numberOfGroups; ++i) {
 				waveQueue.push_back(make_enemy(EnemyType::Normal, window, path, waveNumber));
 			}
 		}
@@ -127,7 +171,7 @@ void Grid::startWave() {
 		// Speed
 		randInt = rand() % 100;
 		if (waveNumber == FAST_START_WAVE || (waveNumber >= FAST_START_WAVE && randInt <= FAST_SPAWN_RATE)) {
-			for (uint8_t i = 0; i < FAST_PER_GROUP; ++i) {
+			for (uint8_t i = 0; i < FAST_PER_GROUP*numberOfGroups; ++i) {
 				waveQueue.push_back(make_enemy(EnemyType::Fast, window, path, waveNumber));
 			}
 		}
@@ -135,7 +179,7 @@ void Grid::startWave() {
 		// Flying
 		randInt = rand() % 100;
 		if (waveNumber == FLYING_START_WAVE || (waveNumber >= FLYING_START_WAVE && randInt <= FLYING_SPAWN_RATE)) {
-			for (uint8_t i = 0; i < FLYING_PER_GROUP; ++i) {
+			for (uint8_t i = 0; i < FLYING_PER_GROUP*numberOfGroups; ++i) {
 				waveQueue.push_back(make_enemy(EnemyType::Flying, window, path, waveNumber));
 			}
 		}
@@ -169,9 +213,10 @@ void Grid::placeTower(uint8_t x, uint8_t y, TowerType towerType, bool saveAction
 	}
 
 	try {
-		calculatePath();
-
 		if (saveAction) {
+			// We do not need to calculate when rebuild grid is called
+			calculatePath();
+			tower_construction_sound.play();
 			player.addAction(x, y, TowerDataContainer::get(towerType).cost, Action::ACTION_TYPE::PLACE_TOWER, towerType);
 			++player.numberOfTowersPlaced; //Keep track of the number of towers placed for stats
 		}
@@ -191,6 +236,7 @@ void Grid::upgradeTower(uint8_t x, uint8_t y, bool saveAction) {
 		if (selected->getUpgradeLevel() < 2) {
 			player.removeGold(selected->getUpgradeCost());
 			if (saveAction) {
+				tower_construction_sound.play();
 				player.addAction(x, y, selected->getUpgradeCost(), Action::ACTION_TYPE::UPGRADE_TOWER, selected->getType());
 				player.numberOfTowersUpgraded++;
 			}
@@ -231,4 +277,12 @@ void Grid::removeTower(uint8_t x, uint8_t y, bool saveAction) {
 		}
 		grid[x + y * COLUMNS] = nullptr;
 	}
+}
+
+sf::Time Grid::getWaveClock() {
+	return waveClock.getElapsedTime();
+}
+
+sf::Time Grid::getWaveDelay() {
+	return waveDelay;
 }

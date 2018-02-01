@@ -7,6 +7,7 @@
 #include "PlayState.h"
 #include "../helpers/Menu.h"
 #include "../helpers/MenuItem.h"
+#include "../helpers/ToggleFullscreen.h"
 #include "../spear/SpearContainer.h"
 
 class MenuState: public State {
@@ -15,6 +16,7 @@ private:
 	sf::Text text;
 	Menu menu;
 	std::unique_ptr<SpearContainer> easterEgg;
+	sf::Music background_music;
 public:
 	MenuState(sf::RenderWindow& window);
 
