@@ -195,10 +195,20 @@ void PlayState::init() {
 void PlayState::update() {
 	grid.update();
 	if (placementTower != nullptr) {
-		placementTower->setPosition(placePosition);
 		sellsForText.setString("Sells for:    " + std::to_string(placementTower->getSellPrice()));
 		placementCostText.setString("Cost:         " + std::to_string(placementTower->getCost()));
 		attackDamageText.setString("Attack damage: " + floatToDecimalstring(placementTower->getDamage(), 2));
+
+		placementTower->setPosition(placePosition);
+		
+		// Set color of placement Tower based if it can be placed
+		if (!grid.canBePlaced(static_cast<uint8_t>(placeIndex.x), static_cast<uint8_t>(placeIndex.y))) {
+			placementTower->setColor(sf::Color::Red);
+		} else if (player.getGold() < placementTower->getCost()) {
+			placementTower->setColor(sf::Color::Yellow);
+		} else {
+			placementTower->setColor(sf::Color::Green);
+		}
 	} else if (selected != nullptr) {
 		sellsForText.setString("Sells for:    " + std::to_string(selected->getSellPrice()));
 		upgradeCostText.setString("Upgrade cost: " + std::to_string(selected->getUpgradeCost()));
@@ -214,8 +224,10 @@ void PlayState::render() const {
 	grid.render();
 	if (selected != nullptr) {
 		window.draw(sellsForText);
-		window.draw(upgradeCostText);
 		window.draw(attackDamageText);
+		if (selected->getUpgradeLevel() < 2) {
+			window.draw(upgradeCostText);
+		}
 	} else if (placementTower != nullptr) {
 		window.draw(sellsForText);
 		window.draw(placementCostText);
@@ -308,20 +320,12 @@ void PlayState::onMouseMoved(sf::Event& evt) {
 
 	if (placementTower != nullptr) {
 		float fullSize = tileSize + lineSize;
-		auto indexes = sf::Vector2f(
+		placeIndex = sf::Vector2f(
 			ceil(static_cast<float>(evt.mouseMove.x) / fullSize) - 3,
 			ceil(static_cast<float>(evt.mouseMove.y) / fullSize) - 3
 		);
 
-		placePosition = sf::Vector2f(indexes.x * fullSize + 80, indexes.y * fullSize + 88);
-
-		if (!grid.canBePlaced(static_cast<uint8_t>(indexes.x), static_cast<uint8_t>(indexes.y))) {
-			placementTower->setColor(sf::Color::Red);
-		} else if (player.getGold() < placementTower->getCost()) { // TODO: replace this with tower cost
-			placementTower->setColor(sf::Color::Yellow);
-		} else {
-			placementTower->setColor(sf::Color::Green);
-		}
+		placePosition = sf::Vector2f(placeIndex.x * fullSize + 80, placeIndex.y * fullSize + 88);
 	}
 }
 
