@@ -126,6 +126,8 @@ void PlayState::setPlaceTower(TowerType towerType) {
 							dummyEnemies,
 							towerType
 	);
+
+	placementTower->enableRangeRender(true);
 }
 
 std::string PlayState::floatToDecimalstring(float value, int precision) {
@@ -254,13 +256,11 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 	} else if (evt.key.code == sf::Keyboard::A) {
 		deselect();
 		setPlaceTower(TowerType::Normal);
-		placementTower->enableRangeRender(true);
 	} else if (evt.key.code == sf::Keyboard::U) {
 		undo();
 	} else if (evt.key.code == sf::Keyboard::S) {
 	    deselect();
 		setPlaceTower(TowerType::Long);
-		placementTower->enableRangeRender(true);
 	} else if (evt.key.code == sf::Keyboard::W) {
 		grid.startWave();
 	} else if (evt.key.code == sf::Keyboard::Q) {
@@ -268,7 +268,6 @@ void PlayState::onKeyPressed(sf::Event& evt) {
 	} else if (evt.key.code == sf::Keyboard::D) {
 		deselect();
 		setPlaceTower(TowerType::Slow);
-		placementTower->enableRangeRender(true);
 	} 
 	else if (evt.key.code == sf::Keyboard::Y) {
 		upgrade();
@@ -289,7 +288,6 @@ void PlayState::onMouseButtonPressed(sf::Event& evt) {
 		uint8_t y = static_cast<uint8_t>(ceil(static_cast<float>(placePosition.y) / fullSize)) - 3;
 
 		if (grid.canBePlaced(x, y)) {
-			std::cout << "Success!" << std::endl;
 			if (player.getGold() >= placementTower->getCost()) {
 				grid.placeTower(x, y, placementTower->getType(), true);
 			}

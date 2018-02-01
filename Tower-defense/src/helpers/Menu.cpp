@@ -1,7 +1,5 @@
 #include "Menu.h"
 
-#include <iostream>
-
 Menu::Menu(sf::RenderWindow& window, std::vector<MenuItem> menuItems):
 	window(window),
 	menuItems(menuItems),

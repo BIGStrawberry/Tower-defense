@@ -68,7 +68,7 @@ void Grid::update() {
 		enemies.push_back(waveQueue.back());
 		waveQueue.pop_back();
 	} else if (!preWave && waveQueue.size() == 0 && enemies.size() == 0) { // Wave completed
-		std::cout << "Wave: " << waveNumber << " completed" << std::endl;
+		// std::cout << "Wave: " << waveNumber << " completed" << std::endl;
 		preWave = true; // Set state to preWave state
 		++waveNumber;
 		++player.numberOfWavesCompleted; //Keep track of the waves completed for stats
@@ -242,7 +242,7 @@ void Grid::upgradeTower(uint8_t x, uint8_t y, bool saveAction) {
 			}
 			selected->upgrade();
 		} else {
-			std::cout << "Oei, kan deze tower niet meer upgraden.\n";
+			// std::cout << "Oei, kan deze tower niet meer upgraden.\n";
 		}
 	}
 }

@@ -1,5 +1,4 @@
 #include "TextureContainer.h"
-#include <iostream>
 
 
 std::map<std::string, std::shared_ptr<sf::Texture>> TextureContainer::container;

@@ -1,6 +1,4 @@
 #include "Tower.h"
-#include <iostream>
-
 
 
 Tower::Tower(sf::RenderWindow & window, float size, sf::Vector2f pos, std::vector<std::shared_ptr<Enemy>>& enemies, TowerType type):

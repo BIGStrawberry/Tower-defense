@@ -1,5 +1,4 @@
 #include "Enemy.h"
-#include <iostream>
 
 Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, EnemyType type, uint16_t waveNumber) :
 	window(window),
@@ -9,12 +8,12 @@ Enemy::Enemy(sf::RenderWindow& window, const std::vector<sf::Vector2f>& path, En
 	data(EnemyDataContainer::get(type)),
 	slowed(false),
 	original_speed(data.speed),
-	bar((std::pow(static_cast<float>(waveNumber) + data.hp, 1.4f)))
+	bar((std::pow(static_cast<float>(waveNumber) + data.hp, 1.5f) * ((waveNumber / 21) * 0.5f + 1)))
 {
 	int waveSpike = 21;
 	data.hp = (std::pow(static_cast<float>(waveNumber) + data.hp, 1.5f) * ((waveNumber / waveSpike) * 0.5f + 1));
-	std::cout << "Wave spike: " << ((waveNumber / waveSpike) * 0.5f + 1) << std::endl;
-	std::cout << data.hp << std::endl;
+	// std::cout << "Wave spike: " << ((waveNumber / waveSpike) * 0.5f + 1) << std::endl;
+	// std::cout << data.hp << std::endl;
 	data.gold += waveNumber;
 	data.body.setPosition(path[0]);
 	data.body.setRotation(-90.f);

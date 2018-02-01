@@ -2,10 +2,10 @@
 
 #include <SFML\Graphics.hpp>
 #include <SFML\Audio.hpp>
-#include <iostream>
 #include <array>
 #include <unordered_map>
 #include <memory>
+#include <iostream>
 #include "SpearMan.h"
 #include "../helpers/Menu.h"
 

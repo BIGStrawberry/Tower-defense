@@ -1,7 +1,7 @@
 #pragma once
 
-#include <iostream>
 #include <SFML/Graphics.hpp>
+#include <iostream>
 #include "State.h"
 #include "PlayState.h"
 #include "../Player.h"

@@ -1,7 +1,6 @@
 #pragma once
 #include "SFML/Graphics.hpp"
 #include "SFML/Audio.hpp"
-#include <iostream>
 #include <math.h>
 #include <memory>
 #include <SFML/System.hpp>

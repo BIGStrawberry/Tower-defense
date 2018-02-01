@@ -1,5 +1,4 @@
 #include "TowerDataContainer.h"
-#include <iostream>
 
 
 std::map<TowerType, TowerData> TowerDataContainer::container; 
