@@ -7,7 +7,7 @@
 PlayState::PlayState(sf::RenderWindow& window):
 	State(window),
 	tileSize(31),
-	player(window, 20, 375),
+	player(window, 20, 600),
 	grid(window, 31, player),
 	placementTower(nullptr),
 	waveNumberText("Wave: 999", font, 30),
@@ -196,7 +196,7 @@ void PlayState::update() {
 	grid.update();
 	if (placementTower != nullptr) {
 		sellsForText.setString("Sells for:    " + std::to_string(placementTower->getSellPrice()));
-		placementCostText.setString("Cost:         " + std::to_string(placementTower->getUpgradeCost()));
+		placementCostText.setString("Cost:         " + std::to_string(placementTower->getCost()));
 		attackDamageText.setString("Attack damage: " + floatToDecimalstring(placementTower->getDamage(), 2));
 
 		placementTower->setPosition(placePosition);
